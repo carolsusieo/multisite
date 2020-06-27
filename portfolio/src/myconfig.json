@@ -1,0 +1,138 @@
+{
+    "appContact" : {
+      "FirstName" : "Carol",
+      "LastName" : "Odiorne",
+      "email" : "carolsusieo@gmail.com",
+      "street" : "609 S Lake Creek Drive",
+      "city" : "Round Rock",
+      "state" : "Texas",
+      "zip" : "78681",
+      "phone": "(469) 920 9683",
+      "greeting": "Greetings from",
+      "desc": "Austin based Software Engineer, Technical Consultant and FinTech specialist."
+    },
+    "work": [
+      {
+        "company": "Temenos",
+        "position" :"Technical Lead" ,
+        "years": "2017–Present",
+        "desc": "Design functional technology solutions, develop the structure for IT systems, implement architecture, and ensure the IT framework operates efficiently. Provide technical leadership to software development teams. Oversee AWS and Azure hosting such as coordinating and monitoring VPN connections. Identify and resolve network and application security issues.",
+        "subdesc": [
+          "Certified Kony Fabric/Visualizer Developer with expertise in JavaScript and Java supporting the Spring Framework.",
+          "Enhance security and improve the user experience by leading Okta API Integration to support Identity Access Management for the enterprise mobile application.",
+          "Execute full lifecycle software development for the enterprise retail banking mobile application including requirements gathering, system architecture, verification, and documentation.",
+"Led several API Integrations for Core and 3rd Party systems: Fiserv DNA, Symitar, VSoft and Alogent MRDC and image retrieval, Lanvera, LocatorSearch, WireXchange, MX, iPay, PSCU, Checkfree, Augeo and others."
+        ]
+      },
+      {
+        "company": "Independent Contractor",
+        "position" :"Software engineer" ,
+        "years": "2013–2017",
+        "desc": "Designed, developed, tested, and supported custom software applications and their integrations in support of the strategic IT objectives for diverse clients. Partnered with key stakeholders to build scalable technology solutions that exceeded client expectations. Oversaw Identity Access Management (IAM) and AWS Administration.",
+      "subdesc": [
+          "Website development for Job Corps USA using Drupal and various coding languages: HTML, CSS, and PHP.",
+          "Designed and developed several Android applications using Android Studio, Eclipse, and Unity.",
+          "Created Full Stack Web Applications with Restful webservices using Laravel and WordPress.",
+          "Increased efficiency within clients’ IT organization using SailPoint IIQ, Java EE, Tomcat, MySQL, Active Directory, and PowerShell."
+        ]
+    },
+    {
+    "company": "Active Network, LLC",
+    "position" :"Senior Software Engineer" ,
+    "years": "2008–2013",
+    "desc" : "Designed, developed, implemented, and supported applications, systems, and IT products based on company’s business objectives. Led a team of software developers to drive continuous improvement by implementing value-added development solutions.",
+    "subdesc": [
+      "Designed, developed, and managed lifecycle for Software Development Kit (SDK) supporting automated hunting and fishing licensing systems across the United States",
+      "Led mobile application development to support and enhance hunting and fishing applications.",
+      "Enhanced development and debugging processes for POS application software by designing a PC Emulator in Microsoft Visual Studio and C++."
+    ]
+    },
+    {
+    "company": "Automated License Systems, Inc. ",
+    "position" :"Senior Software Engineer" ,
+    "years": "2002–2008",
+    "desc": "Proposed, designed, and developed a terminal application for the POS purchas",
+    "subdesc": [
+      "Expanded product adoption across the United States driving exponential revenue growth.",
+      "Technical Architect and Team Lead delivering numerous projects on time and within budget."
+    ]
+    }
+    ],
+    "social":[
+      {
+        "type": "Skype",
+        "value": "carolsuejackson/chat",
+        "url" : "skype:",
+        "fa": "fa fa-skype",
+        "full": "skype:carolsusiejackson/chat"
+
+      },
+      {
+        "type": "Linkedin",
+        "value": "carolodiorne",
+        "url": "www.linkedin.com/in/",
+        "fa": "fa fa-linkedin",
+        "full": "https://www.linkedin.com/in/carolodiorne"
+      },
+      {
+        "type": "Github",
+        "value": "carolsusieo",
+        "url": "www.github.com",
+        "fa" : "fa fa-github",
+        "full": "https://www.github.com/carolsusieo"
+      },
+      {
+        "type": "Stack Overflow",
+        "value": "1846633/carol-susie-odiorne",
+        "url": "www.stack-overflow/users/",
+        "fa": "fa fa-stack-overflow",
+        "full": "https://www.stackoverflow.com/users/1846633/carol-susie-odiorne"
+
+      }
+    ],
+
+    "skills":[
+   { "label": "IDM, Okta", "value": 11 },
+   { "label": "Cloud: AWS,Azure", "value": 10 },
+   { "label": "Git,SVN", "value": 10 },
+   { "label": "Windows", "value": 5 },
+   { "label": "Linux", "value": 5 },
+   { "label": "Docker,VMs", "value": 6 },
+   { "label": "Apps, Mobile and Web", "value": 10 },
+   { "label": "RESTful,SOAP API", "value": 12 },
+   { "label": "Confluence", "value": 6 },
+   { "label": "Agile", "value": 9 },
+   { "label": "Jira", "value": 7 },
+   { "label": "MySQL,MongoDB", "value": 14 },
+   { "label": "Javascript", "value": 7 },
+   { "label": "C,C++", "value": 13 },
+   { "label": "Java", "value": 15 }
+
+ ],
+    "education": [
+      {
+        "school": "LeTourneau University",
+        "location": "Dallas, TX",
+        "years" :"1995" ,
+        "degree": "Business Managment Coursework",
+        "field": "",
+        "gpa": "4.0 GPA"
+      },
+      {
+        "school": "Community College of the Air Force",
+        "location": "Georgia",
+        "years" :"1989" ,
+        "degree": "Associate Applied Science",
+        "field": "Information Systems",
+        "gpa": "4.0 GPA"
+      },
+      {
+        "school": "Dale Carnegie",
+        "location": "Round Rock, Texas",
+        "years" :"2020" ,
+        "degree": "Certification",
+        "field": "Professional Communications and Human Relations",
+        "gpa": "Human Relations and Crashing Through Awards"
+      }
+    ]
+}

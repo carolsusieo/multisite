@@ -1,0 +1,126 @@
+{
+    "landing" :{
+      "topmenu":[
+          {
+            "href": "#about",
+            "menu": "about",
+            "menutitle": "About"
+          },
+          {
+            "href": "#projects",
+            "menu": "projects",
+            "menutitle": "Projects"
+          },
+          {
+            "href": "#contact",
+            "menu": "contact",
+            "menutitle": "Contact"
+          }
+      ],
+      "lpage": {
+        "toptitle": "Web4U4Less",
+        "title": "Web For You For Less",
+        "copyright_year": "2020",
+        "text": "Fabulous Websites at a fraction of the cost!",
+        "buttonLabel": "Get Started",
+        "mission": "Web4U4Less is a Austin Texas base Web development, hosting, and consultancy. Our mission is to provide great websites at a reasonable cost for small businesses.",
+        "ref": "https://startbootstrap.com/",
+        "img": "img/bg-masthead.jpg",
+        "imgref": "Денис Марчук"
+       },
+      "sections": [
+        {
+          "name": "about",
+          "classList": "text-center",
+          "header": "Built with Love (and Bootstrap if you want it)",
+          "text": "We support our customers in creating, hosting, and advertsing their websites. Working out of Round Rock Texas, we collaborate with you to create and maintain a stunning interactive website that looks as good on your phone as it does on your laptop.",
+          "img" : "img/circuit.png",
+          "imgcredit": "3mikey5000",
+          "classList": "text-center"
+        },
+        {
+          "name": "projects",
+          "projects":[
+            {
+              "text": "Fill out a simple set of information and immediately see how it will display in a variety of formats.",
+              "header": "Websites",
+              "img": "img/web-1668927_1920.jpg",
+              "imgcredit": "Gerd Altmann"
+           },
+           {
+             "header": "Mobile Apps",
+             "text": "We can match your website with an equally stunning self contained mobile app.",
+             "img": "img/ipad.jpg",
+             "imgcredit": "Diego Velazquez"
+           },
+           {
+             "header": "Web Hosting with Mail and Data Storage",
+             "text": "We Host you Web and provide email that match your website address.",
+             "img": "img/digitization-5140055_1920.jpg",
+             "imgcredit": "Gerd Altmann"
+           }
+           ]
+         },
+         {
+           "name": "signup",
+           "header": "Subscribe to receive news, coupons and tech advice.",
+           "input": "email",
+           "inputText": "Enter email address...",
+           "inputId": "inputEmail",
+           "button" : "submit",
+           "buttonText": "Subscribe",
+           "classList": "text-center"
+         },
+         {
+           "name" : "contact",
+           "items":[{
+             "title": "Address",
+             "value": "609 S Lake Creek Drive, Round Rock, Texas 78681"
+           },
+           {
+             "title": "Phone",
+             "value": "469 920 9683"
+           },
+           {
+             "title": "Email",
+             "value": "info@web4u4less.com"
+
+           }],
+            "social":[
+                 {
+                   "type": "Skype",
+                   "value": "carolsuejackson/chat",
+                   "url" : "skype:",
+                   "className": "fa fa-skype",
+                   "full": "skype:carolsusiejackson/chat"
+
+                 },
+                 {
+                   "type": "Linkedin",
+                   "value": "carolodiorne",
+                   "url": "www.linkedin.com/in/",
+                   "className": "fa fa-linkedin",
+                   "full": "https://www.linkedin.com/in/carolodiorne"
+                 },
+                 {
+                   "type": "Github",
+                   "value": "carolsusieo",
+                   "url": "www.github.com",
+                   "className" : "fa fa-github",
+                   "full": "https://www.github.com/carolsusieo"
+                 },
+                 {
+                   "type": "Stack Overflow",
+                   "value": "1846633/carol-susie-odiorne",
+                   "url": "www.stack-overflow/users/",
+                   "className": "fa fa-stack-overflow",
+                   "full": "https://www.stackoverflow.com/users/1846633/carol-susie-odiorne"
+
+                 }
+               ],
+
+           "classList": "bg-black"
+         }
+      ]
+    }
+}

@@ -1,0 +1,83 @@
+@mixin background($imgpath){
+  background: {image: url($imgpath),linear-gradient(to bottom, #{fade-out($black, .7)} 0%,#{fade-out($black, .3)} 75%,$black 100%)}
+  background-position: top;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+  text-align: center;
+  overflow: hidden;
+}
+
+@mixin header($imgpath) {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  min-height: 500px;
+  padding: 15rem 0;
+  @include background($imgpath);
+  h1 {
+     font: 90px/1.1em 'opensans-bold', sans-serif;
+     color: #fff;
+     letter-spacing: -2px;
+     margin: 0 auto 18px auto;
+     text-shadow: 0px 1px 3px rgba(0, 0, 0, .8);
+  }
+  h3 {
+     font: 18px/1.9em 'librebaskerville-regular', serif;
+     color: #A8A8A8;
+     margin: 0 auto;
+     width: 70%;
+     text-shadow: 0px 1px 2px rgba(0, 0, 0, .5);
+  }
+  a {
+     color: #fff;
+  }
+  hr {
+     width: 60%;
+     margin: 18px auto 24px auto;
+     border-color: #2F2D2E;
+     border-color: rgba(150, 150, 150, .1);
+  }
+}
+
+
+/* header social links */
+.social {
+   margin: 24px 0;
+   padding: 0;
+   font-size: 30px;
+   text-shadow: 0px 1px 2px rgba(0, 0, 0, .8);
+   li {
+      display: inline-block;
+      margin: 0 15px;
+      padding: 0;
+   }
+   a { color: #fff;
+     hover { color: #11ABB0; }
+   }
+}
+
+
+/* would be best to pump this in via json - same place it comes in via
+other places - so only needs to be changed once.
+*/
+
+
+.header {
+  @include header(#{$bg-image})
+}
+.header0 {
+   @include header(#{$bg-image})
+}
+
+.header1 {
+  @include header('/images/webpic_lrg/BluePolygons_1920x1234.png');
+}
+
+.header2 {
+  @include header('/images/webpic_lrg/background-2462431_1920.jpg');
+}
+.header3{
+  @include header('/images/webpic_lrg/free-website-background-17.jpg');
+
+}

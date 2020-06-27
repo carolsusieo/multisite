@@ -1,0 +1,89 @@
+@import 'variables.scss';
+@import 'navbar.scss';
+@import 'buttons.scss';
+@import 'form.scss';
+@import 'info.scss';
+//@import 'video.scss';
+@import 'picText.scss';
+@import 'header.scss';
+//@import 'gallery.scss';
+//@import '~video-react/styles/scss/video-react';
+
+body {
+  font-family: 'Righteous';
+  letter-spacing: 0.0625em;
+  margin: 0;
+ background-color: #282c34;
+ color: white;
+ padding: 40px;
+ font-family: Arial;
+ text-align: center;
+}
+
+a {
+  color: $primary;
+  &:focus,
+  &:hover {
+    text-decoration: none;
+    color: darken($primary, 40%);
+  }
+}
+.bg-black {
+  background-color: $black !important;
+}
+
+.bg-primary {
+  background-color: $primary !important;
+}
+
+.text-primary {
+  color: $primary !important;
+}
+.footer {
+  padding: 5rem 0;
+}
+
+.color-picker-palette {
+  position: absolute;
+  z-index: 100;
+}
+.color-picker-cover {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+}
+
+
+// these will move:
+// about
+.row{
+
+}
+.three-columns{
+
+}
+.profile-pic{
+
+}
+.nine-columns-main-col{
+
+}
+.columns{
+
+}
+
+//contact
+.row-section-head{
+
+}
+.two-columns-header-col{
+
+}
+.ten-columns{
+
+}
+.lead{
+
+}

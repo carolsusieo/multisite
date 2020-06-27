@@ -1,0 +1,205 @@
+"Form": {
+  "label": "Your Contact Information",
+  "_onSubmit":"{this.onSubmit}",
+  "initialValues":"{stooge: 'larry', employed: false}",
+   "div": [
+      {
+         "label": [
+            "First Name"
+         ],
+         "Field": {
+            "_name": "firstName",
+            "_component": "input",
+            "_type": "text",
+            "_placeholder": "First Name"
+         }
+      },
+      {
+         "label": [
+            "Last Name"
+         ],
+         "Field": {
+            "_name": "lastName",
+            "_component": "input",
+            "_type": "text",
+            "_placeholder": "Last Name"
+         }
+      },
+      {
+         "label": [
+            "Employed"
+         ],
+         "Field": {
+            "_name": "employed",
+            "_component": "input",
+            "_type": "checkbox"
+         }
+      },
+      {
+         "label": [
+            "Favorite Color"
+         ],
+         "Field": {
+            "option": [
+
+               {
+                  "_value": "#ff0000",
+                  "__text": "❤️ Red"
+               },
+               {
+                  "_value": "#00ff00",
+                  "__text": "💚 Green"
+               },
+               {
+                  "_value": "#0000ff",
+                  "__text": "💙 Blue"
+               }
+            ],
+            "_name": "favoriteColor",
+            "_component": "select"
+         }
+      },
+      {
+         "label": [
+            "Toppings"
+         ],
+         "Field": {
+            "option_multiple": [
+               {
+                  "_value": "chicken",
+                  "__text": "🐓 Chicken"
+               },
+               {
+                  "_value": "ham",
+                  "__text": "🐷 Ham"
+               },
+               {
+                  "_value": "mushrooms",
+                  "__text": "🍄 Mushrooms"
+               },
+               {
+                  "_value": "cheese",
+                  "__text": "🧀 Cheese"
+               },
+               {
+                  "_value": "tuna",
+                  "__text": "🐟 Tuna"
+               },
+               {
+                  "_value": "pineapple",
+                  "__text": "🍍 Pineapple"
+               }
+            ],
+            "_name": "toppings",
+            "_component": "select"
+         }
+      },
+      {
+         "label": [
+            "Sauces"
+         ],
+         "div": [
+            {
+               "label": [
+                  {
+                     "Field": {
+                        "_name": "sauces",
+                        "_component": "input",
+                        "_type": "checkbox",
+                        "_value": "ketchup"
+                     },
+                     "__text": "{' '}\n                Ketchup"
+                  },
+                  {
+                     "Field": {
+                        "_name": "sauces",
+                        "_component": "input",
+                        "_type": "checkbox",
+                        "_value": "mustard"
+                     },
+                     "__text": "{' '}\n                Mustard"
+                  },
+                  {
+                     "Field": {
+                        "_name": "sauces",
+                        "_component": "input",
+                        "_type": "checkbox",
+                        "_value": "mayonnaise"
+                     },
+                     "__text": "{' '}\n                Mayonnaise"
+                  },
+                  {
+                     "Field": {
+                        "_name": "sauces",
+                        "_component": "input",
+                        "_type": "checkbox",
+                        "_value": "guacamole"
+                     },
+                     "__text": "{' '}\n                Guacamole 🥑"
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "label": [
+            "Best Stooge"
+         ],
+         "div": [
+            {
+               "label": [
+                  {
+                     "Field": {
+                        "_name": "stooge",
+                        "_component": "input",
+                        "_type": "radio",
+                        "_value": "larry"
+                     },
+                     "__text": "{' '}\n                Larry"
+                  },
+                  {
+                     "Field": {
+                        "_name": "stooge",
+                        "_component": "input",
+                        "_type": "radio",
+                        "_value": "moe"
+                     },
+                     "__text": "{' '}\n                Moe"
+                  },
+                  {
+                     "Field": {
+                        "_name": "stooge",
+                        "_component": "input",
+                        "_type": "radio",
+                        "_value": "curly"
+                     },
+                     "__text": "{' '}\n                Curly"
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "label": [
+            "Notes"
+         ],
+         "Field": {
+            "_name": "notes",
+            "_component": "textarea",
+            "_placeholder": "Notes"
+         }
+      },
+      {
+         "button": [
+            {
+               "_type": "submit",
+               "__text": "Submit"
+            },
+            {
+               "_type": "button",
+               "_onClick": "{form.reset}",
+               "__text": "Reset"
+            }
+         ],
+      }
+   ]
