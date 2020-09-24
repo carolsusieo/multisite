@@ -66,3 +66,179 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+
+### Explanation of myconfig.js
+
+currently a json file that controls what shows up in the webpage.
+
+
+export const appConfig ={
+  "landing" :{
+    "lpage": {
+      "toptitle": "",
+      "title": "",
+      "copyright_year": "",
+      "text": "",
+      "buttonLabel": "",
+      "mission": "",
+      "img": "/images/bg-masthead.jpg",
+      "imgref": "Another image"
+    }
+  },
+  "sections":[
+    {
+     "menutitle": "",
+     "login": "",
+     "type": "info",
+     "name": "",
+     "header": "",
+     "classList": "text-center",
+     "text": "",
+     "img" : "images/webpic_sml/sample-image.jpg",
+     "include": "contact",
+     "include": "social"
+    },
+    {
+      "menutitle": "",
+      "login": "false",
+      "type": "subcolumns",
+      "name": "",
+      "header": "",
+      "classList": "columns2",
+      "data": // based on classList used
+          [{
+            "header": "",
+            "main" :"" ,
+            "submain": "",
+            "text": "",
+            "subtext": [
+              "",
+              ""
+            ]
+          }
+      ]
+    },
+
+    {
+      "menutitle": "",
+      "login": "false",
+      "type": "circles",
+      "name": "",
+      "header": "",
+      "classList": "circles",
+      "data": [
+
+          { "label": "IDM, Okta", "value": 11 }
+       ]
+    },
+    {
+      "type": "subcolumns",
+      "name": "",
+      "login": "false",
+      "header": "",
+      "classList": "columns2",
+      "data": [
+         {
+           "header": "",
+           "main": "",
+           "submain" :"" ,
+           "text": "",
+           "subtext":[ "",
+              ""
+            ]
+         }
+     ]
+   },
+   {
+     "type": "final-form",
+     "name": "",
+     "login": "false",
+     "header": "",
+     "text": "",
+     "api": "api/contact/contact",
+     "data":[
+        {
+          "label": [
+             "First Name"
+          ],
+          "Field": {
+             "_name": "firstName",
+             "_component": "input",
+             "_type": "text",
+             "_placeholder": "First Name"
+          }
+        },
+
+        {
+           "label": [
+           "State"
+           ],
+           "Field": {
+               "option":[
+                 {
+                   "_value": "AL",
+                   "__text": "Alabama"
+                 },
+                 {
+                   "_value": "TN",
+                   "__text": "Tennessee"
+                 },
+                 {
+                        "_value": "TX",
+                        "__text": "Texas"
+                 }
+               ],
+               "_name": "state",
+               "_component": "select"
+           }
+        },
+        {
+           "button": [
+              {
+                 "_type": "submit",
+                 "__text": "Submit"
+              },
+              {
+                 "_type": "reset",
+                 "__text": "Reset"
+              }
+           ]
+        }
+     ]
+   },
+   {
+     "type": "dbdata",
+     "name": "easyAdded",
+     "login": "true",
+     "header": "Easy Added",
+     "classList": "columns2",
+     "api": "/api/easy/easys"
+  }
+  ], // end of sections
+  "include":
+  {
+      "contact":
+        {
+          "phone": "(469) 920 9683"
+        },
+      "social":
+        [
+            {
+              "type": "Skype",
+              "value": "carolsuejackson/chat",
+              "url" : "skype:",
+              "fa": "fa fa-skype",
+              "full": "skype:carolsusiejackson/chat"
+
+            },
+            {
+              "type": "Linkedin",
+              "value": "carolodiorne",
+              "url": "www.linkedin.com/in/",
+              "fa": "fa fa-linkedin",
+              "full": "https://www.linkedin.com/in/carolodiorne"
+            }
+        ]
+  }
+}

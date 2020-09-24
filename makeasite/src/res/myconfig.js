@@ -25,6 +25,7 @@ export const appConfig ={
      "include": "social"
     },
     {
+      "menutitle": "Work",
       "login": "false",
       "type": "subcolumns",
       "name": "work",
@@ -34,7 +35,7 @@ export const appConfig ={
           [{
             "header": "Temenos",
             "main" :"Technical Lead" ,
-            "submain": "2017–Present",
+            "submain key = {section.name}": "2017–Present",
             "text": "Design functional technology solutions, develop the structure for IT systems, implement architecture, and ensure the IT framework operates efficiently. Provide technical leadership to software development teams. Oversee AWS and Azure hosting such as coordinating and monitoring VPN connections. Identify and resolve network and application security issues.",
             "subtext": [
               "Certified Kony Fabric/Visualizer Developer with expertise in JavaScript and Java supporting the Spring Framework.",
@@ -78,7 +79,6 @@ export const appConfig ={
           }
       ]
     },
-
     {
       "menutitle": "Skills",
       "login": "false",
@@ -87,7 +87,6 @@ export const appConfig ={
       "header": "Skills",
       "classList": "circles",
       "data": [
-
           { "label": "IDM, Okta", "value": 11 },
           { "label": "Cloud: AWS,Azure", "value": 10 },
           { "label": "Git,SVN", "value": 10 },
@@ -105,7 +104,36 @@ export const appConfig ={
           { "label": "Java", "value": 15 }
        ]
     },
-    {
+
+        {
+          "menutitle": "Change It",
+          "login": "true",
+          "type": "info",
+          "name": "change",
+          "header": "Change It",
+          "classList": "columns2",
+          "data":
+              [{
+                "header": "Change data and pictures",
+                "main" :"It's easy once I add it" ,
+                "submain": "But I need to do that",
+                "text": "And I will",
+                "subtext": [
+                  "As soon as I get a chance"
+                ]
+              },
+              {
+                "header": "Add Videos too",
+                "main" :"That was another easy component" ,
+                "submain": "That I added previously",
+                "text": "I think it was easier",
+                "subtext": [
+                  "But I'll have to find out"
+                ]
+              }
+          ]
+        },
+      {
       "type": "subcolumns",
       "name": "education",
       "login": "false",

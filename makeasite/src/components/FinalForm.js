@@ -31,7 +31,10 @@ onSubmit = async values => {
 
 render(){
  const my_divs = this.props.data;
+ var i=1;
  return(
+   <section id={this.props.name}>
+
   <div stype={{textAlign: "center"}}>
     <h1>{this.props.header}</h1>
     <p>{this.props.text}</p>
@@ -48,7 +51,7 @@ render(){
                   <Field name={div.Field._name}
                     component={div.Field._component}>
                     {div.Field.option.map(aoption =>{
-                     return(<option value={aoption._value}>{aoption.__text}</option>)
+                     return(<option key = {i++} value={aoption._value}>{aoption.__text}</option>)
                     })}
                   </Field>
                 </div>
@@ -71,7 +74,7 @@ render(){
             }
             else
             return(
-            <div>
+            <div >
              <label>{div.label}</label>
              <Field
               name={div.Field._name}
@@ -103,7 +106,7 @@ render(){
                 }
                 else{
                 return(
-                  <div>
+                  <div key = {i++}>
                   <button type={abutton._type} disabled={submitting || pristine}>
                     {abutton.__text}
                   </button>
@@ -140,6 +143,7 @@ render(){
       )}
     />
   </div>
+  </section>
 )
 }
 }

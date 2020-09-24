@@ -17,6 +17,7 @@ export default class Header extends Component {
   var title = '';
   var mission = '';
   var img = '';
+  var i= 1;
   if(landing){
     texthere = landing.lpage.texthere;
     ref = landing.lpage.ref;
@@ -28,6 +29,7 @@ export default class Header extends Component {
   // the className may change for every possible background image that might be used.
     if(social && contact)  {
       return(
+        <section id={this.props.name}>
             <div className="header" id="home">
             <div className="banner">
               <h3 >{title}</h3>
@@ -37,11 +39,12 @@ export default class Header extends Component {
               <hr />
                <ul className="social">
                {social.map(test =>(
-                 <li><a href={test.full} ><i className={test.fa} /></a></li>
+                 <li key = {i++}><a href={test.full} ><i className={test.fa} /></a></li>
                ))}
               </ul>
             </div>
           </div>
+          </section>
       );
     }
     return ( <p>Error</p>)

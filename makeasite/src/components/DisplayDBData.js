@@ -23,6 +23,8 @@ export default function DisplayDBData(input) {
 
      if(!isLoading)
       return(
+        <section>
+
           <div className="row">
             <div className="three columns header-col">
               <h1><span>{input.header}</span></h1>
@@ -32,6 +34,7 @@ export default function DisplayDBData(input) {
             </div>
 
           </div>
+          </section>
       )
       else {
         return(<p>Loading</p>)

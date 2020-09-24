@@ -21,12 +21,19 @@ import { useAuth0 } from "./src_auth0/react-auth0-spa";
 import history from "./src_auth0/utils/history";
 
 
+// the NAVBAR  menu items are managed by the authentication package - and create items for
+//    all items in configuration that are marked with "menutitle"
+//
+
 const App = () => {
   const { loading, isAuthenticated} = useAuth0();
    if (loading) {
       return <Loading />;
     }
     return (
+
+      // if isAuthenticated, there will be an extra button to choose - to allow things
+      // to be changed (back image, and font....)
       <Router history={history}>
         <div id="app" className="d-flex flex-column h-100">
           <NavBar sections ={appConfig.sections}/>
@@ -38,11 +45,13 @@ const App = () => {
               landing={appConfig.landing}
               contact={appConfig.include.contact}/>
             {appConfig.sections.map(section =>{
-
+          //    console.log(section.login + " " + isAuthenticated);
 
               if (!section.login || section.login === 'false' || isAuthenticated){
               if(section.type == 'info' ){
-                  return(<Info name={section.name}
+
+                // profile ?
+                  return(<Info key = {section.name} name={section.name}
                     header = {section.header}
                     text = {section.text}
                     img = {section.img}
@@ -50,14 +59,14 @@ const App = () => {
                     contact={appConfig.include.contact}/>)
               }
               else if(section.type == 'subcolumns'){
-                  return(<DisplayColumns name={section.name}
+                  return(<DisplayColumns key = {section.name} name={section.name}
                     header = {section.header}
                     text = {section.text}
                     classList = {section.classList}
                     data={section.data}/>)
               }
               else if(section.type == 'circles'){
-                return(<DataCircles name={section.name}
+                return(<DataCircles key = {section.name} name={section.name}
                   header = {section.header}
                   text = {section.text}
                   classList = {section.classList}
@@ -66,7 +75,7 @@ const App = () => {
               else if(section.type == 'infoPic'){
               }
               else if(section.type == 'final-form'){
-                return(<FinalForm name={section.name}
+                return(<FinalForm key = {section.name} name={section.name}
                   header = {section.header}
                   api = {section.api}
                   text = {section.text}
@@ -77,14 +86,14 @@ const App = () => {
               else if(section.type == "cards"){
               }
               else if(section.type == 'dbdata'){
-                return(<DisplayDBData name = {section.name}
+                return(<DisplayDBData key = {section.name} name = {section.name}
                   header = {section.header}
                   api = {section.api}
                   classList = {section.classList}/>
                 )
               }
               else {
-                return(<Section name={section.name}
+                return(<Section key = {section.name} name={section.name}
                   header={section.header}
                   text={section.text}
                   img={section.img}

@@ -16,12 +16,14 @@ export default class DataCircles extends Component {
   }
 
 render(){
-  const dataCircles = this.props.dataCircles;
+  const dataCircles = this.props.data;
   if(dataCircles)  {
   return(
+    <section id={this.props.name}>
+
     <div className="row skill">
         <div className="three columns header-col">
-          <h1><span>this.props.header</span></h1>
+          <h1><span>{this.props.header}</span></h1>
         </div>
     <BubbleChart
       graph= {{
@@ -59,6 +61,7 @@ render(){
       data={dataCircles}
     />
     </div>
+    </section>
   )
 }
 return(<p>Error</p>)

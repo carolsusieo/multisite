@@ -11,6 +11,8 @@ export default class ContactSpecifics extends Component {
         let test = this.props.contact;
         if(test)  {
             return (
+              <section id={this.props.name}>
+
                 <div>
                   <span>{test.FirstName} {test.LastName}</span><br />
                   <span>{test.street}</span><br/>
@@ -18,6 +20,7 @@ export default class ContactSpecifics extends Component {
                   <span>{test.email}</span><br/>
                   <span>{test.phone}</span><br/>
                 </div>
+                </section>
             );
           };
         return(<p> No Data </p>);

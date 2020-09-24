@@ -31,7 +31,10 @@ const NavBar = ({sections}) => {
     {
       sections.map(section =>{
           console.log("section",section);
-          if(section.menutitle != undefined){
+          // items will show up in the navigational bar based on if menutitle
+          // is in the configuration file for the item...
+
+          if(section.menutitle != undefined && (section.login == true || isAuthenticated)){
             hasMore.push(section)
             return(section);
           }
@@ -63,9 +66,10 @@ const NavBar = ({sections}) => {
                   Home
                 </NavLink>
               </NavItem>
+
                 {hasMore.length > 0 && (
-                         hasMore.map(section =>(<NavItem>
-                           <NavLink href={'#' + section.name}>{section.menutitle}</NavLink>
+                         hasMore.map(section =>(
+                           <NavItem key = {section.name}><NavLink href ={'#' + section.name}>{section.menutitle}</NavLink>
                          </NavItem>))
                   )}
             </Nav>
