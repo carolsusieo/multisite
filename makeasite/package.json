@@ -25,7 +25,8 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.4.1",
     "reactstrap": "^8.0.0",
-    "styled-components": "^5.1.1"
+    "styled-components": "^5.1.1",
+    "react-player": "^2.6.2"
   },
   "scripts": {
     "start": "PORT=8003 react-scripts start",

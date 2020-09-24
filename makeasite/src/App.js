@@ -8,6 +8,7 @@ import DisplayDBData from './components/DisplayDBData'
 import Footer from './components/Footer'
 import FinalForm from './components/FinalForm'
 import Section from './components/Section'
+import Video from './components/Video'
 
 import { Router, Route, Switch } from "react-router-dom";
 import { Container } from "reactstrap";
@@ -91,6 +92,12 @@ const App = () => {
                   api = {section.api}
                   classList = {section.classList}/>
                 )
+              }
+              else if(section.type == 'video'){
+                return(<Video key = {section.name} name = {section.name}
+                 header = {section.header}
+                 url= {section.url}
+                 classlist = {section.classList}/>)
               }
               else {
                 return(<Section key = {section.name} name={section.name}

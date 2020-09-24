@@ -80,6 +80,15 @@ export const appConfig ={
       ]
     },
     {
+      "menutitle": "Video",
+      "login": "true",
+      "type": "video",
+      "name": "testvideo",
+      "header": "Video",
+      "classlist": "video",
+        "url":"https://www.youtube.com/watch?v=sjkrrmBnpGE&ab_channel=QuietQuest-StudyMusic"
+    },
+    {
       "menutitle": "Skills",
       "login": "false",
       "type": "circles",
