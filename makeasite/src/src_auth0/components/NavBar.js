@@ -50,18 +50,19 @@ const NavBar = ({sections}) => {
 
   return (
     <div className="nav-container">
-      <Navbar color="light" light expand="md">
+      <Navbar fixed="top" color="light" light expand="md">
         <Container>
           <NavbarBrand className="logo" />
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
-              <NavItem>
+              <NavItem key = "header">
                 <NavLink
-                  tag={RouterNavLink}
+                  /*tag={RouterNavLink}
                   to="/"
                   exact
-                  activeClassName="router-link-exact-active"
+                  activeClassName="router-link-exact-active"*/
+                  href='#header'
                 >
                   Home
                 </NavLink>
@@ -80,7 +81,7 @@ const NavBar = ({sections}) => {
                   <Button
                     id="qsLoginBtn"
                     color="primary"
-                    className="btn-margin"
+                    className="btn-margin"Navbar
                     onClick={() => loginWithRedirect({})}
                   >
                     Log in

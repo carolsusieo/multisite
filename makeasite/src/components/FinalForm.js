@@ -7,7 +7,13 @@ export default class FinalForm extends Component{
 constructor(props){
   super(props)
   this.state = {
+
   }
+  this.sectionStyle = {
+  width: "100%",
+  backgroundImage: "url(" +  props.backimg + ")"
+  };
+
 }
 onClear = () =>{
   this.setState({
@@ -33,10 +39,10 @@ render(){
  const my_divs = this.props.data;
  var i=1;
  return(
-   <section id={this.props.name}>
+   <section class='jumptarget'  id={this.props.name}>
+   <h1>{this.props.header}</h1>
 
-  <div stype={{textAlign: "center"}}>
-    <h1>{this.props.header}</h1>
+  <div style={this.sectionStyle} >
     <p>{this.props.text}</p>
     <Form
       onSubmit={this.onSubmit}
@@ -46,21 +52,28 @@ render(){
           if(div.Field){
             if(div.Field.option){
               return(
-                <div>
-                  <label>{div.label}</label>
-                  <Field name={div.Field._name}
-                    component={div.Field._component}>
+                <div class="form-group row">
+                 <div class="col-2">
+                    <label>{div.label}</label>
+                 </div>
+                 <div class="col-4">
+                  <Field  name={div.Field._name}
+                    component={div.Field._component} >
                     {div.Field.option.map(aoption =>{
                      return(<option key = {i++} value={aoption._value}>{aoption.__text}</option>)
                     })}
                   </Field>
+                 </div>
                 </div>
               )
             }
             else if(div.Field.option_multiple){
               return(
-                <div>
+                <div class="form-group row">
+                 <div class="col-2">
                   <label>{div.label}</label>
+                 </div>
+                 <div class="col-2">
                   <Field name={div.Field._name}
                   component={div.Field._component} multiple>
                   {div.Field.option_multiple.map(aoption =>{
@@ -69,13 +82,17 @@ render(){
                     )
                   })}
                   </Field>
-                  </div>
+                 </div>
+                </div>
               )
             }
             else
             return(
-            <div >
+              <div class="form-group row">
+               <div class="col-2">
              <label>{div.label}</label>
+             </div>
+             <div class="col-4">
              <Field
               name={div.Field._name}
               component={div.Field._component}
@@ -83,34 +100,37 @@ render(){
               placeholder={div.Field._placeholder}
               >
              </Field>
+             </div>
             </div>
            )
           }
           else if(div.button){
             return(
-              <div className="buttons">
+
+
+              <div class="row justify-content-start">
+              <div class='col-2'/>
+
               {div.button.map(abutton=>{
                   if(abutton._type == 'reset'){
                     return(
-                      <div>
-                      <button
+
+                      <button class='col-2'
                         type="button"
                         onClick={form.reset}
                         disabled={submitting || pristine}
                         >
                         {abutton.__text}
                       </button>
-                      </div>
+
                     )
 
                 }
                 else{
                 return(
-                  <div key = {i++}>
-                  <button type={abutton._type} disabled={submitting || pristine}>
+                  <button class='col-2' type={abutton._type} disabled={submitting || pristine}>
                     {abutton.__text}
                   </button>
-                  </div>
                 )
                }
              })}
@@ -119,9 +139,11 @@ render(){
           }
           else if(div.div){
             return(
-              <div>
-              <label>{div.label}</label>
-                <div>
+              <div class="form-group row">
+               <div class="col-2">
+                <label>{div.label}</label>
+               </div>
+               <div class='col-2'>
                    {div.div[0].label.map(alabel =>{
                      return(
                     <label>
@@ -139,7 +161,9 @@ render(){
             )
           }
          })}
+
         </form>
+
       )}
     />
   </div>

@@ -19,6 +19,7 @@ export default class Header extends Component {
   var img = '';
   var i= 1;
   if(landing){
+
     texthere = landing.lpage.texthere;
     ref = landing.lpage.ref;
     buttonLabel =landing.lpage.buttonLabel;
@@ -29,7 +30,7 @@ export default class Header extends Component {
   // the className may change for every possible background image that might be used.
     if(social && contact)  {
       return(
-        <section id={this.props.name}>
+        <section class='jumptarget'  id={this.props.name}>
             <div className="header" id="home">
             <div className="banner">
               <h3 >{title}</h3>

@@ -8,7 +8,7 @@ export const appConfig ={
       "buttonLabel": "to learn more about me",
       "mission": "",
       "img": "/images/bg-masthead.jpg",
-      "imgref": "Денис Марчук"
+      "imgref": "Денис МарчуonClickк"
     }
   },
   "sections":[
@@ -19,7 +19,7 @@ export const appConfig ={
      "name": "about",
      "header": "About Me",
      "classList": "text-center",
-     "text": "",
+     "text": "This is text about the image",
      "img" : "images/webpic_sml/sample-image.jpg",
      "include": "contact",
      "include": "social"
@@ -82,6 +82,7 @@ export const appConfig ={
     {
       "menutitle": "Video",
       "login": "true",
+      "backimg": "",
       "type": "video",
       "name": "testvideo",
       "header": "Video",
@@ -91,6 +92,7 @@ export const appConfig ={
     {
       "menutitle": "Skills",
       "login": "false",
+      "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
       "type": "circles",
       "name": "skills",
       "header": "Skills",
@@ -121,6 +123,8 @@ export const appConfig ={
           "name": "change",
           "header": "Change It",
           "classList": "columns2",
+          "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
+
           "data":
               [{
                 "header": "Change data and pictures",
@@ -145,6 +149,7 @@ export const appConfig ={
       {
       "type": "subcolumns",
       "name": "education",
+      "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
       "login": "false",
       "header": "Education",
       "classList": "columns2",
@@ -181,6 +186,7 @@ export const appConfig ={
    {
      "type": "final-form",
      "name": "contactyou",
+     "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
      "login": "false",
      "header": "Get In Touch.",
      "text": "Provide the following information so that I can get back to you.",

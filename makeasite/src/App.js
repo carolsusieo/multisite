@@ -9,6 +9,7 @@ import Footer from './components/Footer'
 import FinalForm from './components/FinalForm'
 import Section from './components/Section'
 import Video from './components/Video'
+//import OutsideAlerter from './components/OutsideAlerter'
 
 import { Router, Route, Switch } from "react-router-dom";
 import { Container } from "reactstrap";
@@ -21,10 +22,25 @@ import {appConfig} from "./res/myconfig";
 import { useAuth0 } from "./src_auth0/react-auth0-spa";
 import history from "./src_auth0/utils/history";
 
+//Lifting State.  A requirement for managing changes on the fly..
+// Or, would it be easier to change database with an overlay,
+// and do a restart everytime a change is made...  if possible
+// but I wonder...
 
-// the NAVBAR  menu items are managed by the authentication package - and create items for
+//  Let's start with changing font....
+// todos:
+// ability to have a background picture on any section
+
+// ability to change font type and color on a change page. That then affects
+// font and color on other pages.
+// ability to change the background pictures on pages.
+// font size changes - or wraps to manage mutlicolumn
+
+
+// the NAVBAR  menu items are managed by the authentication package -
+// and create items for
 //    all items in configuration that are marked with "menutitle"
-//
+//I think it might be
 
 const App = () => {
   const { loading, isAuthenticated} = useAuth0();
@@ -42,7 +58,7 @@ const App = () => {
             <Switch>
               <PrivateRoute path="/profile" component={Profile} />
             </Switch>
-            <Header social={appConfig.include.social}
+            <Header name='header' social={appConfig.include.social}
               landing={appConfig.landing}
               contact={appConfig.include.contact}/>
             {appConfig.sections.map(section =>{
@@ -57,21 +73,24 @@ const App = () => {
                     text = {section.text}
                     img = {section.img}
                     classList = {section.classList}
-                    contact={appConfig.include.contact}/>)
+                    contact={appConfig.include.contact}
+                    backimg = {section.backimg}/>)
               }
               else if(section.type == 'subcolumns'){
                   return(<DisplayColumns key = {section.name} name={section.name}
                     header = {section.header}
                     text = {section.text}
                     classList = {section.classList}
-                    data={section.data}/>)
+                    data={section.data}
+                    backimg = {section.backimg}/>)
               }
               else if(section.type == 'circles'){
                 return(<DataCircles key = {section.name} name={section.name}
                   header = {section.header}
                   text = {section.text}
                   classList = {section.classList}
-                  data={section.data}/>)
+                  data={section.data}
+                  backimg = {section.backimg}/>)
               }
               else if(section.type == 'infoPic'){
               }
@@ -82,7 +101,8 @@ const App = () => {
                   text = {section.text}
                   submit = {section._onSubmit}
                   classList = {section.classList}
-                  data = {section.data}/>)
+                  data = {section.data}
+                 backimg = {section.backimg}/>)
               }
               else if(section.type == "cards"){
               }
@@ -97,7 +117,8 @@ const App = () => {
                 return(<Video key = {section.name} name = {section.name}
                  header = {section.header}
                  url= {section.url}
-                 classlist = {section.classList}/>)
+                 classlist = {section.classList}
+                 backimg = {section.backimg}/>)
               }
               else {
                 return(<Section key = {section.name} name={section.name}
@@ -105,7 +126,7 @@ const App = () => {
                   text={section.text}
                   img={section.img}
                   classList = {section.classList}
-                  mission={section.mission}/>)
+                  mission={section.mission}                  backimg = {section.backimg}/>)
               }
               }
             })}

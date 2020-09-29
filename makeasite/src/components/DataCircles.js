@@ -6,7 +6,11 @@ export default class DataCircles extends Component {
 
   constructor(props) {
         super(props);
-    }
+        this.sectionStyle = {
+        width: "100%",
+        backgroundImage: "url(" +  props.backimg + ")"
+        };
+  }
 
   bubbleClick = (label) =>{
     console.log("Custom bubble click func")
@@ -19,12 +23,13 @@ render(){
   const dataCircles = this.props.data;
   if(dataCircles)  {
   return(
-    <section id={this.props.name}>
-
-    <div className="row skill">
-        <div className="three columns header-col">
-          <h1><span>{this.props.header}</span></h1>
+    <section  id={this.props.name}>
+    <div className="row skill" >
+        <div>
+          <h1>{this.props.header}</h1>
         </div>
+    </div>
+    <div style={this.sectionStyle}>
     <BubbleChart
       graph= {{
         zoom: 1.1,

@@ -6,35 +6,70 @@ import React, { Component } from 'react';
 export default class DisplayColumns extends Component {
   constructor(props){
     super(props);
+    this.sectionStyle = {
+  //  width: "100%",
+    backgroundImage: "url(" +  props.backimg + ")",
+
+
+    };
+    this.bulletStyle = {
+      display:"inline-block",
+
+    };
   }
+
+  // want the columns to look like this:
+
+  //  record header
+  //        record main . record submain
+  //        record text........................................................
+  //        ...................................................................
+  //        . record bullet........
+  //        . record bullet........
   render() {
     var i = 1;
         return (
-          <section id={this.props.name}>
+          <section class='jumptarget'  id={this.props.name}>
+          <div>
+            <h1>{this.props.header}</h1>
+          </div>
 
-          <div className="row education">
-            <div className="three columns header-col">
-              <h1><span>{this.props.header}</span></h1>
-            </div>
-            <div className="nine columns main-col">
+          <div class="container" style={this.sectionStyle}>
+
+
             {this.props.data.map(record =>(
-              <div className="row item" key={i++}>
-               <div className="row data">
-                <div className="twelve columns">
+              <div>
+               <div class="row justify-content-start" key={i++}>
+                <div class="col-3">
                   <h3>{record.header}</h3>
-                  <p className="info">{record.main}<span>•</span> <em className="date">{record.submain}</em></p>
-                  <p className="info">
+                  <p>{record.main}<span> • </span> <em className="date">{record.submain}</em></p>
+               </div>
+                 <div class="col-7">
+                  <p>
                     {record.text}
                   </p>
-                  {record.subtext.map(subdesc =>(
-                  <li className="info" key = {i++}>{subdesc}</li>
-                   ))}
-                </div>
+                  </div>
                </div>
+               <div class = "row">
+                  <div class="col-3"><p/></div>
+                  <div class="col-7">
+                  <ul class="text-left" style={this.bulletStyle}>
+
+                  {record.subtext.map(subdesc =>(
+                          <li key = {i++}>{subdesc} </li>
+                   ))}
+                   </ul>
+                   </div>
+
+               </div>
+               <div class="row">
+               <p/>
+               </div>
+
               </div>
             ))}
             </div>
-          </div>
+
           </section>
         )
     }

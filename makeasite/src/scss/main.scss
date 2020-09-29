@@ -55,6 +55,12 @@ a {
   right: 0px;
 }
 
+.jumptarget::before {
+  content:"";
+  display:block;
+  height:35px; /* fixed header height*/
+  margin:-35px 0 0; /* negative fixed header height */
+}
 
 // these will move:
 // about
@@ -74,7 +80,6 @@ a {
 
 }
 
-//contact
 .row-section-head{
 
 }
