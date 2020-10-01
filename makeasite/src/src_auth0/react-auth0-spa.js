@@ -16,6 +16,7 @@ export const Auth0Provider = ({
   const [auth0Client, setAuth0] = useState();
   const [loading, setLoading] = useState(true);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [editState, setEditState] = useState(false);
 
   useEffect(() => {
     const initAuth0 = async () => {
@@ -44,6 +45,10 @@ export const Auth0Provider = ({
     initAuth0();
     // eslint-disable-next-line
   }, []);
+
+  const toggleEditState = async (params = {}) => {
+    setEditState((editState) ? false:true);
+  };
 
   const loginWithPopup = async (params = {}) => {
     setPopupOpen(true);
@@ -76,6 +81,8 @@ export const Auth0Provider = ({
         popupOpen,
         loginWithPopup,
         handleRedirectCallback,
+        toggleEditState,
+        editState,
         getIdTokenClaims: (...p) => auth0Client.getIdTokenClaims(...p),
         loginWithRedirect: (...p) => auth0Client.loginWithRedirect(...p),
         getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),

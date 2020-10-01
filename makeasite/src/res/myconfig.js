@@ -1,4 +1,6 @@
 export const appConfig ={
+  "appName": "makeasite",
+  "editable": "true",
   "landing" :{
     "lpage": {
       "toptitle": "John Doe React-ing - todo currently not used",
@@ -7,11 +9,30 @@ export const appConfig ={
       "text": "Nashville based Software Engineer, Technical Consultant and FinTech specialist.",
       "buttonLabel": "to learn more about me",
       "mission": "",
-      "img": "/images/bg-masthead.jpg",
+      "backimg": "/images/bg-masthead.jpg",
       "imgref": "Денис МарчуonClickк"
     }
   },
   "sections":[
+    {
+      "menutitle": "Home",
+      "login": "false",
+      "type": "header",
+      "name": "header",
+      "header": "John Doe React-ing",
+      "menutitle": "Home",
+      "classList": "text-center",
+        "toptext": "John Doe React-ing - todo currently not used",
+        "title": "Greetings From",
+        "copyright_year": "2020",
+        "text": "Nashville based Software Engineer, Technical Consultant and FinTech specialist.",
+        "buttonLabel": "to learn more about me",
+        "mission": "",
+        "backimg": "/images/bg-masthead.jpg",
+        "imgref": "Денис МарчуonClickк",
+        "mission": ""
+    },
+
     {
      "menutitle": "About",
      "login": "false",
@@ -86,7 +107,7 @@ export const appConfig ={
       "type": "video",
       "name": "testvideo",
       "header": "Video",
-      "classlist": "video",
+      "classList": "video",
         "url":"https://www.youtube.com/watch?v=sjkrrmBnpGE&ab_channel=QuietQuest-StudyMusic"
     },
     {
@@ -115,38 +136,7 @@ export const appConfig ={
           { "label": "Java", "value": 15 }
        ]
     },
-
-        {
-          "menutitle": "Change It",
-          "login": "true",
-          "type": "info",
-          "name": "change",
-          "header": "Change It",
-          "classList": "columns2",
-          "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
-
-          "data":
-              [{
-                "header": "Change data and pictures",
-                "main" :"It's easy once I add it" ,
-                "submain": "But I need to do that",
-                "text": "And I will",
-                "subtext": [
-                  "As soon as I get a chance"
-                ]
-              },
-              {
-                "header": "Add Videos too",
-                "main" :"That was another easy component" ,
-                "submain": "That I added previously",
-                "text": "I think it was easier",
-                "subtext": [
-                  "But I'll have to find out"
-                ]
-              }
-          ]
-        },
-      {
+    {
       "type": "subcolumns",
       "name": "education",
       "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
@@ -408,7 +398,6 @@ export const appConfig ={
          }
       ]
     }
-
   ],
   "include":
   {

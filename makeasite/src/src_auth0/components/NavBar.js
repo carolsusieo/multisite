@@ -18,12 +18,13 @@ import {
 
 import { useAuth0 } from "../react-auth0-spa";
 
-const NavBar = ({sections}) => {
+const NavBar = ({editable, sections}) => {
 
 // determine if the sections sent in have any ones with menutitle set..
   const [isOpen, setIsOpen] = useState(false);
-  const { user, isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect,editState,toggleEditState, logout} = useAuth0();
   const toggle = () => setIsOpen(!isOpen);
+
 
   var hasMore=[];
     console.log("sections", sections);
@@ -48,33 +49,45 @@ const NavBar = ({sections}) => {
       returnTo: window.location.origin
     });
 
+  const currentEditState = () =>{
+    console.log("editState: " + editState);
+    return(editState == true?"Stop Edit":"Edit");
+  };
+
+
   return (
-    <div className="nav-container">
+    <div className="nav-container">isAuthenticated
       <Navbar fixed="top" color="light" light expand="md">
         <Container>
           <NavbarBrand className="logo" />
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar>
             <Nav className="mr-auto" navbar>
-              <NavItem key = "header">
-                <NavLink
-                  /*tag={RouterNavLink}
-                  to="/"
-                  exact
-                  activeClassName="router-link-exact-active"*/
-                  href='#header'
-                >
-                  Home
-                </NavLink>
-              </NavItem>
 
                 {hasMore.length > 0 && (
                          hasMore.map(section =>(
-                           <NavItem key = {section.name}><NavLink href ={'#' + section.name}>{section.menutitle}</NavLink>
+                           <NavItem key = {section.name}><NavLink href =
+                             {'#' + section.name}>{section.menutitle}</NavLink>
                          </NavItem>))
                   )}
+
+                  {(isAuthenticated && editable) && (
+                    <NavItem>
+                      <Button
+                        id="qsEditBtn"
+                        color="primary"
+                        class="btn btn-sm btn-outline-success"
+                        block
+                        onClick={() => toggleEditState({})}
+                        >
+                      {currentEditState()}
+                    </Button>
+
+                    </NavItem>
+                  )}
+
             </Nav>
-            <Nav className="d-none d-md-block" navbar>
+              <Nav className="d-none d-md-block" navbar>
               {!isAuthenticated && (
 
                 <NavItem>
@@ -118,6 +131,7 @@ const NavBar = ({sections}) => {
                   </DropdownMenu>
                 </UncontrolledDropdown>
               )}
+
             </Nav>
             {!isAuthenticated && (
               <Nav className="d-md-none" navbar>

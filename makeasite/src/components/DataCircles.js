@@ -1,16 +1,41 @@
 import React, { Component } from 'react';
+import BBHome from "../barebones/components/BBHome";
 
 import BubbleChart from '@weknow/react-bubble-chart-d3';
+import {Button} from 'reactstrap';
 
 export default class DataCircles extends Component {
 
   constructor(props) {
         super(props);
-        this.sectionStyle = {
-        width: "100%",
-        backgroundImage: "url(" +  props.backimg + ")"
-        };
-  }
+
+        this.deleteSection = this.deleteSection.bind(this);
+        this.setBackgroundImage = this.setBackgroundImage.bind(this);
+        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+        this.getSectionStyle = this.getSectionStyle.bind(this);
+    };
+
+
+
+
+getSectionStyle = () => {
+  return this.props.getStyle(this.props.name);
+}
+forceUpdateHandler = () => {
+  this.forceUpdate();
+}
+
+ deleteSection = ()=> {
+   console.log("delete Section " + this.props.name);
+   this.props.deleteSection(this.props.name);
+ };
+ setBackgroundImage = (name,current)=> {
+   this.props.setBackgroundImage(name,current);
+   console.log("forcing Update")
+   // props are read only
+   //this.setSectionStyle(current.substr(1));
+   this.forceUpdateHandler();
+ };
 
   bubbleClick = (label) =>{
     console.log("Custom bubble click func")
@@ -20,16 +45,30 @@ export default class DataCircles extends Component {
   }
 
 render(){
-  const dataCircles = this.props.data;
-  if(dataCircles)  {
+  if(this.props.data)  {
   return(
     <section  id={this.props.name}>
     <div className="row skill" >
         <div>
-          <h1>{this.props.header}</h1>
+        {this.props.editState == true && (
+
+        <h2 >{this.props.header}<span>
+        <Button
+            id="qsDeleteSection"
+            color="primary"
+            class="btn btn-sm btn-outline-success"
+            block
+            onClick={() => this.deleteSection({})}
+            >
+          Delete Section
+        </Button></span></h2>
+
+       )}
+       {this.props.editState != true && (
+         <h2>{this.props.header}</h2>)}
         </div>
     </div>
-    <div style={this.sectionStyle}>
+    <div style={this.getSectionStyle()}>
     <BubbleChart
       graph= {{
         zoom: 1.1,
@@ -63,8 +102,11 @@ render(){
       bubbleClickFunc={this.bubbleClick}
       legendClickFun={this.legendClick}
       // these are the bubbles
-      data={dataCircles}
+      data={this.props.data}
     />
+    {this.props.editState &&(
+      <BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>
+    )}
     </div>
     </section>
   )

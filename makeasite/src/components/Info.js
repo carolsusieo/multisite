@@ -1,24 +1,42 @@
 import React, { Component } from 'react';
 import ContactSpecifics from './ContactSpecifics'
 import PropTypes from 'prop-types';
+import {Button} from 'reactstrap';
+import BBHome from "../barebones/components/BBHome";
+
 //import resume from './Resume.pdf'
 /*import "bootstrap/dist/css/bootstrap.min.css";*/
 
 export default class Info extends Component {
   constructor(props) {
         super(props);
-        this.sectionStyle = {
-        width: "100%",
-        backgroundImage: "url(" +  props.backimg + ")",
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gridGap: 20
-
-        };
-
-  }
+        this.deleteSection = this.deleteSection.bind(this);
+        this.setBackgroundImage = this.setBackgroundImage.bind(this);
+        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+        this.getSectionStyle = this.getSectionStyle.bind(this);
+    };
 
 
+
+
+getSectionStyle = () => {
+  return this.props.getStyle(this.props.name);
+}
+forceUpdateHandler = () => {
+  this.forceUpdate();
+}
+
+ deleteSection = ()=> {
+   console.log("delete Section " + this.props.name);
+   this.props.deleteSection(this.props.name);
+ };
+ setBackgroundImage = (name,current)=> {
+   this.props.setBackgroundImage(name,current);
+   console.log("forcing Update")
+   // props are read only
+   //this.setSectionStyle(current.substr(1));
+   this.forceUpdateHandler();
+ };
 /*{(this.props.backimg && style="background-image: url({this.props.backimg})")}*/
 /* an image specific to the About.....*/
 
@@ -26,9 +44,25 @@ export default class Info extends Component {
     return (
 
            <section class='jumptarget'   id={this.props.name} >
-           <h2 >{this.props.header}</h2>
+           {this.props.editState == true && (
 
-        <div className="container" style={this.sectionStyle}>
+           <h2 >{this.props.header}<span>
+           <Button
+               id="qsDeleteSection"
+               color="primary"
+               class="btn btn-sm btn-outline-success"
+               block
+               onClick={() => this.deleteSection({})}
+               >
+             Delete Section
+           </Button></span></h2>
+
+          )}
+          {this.props.editState != true && (
+            <h2>{this.props.header}</h2>)}
+
+
+        <div className="container" style={this.getSectionStyle()}>
             <div>
               <img className="profile-pic" src={this.props.img} alt="" />
             </div>
@@ -50,7 +84,10 @@ export default class Info extends Component {
              )}
 
           </div>
-        </section>
+          {this.props.editState &&(
+            <BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>
+          )}
+      </section>
 
    )}
 };

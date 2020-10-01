@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import api from '../api'
 import { Form, Field } from 'react-final-form'
+import {Button} from 'reactstrap';
 
 export default class FinalForm extends Component{
 
@@ -9,12 +10,34 @@ constructor(props){
   this.state = {
 
   }
-  this.sectionStyle = {
-  width: "100%",
-  backgroundImage: "url(" +  props.backimg + ")"
-  };
+  this.deleteSection = this.deleteSection.bind(this);
+  this.setBackgroundImage = this.setBackgroundImage.bind(this);
+  this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+  this.getSectionStyle = this.getSectionStyle.bind(this);
+};
 
+
+
+
+getSectionStyle = () => {
+return this.props.getStyle(this.props.name);
 }
+forceUpdateHandler = () => {
+this.forceUpdate();
+}
+
+deleteSection = ()=> {
+console.log("delete Section " + this.props.name);
+this.props.deleteSection(this.props.name);
+};
+setBackgroundImage = (name,current)=> {
+this.props.setBackgroundImage(name,current);
+console.log("forcing Update")
+// props are read only
+//this.setSectionStyle(current.substr(1));
+this.forceUpdateHandler();
+};
+
 onClear = () =>{
   this.setState({
 
@@ -40,7 +63,22 @@ render(){
  var i=1;
  return(
    <section class='jumptarget'  id={this.props.name}>
-   <h1>{this.props.header}</h1>
+   {this.props.editState == true && (
+
+   <h2 >{this.props.header}<span>
+   <Button
+       id="qsDeleteSection"
+       color="primary"
+       class="btn btn-sm btn-outline-success"
+       block
+       onClick={() => this.deleteSection({})}
+       >
+     Delete Section
+   </Button></span></h2>
+
+  )}
+  {this.props.editState != true && (
+    <h2>{this.props.header}</h2>)}
 
   <div style={this.sectionStyle} >
     <p>{this.props.text}</p>

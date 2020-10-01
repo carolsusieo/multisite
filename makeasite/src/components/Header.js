@@ -1,12 +1,41 @@
 import React, { Component } from 'react';
 import dotenv from 'dotenv';
+import BBHome from '../barebones/components/BBHome';
 
 export default class Header extends Component {
 
     constructor(props) {
           super(props)
-      }
+          this.setBackgroundImage = this.setBackgroundImage.bind(this);
 
+
+      this.deleteSection = this.deleteSection.bind(this);
+      this.setBackgroundImage = this.setBackgroundImage.bind(this);
+      this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+      this.getSectionStyle = this.getSectionStyle.bind(this);
+  };
+
+
+
+
+getSectionStyle = () => {
+return this.props.getStyle(this.props.name);
+}
+forceUpdateHandler = () => {
+this.forceUpdate();
+}
+
+deleteSection = ()=> {
+ console.log("delete Section " + this.props.name);
+ this.props.deleteSection(this.props.name);
+};
+setBackgroundImage = (name,current)=> {
+ this.props.setBackgroundImage(name,current);
+ console.log("forcing Update")
+ // props are read only
+ //this.setSectionStyle(current.substr(1));
+ this.forceUpdateHandler();
+};
   render() {
   const social = this.props.social;
   const landing = this.props.landing;
@@ -16,17 +45,14 @@ export default class Header extends Component {
   var buttonLabel = '';
   var title = '';
   var mission = '';
-  var img = '';
+  var  backimg = '';
   var i= 1;
-  if(landing){
-
-    texthere = landing.lpage.texthere;
-    ref = landing.lpage.ref;
-    buttonLabel =landing.lpage.buttonLabel;
-    title = landing.lpage.title;
-    mission = landing.lpage.mission;
-    img = landing.lpage.img;
-  }
+    texthere = this.props.text;
+    ref = this.props.ref;
+    buttonLabel =this.props.buttonLabel;
+    title = this.props.title;
+    mission = this.props.mission;
+    backimg = this.props.backimg;
   // the className may change for every possible background image that might be used.
     if(social && contact)  {
       return(
@@ -43,6 +69,9 @@ export default class Header extends Component {
                  <li key = {i++}><a href={test.full} ><i className={test.fa} /></a></li>
                ))}
               </ul>
+              {(this.props.editState) && (
+              <BBHome name = {this.props.name} setBackgroundImage={this.setBackgroundImage}/>
+              )}
             </div>
           </div>
           </section>
