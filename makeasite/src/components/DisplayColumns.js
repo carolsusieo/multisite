@@ -25,7 +25,7 @@ getSectionStyle = () => {
 return this.props.getStyle(this.props.name);
 }
 forceUpdateHandler = () => {
-this.forceUpdate();this.getSectionStyle()
+this.forceUpdate();
 }
 
 deleteSection = ()=> {

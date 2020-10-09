@@ -75,8 +75,8 @@ currently a json file that controls what shows up in the webpage.
 
 export const appConfig ={
   "appName": "makeasite",
-  "editable": "true",
-  
+  "editable": true,
+
   "landing" :{
     "lpage": {
       "toptitle": "",

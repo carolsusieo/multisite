@@ -1,41 +1,86 @@
 export const appConfig ={
   "appName": "makeasite",
-  "editable": "true",
-  "landing" :{
-    "lpage": {
-      "toptitle": "John Doe React-ing - todo currently not used",
-      "title": "Greetings From",
-      "copyright_year": "2020",
-      "text": "Nashville based Software Engineer, Technical Consultant and FinTech specialist.",
-      "buttonLabel": "to learn more about me",
-      "mission": "",
-      "backimg": "/images/bg-masthead.jpg",
-      "imgref": "Денис МарчуonClickк"
-    }
-  },
+  "editable": true,
+
   "sections":[
     {
       "menutitle": "Home",
-      "login": "false",
+      "loginDisplay": false,
       "type": "header",
       "name": "header",
       "header": "John Doe React-ing",
-      "menutitle": "Home",
       "classList": "text-center",
-        "toptext": "John Doe React-ing - todo currently not used",
         "title": "Greetings From",
         "copyright_year": "2020",
         "text": "Nashville based Software Engineer, Technical Consultant and FinTech specialist.",
         "buttonLabel": "to learn more about me",
-        "mission": "",
         "backimg": "/images/bg-masthead.jpg",
         "imgref": "Денис МарчуonClickк",
         "mission": ""
     },
+    {
+     "menutitle": "Test",
+     "loginDisplay": false,
+     "type": "tested",
+     "name": "test",
+     "header": "Test this",
+     "classList": "text-center",
+     "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
+     "items":[{
+       "type": "html",
+       "id": "html1",
+       "data": "<p>Hello World</p>",
+       }]
+      },
+      {
+       "menutitle": "Test2",
+       "loginDisplay": false,
+       "type": "tested",
+       "name": "test2",
+       "header": "Test2 this",
+       "classList": "text-center",
+       "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
+       "items":[{
+         "type": "button",
+         "id": "button1",
+         "data": "test button",
+
+       },
+       {
+         "type": "button",
+         "id": "button2",
+         "data": "test button2",
+
+       },
+       {
+         "type": "text",
+         "id": "text1",
+         "data": "test it"
+
+
+       },
+       {
+         "type": "image",
+         "id": "name3",
+         "data" : "images/webpic_sml/sample-image.jpg"
+
+       },
+       {
+       "type": "include",
+        "id": "name1",
+        "data": "contact",
+       },
+       {
+       "type": "html",
+        "id": "name2",
+        "data": "<a class='github' href='https://github.com'><b>GitHub</b></a>",
+       }
+        ]
+        },
 
     {
      "menutitle": "About",
-     "login": "false",
+     "loginDisplay": false,
      "type": "info",
      "name": "about",
      "header": "About Me",
@@ -47,7 +92,7 @@ export const appConfig ={
     },
     {
       "menutitle": "Work",
-      "login": "false",
+      "loginDisplay": false,
       "type": "subcolumns",
       "name": "work",
       "header": "Work",
@@ -102,7 +147,7 @@ export const appConfig ={
     },
     {
       "menutitle": "Video",
-      "login": "true",
+      "loginDisplay": true,
       "backimg": "",
       "type": "video",
       "name": "testvideo",
@@ -112,7 +157,7 @@ export const appConfig ={
     },
     {
       "menutitle": "Skills",
-      "login": "false",
+      "loginDisplay": false,
       "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
       "type": "circles",
       "name": "skills",
@@ -140,7 +185,7 @@ export const appConfig ={
       "type": "subcolumns",
       "name": "education",
       "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
-      "login": "false",
+      "loginDisplay": false,
       "header": "Education",
       "classList": "columns2",
       "data": [
@@ -177,7 +222,7 @@ export const appConfig ={
      "type": "final-form",
      "name": "contactyou",
      "backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
-     "login": "false",
+     "loginDisplay": true,
      "header": "Get In Touch.",
      "text": "Provide the following information so that I can get back to you.",
      "api": "api/contact/contact",
@@ -321,7 +366,7 @@ export const appConfig ={
    {
      "type": "dbdata",
      "name": "easyAdded",
-     "login": "true",
+     "loginDisplay": true,
      "header": "Easy Added",
      "classList": "columns2",
      "api": "/api/easy/easys"
@@ -329,7 +374,7 @@ export const appConfig ={
   {
     "type": "dbdata",
     "name": "contactsAdded",
-    "login": "true",
+    "loginDisplay": true,
     "header": "Contacts Added",
     "classList": "columns2",
     "api": "/api/contact/contacts"
@@ -337,7 +382,7 @@ export const appConfig ={
    {
      "type": "dbdata",
      "name": "signupsAdded",
-     "login": "true",
+     "loginDisplay": true,
      "header": "Signups Added",
      "classList": "columns2",
      "api": "/api/signup/signups"
@@ -345,7 +390,7 @@ export const appConfig ={
     {
       "type": "final-form",
       "name": "easyData",
-      "login": "false",
+      "loginDisplay": false,
       "header": "Easy Data",
       "text": "Text DB In",
       "_onSubmit": "{this.onSubmit}",

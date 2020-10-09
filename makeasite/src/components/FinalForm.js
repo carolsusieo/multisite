@@ -44,6 +44,7 @@ onClear = () =>{
   })
 }
 onChange = (event) => {
+  console.log("on Change " + event)
   this.setState({
 
   })
@@ -96,7 +97,9 @@ render(){
                  </div>
                  <div class="col-4">
                   <Field  name={div.Field._name}
-                    component={div.Field._component} >
+                    component={div.Field._component}
+                    inputOnChange={this.onChange}
+                    >
                     {div.Field.option.map(aoption =>{
                      return(<option key = {i++} value={aoption._value}>{aoption.__text}</option>)
                     })}
@@ -113,7 +116,9 @@ render(){
                  </div>
                  <div class="col-2">
                   <Field name={div.Field._name}
-                  component={div.Field._component} multiple>
+                  component={div.Field._component} multiple
+                  inputOnChange={this.onChange}
+                  >
                   {div.Field.option_multiple.map(aoption =>{
                     return(
                       <option value={aoption._value}>{aoption.__text}</option>

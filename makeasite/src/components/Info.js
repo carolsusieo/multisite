@@ -29,6 +29,7 @@ forceUpdateHandler = () => {
  deleteSection = ()=> {
    console.log("delete Section " + this.props.name);
    this.props.deleteSection(this.props.name);
+   this.forceUpdateHandler();
  };
  setBackgroundImage = (name,current)=> {
    this.props.setBackgroundImage(name,current);

@@ -27,15 +27,15 @@ const NavBar = ({editable, sections}) => {
 
 
   var hasMore=[];
-    console.log("sections", sections);
+  //  console.log("sections", sections);
     if(typeof sections === 'object')
     {
       sections.map(section =>{
-          console.log("section",section);
+    //      console.log("section",section);
           // items will show up in the navigational bar based on if menutitle
           // is in the configuration file for the item...
 
-          if(section.menutitle != undefined && (section.login == true || isAuthenticated)){
+          if(section.menutitle != undefined && (section.loginDisplay == true || isAuthenticated)){
             hasMore.push(section)
             return(section);
           }
@@ -50,7 +50,7 @@ const NavBar = ({editable, sections}) => {
     });
 
   const currentEditState = () =>{
-    console.log("editState: " + editState);
+  //  console.log("editState: " + editState);
     return(editState == true?"Stop Edit":"Edit");
   };
 

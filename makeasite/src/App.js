@@ -8,7 +8,6 @@ import DisplayDBData from './components/DisplayDBData'
 import Footer from './components/Footer'
 import FinalForm from './components/FinalForm'
 import Section from './components/Section'
-import Video from './components/Video'
 //import OutsideAlerter from './components/OutsideAlerter'
 
 import { Router, Route, Switch } from "react-router-dom";
@@ -21,149 +20,228 @@ import Profile from "./src_auth0/views/Profile";
 import {appConfig} from "./res/myconfig";
 import { useAuth0 } from "./src_auth0/react-auth0-spa";
 import history from "./src_auth0/utils/history";
+import AddItemPopUp from "./components/AddItemPopUp";
+import AddSectionPopUp from "./components/AddSectionPopUp";
+import PopUp from "./components/PopUp";
 
 // Edit state - if in Edit mode the Navigation Menu is a different color...
 // Edit Toggle on the Navigation menu.
 
-//Lifting State.  A requirement for managing changes on the fly..
-// Or, would it be easier to change database with an overlay,
-// and do a restart everytime a change is made...  if possible
-// but I wonder...
-
-//  Let's start with changing font....
 // todos:
+// ability to change font type and color on a change page.
+// font size changes - or wraps to manage mutlicolumn (columns don't overwrite each other)
 
-// ability to change font type and color on a change page. That then affects
-// font and color on other pages.
-// ability to change the background pictures on pages.
-// font size changes - or wraps to manage mutlicolumn
+// change text on screen
+// add items to a section. - image, text or button
 
-
-// the NAVBAR  menu items are managed by the authentication package -
-// and create items for
-//    all items in configuration that are marked with "menutitle"
-//I think it might be
-
-const App = () => {
-  const { loading, isAuthenticated, editState} = useAuth0();
-   if (loading) {
-      return <Loading />;
-    };
+     class App2 extends Component {
 
 
-    const deleteSection = (sectionName) =>
-    {
-      console.log("app delete section ");
+       constructor(props) {
+             super(props);
+             this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+             this.addSection = this.addSection.bind(this);
+             this.addItem = this.addItem.bind(this);
+             this.deleteSection = this.deleteSection.bind(this);
+             this.setBackgroundImage = this.setBackgroundImage.bind(this);
+             this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+             this.getStyle = this.getStyle.bind(this);
+             this.addSectionPop = this.addSectionPop.bind(this);
+             this.addItemPop = this.addItemPop.bind(this);
+             this.editItem = this.editItem.bind(this);
+             this.deleteItem = this.deleteItem.bind(this);
+             this.state = { showItemPopUp: false,
+                        showSectionPopUp: false,
+                        currentSection: ''};
+         };
 
-      // need to change appConfig appropriately
-      // sectionName == info
-      for(var i = 0; i < appConfig.sections.length;i++){
-        console.log("section name "+ appConfig.sections[i].name);
-        if(appConfig.sections[i].name == sectionName){
-          console.log("deleting " + sectionName)
-          appConfig.sections.splice(i,1);
 
-        }
-      }
-     }
+         forceUpdateHandler = () => {
+           this.forceUpdate();
+         }
+         addItem = (sectionName,values) => {
+           this.setState({currentSection: sectionName})
+           console.log(sectionName + " " + values)
+           this.setState({showItemPopUp: !this.state.showItemPopUp})
 
-     const setBackgroundImage = (name,current) =>
-     {
-       console.log("app changeImage " + name + " " + current);
-       if(name == "header"){
-         appConfig.sections[0].backimg = current.substr(1);
-       }
+           for(var i = 0; i < appConfig.sections.length;i++){
+             if(appConfig.sections[i].name == this.state.currentSection){
+               console.log("adding item to " + this.state.currentSection)
+               // create a unique id for the item
+               values.id = Date.now();
+               if(appConfig.sections[i].items){
+               const newItems = [
+                   ...appConfig.sections[i].items,
+                   values
+               ]
+               appConfig.sections[i].items = newItems;
 
-       else{
-         for(var i = 0; i < appConfig.sections.length;i++){
-           console.log("section name "+ appConfig.sections[i].name);
-           if(appConfig.sections[i].name == name){
-               appConfig.sections[i].backimg = current.substr(1);
-             break;
+             }
+             else{
+               appConfig.sections[i].items = [values];
+             }
+
+                 this.forceUpdateHandler();
+               break;
+             }
+           }
+
+         }
+         editItem = (name, id, values) => {
+           console.log("app edit " + name + id + JSON.stringify(values) + this.state.currentSection)
+           for(var i = 0; i < appConfig.sections.length;i++){
+             if(appConfig.sections[i].name == name){
+               console.log("editing item in " + name)
+               // create a unique id for the item
+               for(var j = 0; j < appConfig.sections[i].items.length;j++){
+                 if(appConfig.sections[i].items[j].id === id){
+                   appConfig.sections[i].items[j] = values;
+                   console.log(JSON.stringify(appConfig.sections[i]));
+                   this.forceUpdateHandler();
+                   break;
+                 }
+               }
+              break;
+
+             }
            }
          }
-       }
-     }
+         deleteItem = (name, id) => {
+           console.log("app delete " + name + id)
+           for(var i = 0; i < appConfig.sections.length;i++){
+             if(appConfig.sections[i].name === name){
+                for(var j = 0; j < appConfig.sections[i].items.length;j++){
+                  if(appConfig.sections[i].items[j].id === id){
+                    appConfig.sections[i].items.splice(j,1);
+                    this.forceUpdateHandler();
+                    break;
+                  }
+                }
+               break;
+             }
+           }
 
-    const getStyle = (name)  =>{
+         }
+         addSection = (values) => {
+           const dataSections =appConfig.sections;
+              const newSections = [
+                  ...dataSections,
+                  values
+              ]
 
-      console.log("getStyle " + name);
-      var imageIn;
-      var type;
-      if(name == "header"){
-        imageIn =  appConfig.sections[0].backimg ;
-             type = name;
+              appConfig.sections = newSections;
+              this.forceUpdateHandler();
+              this.setState({
+                   showSectionPopUp: !this.state.showSectionPopUp
+              });
+              this.forceUpdate();
+
+              console.log(appConfig.sections);
       }
-      else{
-         for(var i = 0; i < appConfig.sections.length;i++){
-           if(appConfig.sections[i].name == name){
-              imageIn =  appConfig.sections[i].backimg ;
-              type = appConfig.sections[i].type;
-             break;
+      addSectionPop = () => {
+        this.setState({showSectionPopUp: !this.state.showSectionPopUp})
+
+      }
+      addItemPop = (inCurrentSection) => {
+        this.setState({currentSection: inCurrentSection});
+        this.setState({showItemPopUp: !this.state.showItemPopUp})
+
+      }
+
+     getStyle = (name) => {
+       var imageIn;
+       var type;
+          for(var i = 0; i < appConfig.sections.length;i++){
+            if(appConfig.sections[i].name === name){
+               imageIn =  appConfig.sections[i].backimg ;
+               type = appConfig.sections[i].type;
+              break;
+            }
+          }
+
+
+
+        var currentStyle;
+        // this was original just for info
+       if(type && type.includes("info")){
+           if(imageIn && imageIn != ""){
+            currentStyle = {
+              width: "100%",
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gridGap: 20,
+              backgroundImage: "url(" +  imageIn + ")",
            }
          }
-       }
-       var currentStyle;
-       // this was original just for info
-      if(type.includes("info")){
-          if(imageIn && imageIn != ""){
+         else{
            currentStyle = {
              width: "100%",
              display: "grid",
              gridTemplateColumns: "repeat(3, 1fr)",
              gridGap: 20,
-             backgroundImage: "url(" +  imageIn + ")",
           }
+         }
         }
-        else{
+        else if (type){
+          if(imageIn && imageIn != ""){
           currentStyle = {
             width: "100%",
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gridGap: 20,
-         }
+            backgroundImage: "url(" +  imageIn + ")",
+            }
+          }
+          else{
+           currentStyle = {
+             width: "100%",
+             }
+          }
+       }
+        return currentStyle;
+     }
 
+      deleteSection = (sectionName)=> {
+        /*
+        console.log("delete Section " + this.props.name);
+        this.props.deleteSection(this.props.name);
+        this.forceUpdateHandler();
+        */
+        // need to change appConfig appropriately
+      // sectionName == info
+      for(var i = 0; i < appConfig.sections.length;i++){
+        if(appConfig.sections[i].name == sectionName){
+          console.log("deleting " + sectionName)
+          appConfig.sections.splice(i,1);
+          this.forceUpdateHandler();
+          break;
         }
-       }
-       else{
-         if(imageIn && imageIn != ""){
-         currentStyle = {
-           width: "100%",
-           backgroundImage: "url(" +  imageIn + ")",
-         }
-       }
-       else{
-         currentStyle = {
-           width: "100%",
-         }
-
-       }
       }
-       return currentStyle;
-     };
 
-     const addSection = () =>
-     {
+      };
+      setBackgroundImage = (name,current)=> {
+        for(var i = 0; i < appConfig.sections.length;i++){
+          if(appConfig.sections[i].name == name){
+            console.log("change background section name "+ appConfig.sections[i].name);
+              appConfig.sections[i].backimg = current.substr(1);
+            break;
+          }
+        }
+      };
 
-     }
+    render(){
 
-     const changeSectionImage = () =>
-     {
-
-     }
-
-     const changeSectionFont = () =>
-     {
-
-     }
-     var name = "header"
     return (
 
       // if isAuthenticated, there will be an extra button to choose - to allow things
       // to be changed (back image, and font....)
+
+
+      // if menutitle filled out, will display in Navbar
+      // if loginDisplay is true, will display on logout
       <Router history={history}>
         <div id="app" className="d-flex flex-column h-100">
+
           <NavBar editable={appConfig.editable} sections ={appConfig.sections}/>
+
+
           <Container className="flex-grow-1 mt-5">
             <Switch>
               <PrivateRoute path="/profile" component={Profile} />
@@ -171,7 +249,7 @@ const App = () => {
             {appConfig.sections.map(section =>{
           //    console.log(section.login + " " + isAuthenticated);
 
-              if (!section.login || section.login === 'false' || isAuthenticated){
+              if (!section.loginDisplay || section.loginDisplay === 'false' || this.props.isAuthenticated){
               if(section.type == 'header'){
                 return (<Header
                   name='header'
@@ -186,10 +264,13 @@ const App = () => {
                   classList = {section.classList}
                   social={appConfig.include.social}
                   contact={appConfig.include.contact}
-                  setBackgroundImage={setBackgroundImage}
-                  editState = {editState}
-                  deleteSection = {deleteSection}
-                  getStyle = {getStyle}
+                  setBackgroundImage={this.setBackgroundImage}
+                  editState = {this.props.editState}
+                  deleteSection = {this.deleteSection}
+                  getStyle = {this.getStyle}
+                  addItem = {this.addItem}
+                  editItem = {this.editItem}
+                  deleteItem = {this.deleteItem}
                   />);
 
               }
@@ -203,10 +284,13 @@ const App = () => {
                     classList = {section.classList}
                     contact={appConfig.include.contact}
                     img={section.img}
-                    editState = {editState}
-                    deleteSection = {deleteSection}
-                    setBackgroundImage = {setBackgroundImage}
-                    getStyle = {getStyle}
+                    editState = {this.props.editState}
+                    deleteSection = {this.deleteSection}
+                    setBackgroundImage = {this.setBackgroundImage}
+                    getStyle = {this.getStyle}
+                    addItem = {this.addItem}
+                    editItem = {this.editItem}
+                    deleteItem = {this.deleteItem}
                     />)
               }
               else if(section.type == 'subcolumns'){
@@ -217,10 +301,13 @@ const App = () => {
                     text = {section.text}
                     classList = {section.classList}
                     data={section.data}
-                    editState = {editState}
-                    deleteSection = {deleteSection}
-                    setBackgroundImage = {setBackgroundImage}
-                    getStyle = {getStyle}
+                    editState = {this.props.editState}
+                    deleteSection = {this.deleteSection}
+                    setBackgroundImage = {this.setBackgroundImage}
+                    getStyle = {this.getStyle}
+                    addItem = {this.addItem}
+                    editItem = {this.editItem}
+                    deleteItem = {this.deleteItem}
 
                     />)
               }
@@ -231,10 +318,10 @@ const App = () => {
                   text = {section.text}
                   classList = {section.classList}
                   data={section.data}
-                  editState = {editState}
-                  deleteSection = {deleteSection}
-                  setBackgroundImage = {setBackgroundImage}
-                  getStyle = {getStyle}
+                  editState = {this.props.editState}
+                  deleteSection = {this.deleteSection}
+                  setBackgroundImage = {this.setBackgroundImage}
+                  getStyle = {this.getStyle}
                   />)
               }
               else if(section.type == 'infoPic'){
@@ -248,10 +335,10 @@ const App = () => {
                   submit = {section._onSubmit}
                   classList = {section.classList}
                   data = {section.data}
-                 editState = {editState}
-                 deleteSection = {deleteSection}
-                 setBackgroundImage = {setBackgroundImage}
-                 getStyle = {getStyle}
+                 editState = {this.props.editState}
+                 deleteSection = {this.deleteSection}
+                 setBackgroundImage = {this.setBackgroundImage}
+                 getStyle = {this.getStyle}
                  />)
               }
               else if(section.type == "cards"){
@@ -262,37 +349,33 @@ const App = () => {
                   header = {section.header}
                   api = {section.api}
                   classList = {section.classList}
-                  deleteSection = {deleteSection}
-                  editState = {editState}
-                  deleteSection = {deleteSection}
-                  setBackgroundImage = {setBackgroundImage}
-                  getStyle = {getStyle}
+                  deleteSection = {this.deleteSection}
+                  editState = {this.props.editState}
+                  deleteSection = {this.deleteSection}
+                  setBackgroundImage = {this.setBackgroundImage}
+                  getStyle = {this.getStyle}
                   />
                 )
               }
-              else if(section.type == 'video'){
-                return(<Video key = {section.name}
-                name = {section.name}
-                 header = {section.header}
-                 url= {section.url}
-                 classlist = {section.classList}
-                 editState = {editState}
-                 deleteSection = {deleteSection}
-                 setBackgroundImage = {setBackgroundImage}
-                 getStyle = {getStyle}
-                 />)
-              }
+
               else {
                 return(<Section key = {section.name}
                   name={section.name}
                   header={section.header}
                   text={section.text}
+                  html = {section.html}
                   classList = {section.classList}
-                  mission={section.mission}
-                  editState = {editState}
-                  deleteSection = {deleteSection}
-                  setBackgroundImage = {setBackgroundImage}
-                  getStyle = {getStyle}
+                  items = {section.items}
+                  url = {section.url}
+                  editState = {this.props.editState}
+                  deleteSection={this.deleteSection}
+                  setBackgroundImage= {this.setBackgroundImage}
+                  getStyle={this.getStyle}
+                  addItem={this.addItem}
+                  social={appConfig.include.social}
+                  contact={appConfig.include.contact}
+                  editItem = {this.editItem}
+                  deleteItem = {this.deleteItem}
                   />)
               }
               }
@@ -300,33 +383,46 @@ const App = () => {
 
             <Footer contact = {appConfig.include.contact}
             name = 'footer'
-            editState = {editState}
-            setBackgroundImage = {setBackgroundImage}
-            getStyle = {getStyle}
+            editState = {this.props.editState}
+            addSection = {this.addSection}
+            addSectionPopUp = {this.addSectionPop}
             />
             </Container>
+
+
+            {this.state.showSectionPopUp ?
+          <AddSectionPopUp
+            text='Add New Section'
+            addSection={this.addSection.bind(this)}
+            />:null
+           }
+
         </div>
       </Router>
     );
+
+  }
 };
 
+
+const App = () => {
+  const { loading, isAuthenticated, editState} = useAuth0();
+   if (loading) {
+      return <Loading />;
+    }
+    else{
+    return(
+    <App2 isAuthenticated={isAuthenticated} editState={editState}/>
+  )};
+}
+
 export default App;
-/*<Header
-  name='header'
-  key = {appConfig.sections[0].name}
-  header = {appConfig.sections[0].header}
-  title = {appConfig.sections[0].title}
-  toptext={appConfig.sections[0].toptext}
-  ref = {appConfig.sections[0].imgref}
-  mission = {appConfig.sections[0].mission}
-  buttonLabel = {appConfig.sections[0].buttonLabel}
-  text = {appConfig.sections[0].text}
-  classList = {appConfig.sections[0].classList}
-  social={appConfig.include.social}
-  contact={appConfig.include.contact}
-  setBackgroundImage={setBackgroundImage}
-  editState = {editState}
-  deleteSection = {deleteSection}
-  getStyle = {getStyle}
-  />
+/*
+{this.state.showItemPopUp ?
+<AddItemPopUp
+text='Add New Item'
+currentSection = {this.state.currentSection}
+addItem={this.addItem.bind(this)}
+/>:null
+}
 */
