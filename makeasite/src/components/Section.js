@@ -5,8 +5,9 @@ import {Button} from 'reactstrap';
 import BBHome from "../barebones/components/BBHome";
 import ContactSpecifics from "./ContactSpecifics";
 import renderHTML from 'react-render-html';
-import AddItemPopUp from "./AddItemPopUp";
+import EditItemPopUp from "./EditItemPopUp";
 import SectionItem from "./SectionItem";
+import {Draggable} from 'react-draggable';
 
 export default class Section extends Component {
 
@@ -21,10 +22,7 @@ export default class Section extends Component {
         this.addItemPopUp = this.addItemPopUp.bind(this);
         this.addItem = this.addItem.bind(this);
         this.rendorMore = this.rendorMore.bind(this);
-        //this.props.addItemPopUp(this.props.name);
-
-
-  };
+    };
 
 
   addItemPopUp = (e) => {
@@ -40,7 +38,9 @@ export default class Section extends Component {
 
 editItem = (id,values ) => {
   console.log("edit item " + id);
-  this.props.editItem(this.props.name,id,values)
+  // is it a new item, or an update?
+  this.props.editItem(this.props.name,id,values);
+
 }
 
 deleteItem = (name, id) => {
@@ -49,7 +49,7 @@ deleteItem = (name, id) => {
 }
 
 getSectionStyle = () => {
-  return this.props.getStyle(this.props.name);
+  return this.props.aStyle(this.props.name);
 }
 
 forceUpdateHandler = () => {
@@ -73,9 +73,9 @@ forceUpdateHandler = () => {
  rendorMore = (e) => {
    console.log("show popup " + this.state.showItemPopup);
    if(this.state.showItemPopup === true){
-       return(<AddItemPopUp
+       return(<EditItemPopUp style={{zIndex:'3000'}}
          text='Add New Item'
-         currentSection = {this.props.name}
+         sectionName = {this.props.name}
          addItem={this.addItem}
          />);
    }
@@ -118,7 +118,7 @@ forceUpdateHandler = () => {
           {this.props.items && (
             this.props.items.map(item =>{
              return(
-              <SectionItem editState={this.props.editState} item={item} deleteItem={this.deleteItem} editItem={this.editItem} />
+              <SectionItem editState={this.props.editState} item={item} deleteItem={this.deleteItem} editItem={this.editItem} include={this.props.include} addItem={this.addItem}/>
             )
             }))}
 

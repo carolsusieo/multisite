@@ -17,7 +17,7 @@ export default class ContactSpecifics extends Component {
         if(test)  {
             return (
             <section class='jumptarget' id={this.props.name}>
-             <div>constructor
+             <div>
                   <span>{test.FirstName} {test.LastName}</span><br/>
                   <span>{test.street}</span><br/>
                   <span>{test.city}, {test.state} {test.zip}</span><br/>

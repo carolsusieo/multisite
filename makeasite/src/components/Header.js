@@ -19,7 +19,7 @@ export default class Header extends Component {
 
 
 getSectionStyle = () => {
-return this.props.getStyle(this.props.name);
+return this.props.aStyle(this.props.name);
 }
 forceUpdateHandler = () => {
 this.forceUpdate();
@@ -37,9 +37,9 @@ setBackgroundImage = (name,current)=> {
  this.forceUpdateHandler();
 };
   render() {
-  const social = this.props.social;
+  const social = this.props.include.social;
   const landing = this.props.landing;
-  const contact = this.props.contact;
+  const contact = this.props.include.contact;
   var texthere = '';
   var ref = '';
   var buttonLabel = '';

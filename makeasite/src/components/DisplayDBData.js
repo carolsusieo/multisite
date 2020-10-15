@@ -8,11 +8,11 @@ export default function DisplayDBData(input) {
 
 
   useEffect(() => {
-    console.log("props",input);
+    console.log("api",input.api);
     async function getData() { api.displayOut(input.api)
       //.then(res =>  res.json())
        .then((apidata) => {
-         console.log("got data", apidata.data.data)
+         console.log("got data for ", input.api, apidata.data.data)
          setData(apidata.data.data);
          setIsLoading(false);
        })

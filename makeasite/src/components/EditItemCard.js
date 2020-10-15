@@ -13,7 +13,7 @@ import { faPlus,faMinus } from "@fortawesome/free-solid-svg-icons";
 /* add of edit an item in container.  popup screen allows you to add
 specifics about the item (text, links, etc)
 */
-class EditItemPopUp extends React.Component {
+class EditItemCard extends React.Component {
   constructor(props) {
         super(props);
       this.state ={ type: '',
@@ -52,7 +52,6 @@ class EditItemPopUp extends React.Component {
         this.onDelete = this.onDelete.bind(this);
         this.onExit = this.onExit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.pickCard = this.pickCard.bind(this);
         this.pickCardUpdate = this.pickCardUpdate.bind(this);
     //    this.onEditItem = this.onEditItem.bind(this);
     };
@@ -77,11 +76,6 @@ class EditItemPopUp extends React.Component {
         this.setState({type: event.target.value});
     }
 
-    pickCard(event) {
-      if(event != undefined && event.target != undefined && event.target.value != undefined){
-        this.setState({cardnum: parseInt(event.target.value)});
-        this.setState({card: this.state.data[parseInt(event.target.value)]});
-      }
 
     }
     pickCardUpdate(event) {
@@ -97,17 +91,14 @@ class EditItemPopUp extends React.Component {
           values.type = this.state.type;
           values.textcolor = this.state.textcolor;
           values.fontsize = this.state.fontsize;
-          if(this.state.type == 'carddeck'){
-          }
+
+          // adding or editing a card 
           if(this.props.editItem != undefined){
-            console.log("Editing " + values.data)
             this.props.editItem(values);
           }
           else if(this.props.addItem != undefined){
-                values.type = this.state.type;
-              console.log("adding " + JSON.stringify(values))
               this.props.addItem(this.props.sectionName,values)
-            }
+          }
     }
 
     onDelete = () => {
@@ -162,24 +153,7 @@ class EditItemPopUp extends React.Component {
                  </Field>
                </div>
 
-               {(this.state.type == 'carddeck' ) && (
 
-                 <div >
-                   <label>Pick Card:</label>
-                   <Field name="type" component="select" onChange={this.pickCard}>
-                     <option />
-                     {(this.state.data[0]) && (
-                     <option value='0'>Card 1</option>
-                     )}
-                     {(this.state.data[1]) && (
-                     <option value='1'>Card 2</option>
-                     )}
-                     {(this.state.data[2]) && (
-                     <option value='2'>Card 3</option>
-                     )}
-                   </Field>
-                 </div>
-               )}
                {(this.state.card)  && (
                  <div >
                    <label>Pick Card Update:</label>
@@ -336,4 +310,4 @@ targets={['#target .content']}
 </div>
 */
 
-export default EditItemPopUp;
+export default EditItemCard;

@@ -22,7 +22,7 @@ export default class DisplayColumns extends Component {
 
 
 getSectionStyle = () => {
-return this.props.getStyle(this.props.name);
+return this.props.aStyle(this.props.name);
 }
 forceUpdateHandler = () => {
 this.forceUpdate();

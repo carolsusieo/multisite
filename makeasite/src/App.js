@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component ,useState, useEffect } from 'react';
 import './App.scss';
 import Header from './components/Header'
-import Info from './components/Info'
 import DataCircles from './components/DataCircles'
 import DisplayColumns from './components/DisplayColumns'
 import DisplayDBData from './components/DisplayDBData'
@@ -17,22 +16,27 @@ import PrivateRoute from "./src_auth0/components/PrivateRoute";
 import Loading from "./src_auth0/components/Loading";
 import NavBar from "./src_auth0/components/NavBar";
 import Profile from "./src_auth0/views/Profile";
-import {appConfig} from "./res/myconfig";
+// let's a the configuration from the database.
+import {initConfig} from "./res/myconfig";
 import { useAuth0 } from "./src_auth0/react-auth0-spa";
 import history from "./src_auth0/utils/history";
-import AddItemPopUp from "./components/AddItemPopUp";
 import AddSectionPopUp from "./components/AddSectionPopUp";
-import PopUp from "./components/PopUp";
+import api from "./api"
 
 // Edit state - if in Edit mode the Navigation Menu is a different color...
-// Edit Toggle on the Navigation menu.
-
 // todos:
-// ability to change font type and color on a change page.
-// font size changes - or wraps to manage mutlicolumn (columns don't overwrite each other)
+// logo on navbar
+// font size changes or word wraps to manage mutlicolumn (columns don't overwrite each other)
+// move items around in a section - mouse down and pull
+// insure that gallery doesn't override the popup on screen
 
-// change text on screen
-// add items to a section. - image, text or button
+// put the json in a database..
+// change the order of sections
+
+
+//container
+// card
+//
 
      class App2 extends Component {
 
@@ -45,58 +49,64 @@ import PopUp from "./components/PopUp";
              this.deleteSection = this.deleteSection.bind(this);
              this.setBackgroundImage = this.setBackgroundImage.bind(this);
              this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
-             this.getStyle = this.getStyle.bind(this);
+             this.aStyle = this.aStyle.bind(this);
              this.addSectionPop = this.addSectionPop.bind(this);
-             this.addItemPop = this.addItemPop.bind(this);
              this.editItem = this.editItem.bind(this);
              this.deleteItem = this.deleteItem.bind(this);
              this.state = { showItemPopUp: false,
                         showSectionPopUp: false,
-                        currentSection: ''};
+                        currentSection: '',
+                        appConfig: props.initConfig};
          };
 
 
          forceUpdateHandler = () => {
            this.forceUpdate();
          }
+
          addItem = (sectionName,values) => {
            this.setState({currentSection: sectionName})
-           console.log(sectionName + " " + values)
-           this.setState({showItemPopUp: !this.state.showItemPopUp})
+           console.log(sectionName + " " + JSON.stringify(values));
+           var currConfig = this.state.appConfig;
 
-           for(var i = 0; i < appConfig.sections.length;i++){
-             if(appConfig.sections[i].name == this.state.currentSection){
-               console.log("adding item to " + this.state.currentSection)
+           for(var i = 0; i < currConfig.sections.length;i++){
+             if(currConfig.sections[i].name == sectionName){
+               console.log("adding item to " + sectionName)
                // create a unique id for the item
                values.id = Date.now();
-               if(appConfig.sections[i].items){
-               const newItems = [
-                   ...appConfig.sections[i].items,
+               if(currConfig.sections[i].items != undefined){
+                 const newItems = [
+                   ...currConfig.sections[this.state.i].items,
                    values
-               ]
-               appConfig.sections[i].items = newItems;
-
-             }
-             else{
-               appConfig.sections[i].items = [values];
-             }
-
-                 this.forceUpdateHandler();
+                 ]
+                   currConfig.sections[i].items = newItems;
+                 this.setState({appConfig: currConfig});
+               }
+               else{
+                 currConfig.sections[i].items = [values];
+                 this.setState({appConfig: currConfig});
+               }
+               console.log("items " + JSON.stringify(this.state.appConfig.sections[i].items))
+               this.forceUpdateHandler();
                break;
              }
            }
+           this.setState({showItemPopUp: !this.state.showItemPopUp})
 
          }
+
          editItem = (name, id, values) => {
+           var currConfig = this.state.appConfig;
            console.log("app edit " + name + id + JSON.stringify(values) + this.state.currentSection)
-           for(var i = 0; i < appConfig.sections.length;i++){
-             if(appConfig.sections[i].name == name){
+           for(var i = 0; i < currConfig.sections.length;i++){
+             if(currConfig.sections[i].name == name){
                console.log("editing item in " + name)
                // create a unique id for the item
-               for(var j = 0; j < appConfig.sections[i].items.length;j++){
-                 if(appConfig.sections[i].items[j].id === id){
-                   appConfig.sections[i].items[j] = values;
-                   console.log(JSON.stringify(appConfig.sections[i]));
+               for(var j = 0; j < currConfig.sections[i].items.length;j++){
+                 if(currConfig.sections[i].items[j].id === id){
+                   currConfig.sections[i].items[j] = values;
+                   this.setState({appConfig: currConfig});
+                   console.log(JSON.stringify(this.state.appConfig.sections[i]));
                    this.forceUpdateHandler();
                    break;
                  }
@@ -106,13 +116,16 @@ import PopUp from "./components/PopUp";
              }
            }
          }
+
          deleteItem = (name, id) => {
+           var currConfig = this.state.appConfig;
            console.log("app delete " + name + id)
-           for(var i = 0; i < appConfig.sections.length;i++){
-             if(appConfig.sections[i].name === name){
-                for(var j = 0; j < appConfig.sections[i].items.length;j++){
-                  if(appConfig.sections[i].items[j].id === id){
-                    appConfig.sections[i].items.splice(j,1);
+           for(var i = 0; i < currConfig.sections.length;i++){
+             if(currConfig.sections[i].name === name){
+                for(var j = 0; j < currConfig.sections[i].items.length;j++){
+                  if(currConfig.sections[i].items[j].id === id){
+                    currConfig.sections[i].items.splice(j,1);
+                    this.setState({appConfig:currConfig});
                     this.forceUpdateHandler();
                     break;
                   }
@@ -122,39 +135,38 @@ import PopUp from "./components/PopUp";
            }
 
          }
-         addSection = (values) => {
-           const dataSections =appConfig.sections;
+
+      addSection = (values) => {
+        var currConfig = this.state.appConfig;
+           const dataSections =currConfig.sections;
               const newSections = [
                   ...dataSections,
                   values
               ]
 
-              appConfig.sections = newSections;
+              currConfig.sections = newSections;
+              this.setState({appConfig: currConfig});
               this.forceUpdateHandler();
               this.setState({
                    showSectionPopUp: !this.state.showSectionPopUp
               });
               this.forceUpdate();
 
-              console.log(appConfig.sections);
+              console.log(this.state.appConfig.sections);
       }
+
       addSectionPop = () => {
         this.setState({showSectionPopUp: !this.state.showSectionPopUp})
-
-      }
-      addItemPop = (inCurrentSection) => {
-        this.setState({currentSection: inCurrentSection});
-        this.setState({showItemPopUp: !this.state.showItemPopUp})
-
       }
 
-     getStyle = (name) => {
+
+     aStyle = (name) => {
        var imageIn;
        var type;
-          for(var i = 0; i < appConfig.sections.length;i++){
-            if(appConfig.sections[i].name === name){
-               imageIn =  appConfig.sections[i].backimg ;
-               type = appConfig.sections[i].type;
+          for(var i = 0; i < this.state.appConfig.sections.length;i++){
+            if(this.state.appConfig.sections[i].name === name){
+               imageIn =  this.state.appConfig.sections[i].backimg ;
+               type = this.state.appConfig.sections[i].type;
               break;
             }
           }
@@ -204,12 +216,14 @@ import PopUp from "./components/PopUp";
         this.props.deleteSection(this.props.name);
         this.forceUpdateHandler();
         */
-        // need to change appConfig appropriately
+        // need to change this.state.appConfig appropriately
       // sectionName == info
-      for(var i = 0; i < appConfig.sections.length;i++){
-        if(appConfig.sections[i].name == sectionName){
+      var currConfig = this.state.appConfig;
+      for(var i = 0; i < currConfig.sections.length;i++){
+        if(currConfig.sections[i].name == sectionName){
           console.log("deleting " + sectionName)
-          appConfig.sections.splice(i,1);
+          currConfig.sections.splice(i,1);
+          this.setState({appConfig:currConfig});
           this.forceUpdateHandler();
           break;
         }
@@ -217,10 +231,12 @@ import PopUp from "./components/PopUp";
 
       };
       setBackgroundImage = (name,current)=> {
-        for(var i = 0; i < appConfig.sections.length;i++){
-          if(appConfig.sections[i].name == name){
-            console.log("change background section name "+ appConfig.sections[i].name);
-              appConfig.sections[i].backimg = current.substr(1);
+        var currConfig = this.state.appConfig;
+        for(var i = 0; i < currConfig.sections.length;i++){
+          if(currConfig.sections[i].name == name){
+            console.log("change background section name "+ currConfig.sections[i].name);
+              currConfig.sections[i].backimg = current.substr(1);
+              this.setState({appConfig: currConfig});
             break;
           }
         }
@@ -239,14 +255,14 @@ import PopUp from "./components/PopUp";
       <Router history={history}>
         <div id="app" className="d-flex flex-column h-100">
 
-          <NavBar editable={appConfig.editable} sections ={appConfig.sections}/>
+          <NavBar editable={this.state.appConfig.editable} sections ={this.state.appConfig.sections}/>
 
 
           <Container className="flex-grow-1 mt-5">
             <Switch>
-              <PrivateRoute path="/profile" component={Profile} />
+              <PrivateRoute path="/profile" component={this.state.appConfig} />
             </Switch>
-            {appConfig.sections.map(section =>{
+            {this.state.appConfig.sections.map(section =>{
           //    console.log(section.login + " " + isAuthenticated);
 
               if (!section.loginDisplay || section.loginDisplay === 'false' || this.props.isAuthenticated){
@@ -262,36 +278,16 @@ import PopUp from "./components/PopUp";
                   buttonLabel = {section.buttonLabel}
                   text = {section.text}
                   classList = {section.classList}
-                  social={appConfig.include.social}
-                  contact={appConfig.include.contact}
+                  include = {this.state.appConfig.include}
                   setBackgroundImage={this.setBackgroundImage}
                   editState = {this.props.editState}
                   deleteSection = {this.deleteSection}
-                  getStyle = {this.getStyle}
+                  aStyle = {this.aStyle}
                   addItem = {this.addItem}
                   editItem = {this.editItem}
                   deleteItem = {this.deleteItem}
                   />);
 
-              }
-              else if(section.type == 'info' ){
-
-                // profile ?
-                  return(<Info key = {section.name}
-                    name={section.name}
-                    header = {section.header}
-                    text = {section.text}
-                    classList = {section.classList}
-                    contact={appConfig.include.contact}
-                    img={section.img}
-                    editState = {this.props.editState}
-                    deleteSection = {this.deleteSection}
-                    setBackgroundImage = {this.setBackgroundImage}
-                    getStyle = {this.getStyle}
-                    addItem = {this.addItem}
-                    editItem = {this.editItem}
-                    deleteItem = {this.deleteItem}
-                    />)
               }
               else if(section.type == 'subcolumns'){
                   return(<DisplayColumns
@@ -304,7 +300,7 @@ import PopUp from "./components/PopUp";
                     editState = {this.props.editState}
                     deleteSection = {this.deleteSection}
                     setBackgroundImage = {this.setBackgroundImage}
-                    getStyle = {this.getStyle}
+                    aStyle = {this.aStyle}
                     addItem = {this.addItem}
                     editItem = {this.editItem}
                     deleteItem = {this.deleteItem}
@@ -321,10 +317,8 @@ import PopUp from "./components/PopUp";
                   editState = {this.props.editState}
                   deleteSection = {this.deleteSection}
                   setBackgroundImage = {this.setBackgroundImage}
-                  getStyle = {this.getStyle}
+                  aStyle = {this.aStyle}
                   />)
-              }
-              else if(section.type == 'infoPic'){
               }
               else if(section.type == 'final-form'){
                 return(<FinalForm key = {section.name}
@@ -338,10 +332,8 @@ import PopUp from "./components/PopUp";
                  editState = {this.props.editState}
                  deleteSection = {this.deleteSection}
                  setBackgroundImage = {this.setBackgroundImage}
-                 getStyle = {this.getStyle}
+                 aStyle = {this.aStyle}
                  />)
-              }
-              else if(section.type == "cards"){
               }
               else if(section.type == 'dbdata'){
                 return(<DisplayDBData key = {section.name}
@@ -353,7 +345,7 @@ import PopUp from "./components/PopUp";
                   editState = {this.props.editState}
                   deleteSection = {this.deleteSection}
                   setBackgroundImage = {this.setBackgroundImage}
-                  getStyle = {this.getStyle}
+                  aStyle = {this.aStyle}
                   />
                 )
               }
@@ -370,10 +362,9 @@ import PopUp from "./components/PopUp";
                   editState = {this.props.editState}
                   deleteSection={this.deleteSection}
                   setBackgroundImage= {this.setBackgroundImage}
-                  getStyle={this.getStyle}
+                  aStyle={this.aStyle}
                   addItem={this.addItem}
-                  social={appConfig.include.social}
-                  contact={appConfig.include.contact}
+                  include={this.state.appConfig.include}
                   editItem = {this.editItem}
                   deleteItem = {this.deleteItem}
                   />)
@@ -381,7 +372,7 @@ import PopUp from "./components/PopUp";
               }
             })}
 
-            <Footer contact = {appConfig.include.contact}
+            <Footer include = {this.state.appConfig.include}
             name = 'footer'
             editState = {this.props.editState}
             addSection = {this.addSection}
@@ -406,23 +397,50 @@ import PopUp from "./components/PopUp";
 
 
 const App = () => {
+
+  const [isDBLoading, setDBIsLoading] = useState(true);
+  const [configData, setData] = useState(null)
+
+
+// get only the one record for this website configuration
+  useEffect(() => {
+    console.log("api/config/config");
+      async function getData() { api.configOut("/api/config/config?website=makeasiteTest")
+      //.then(res =>  res.json())
+       .then((configdata) => {
+         setData(configdata.data.data);
+         setDBIsLoading(false);
+       })
+       .catch(console.log);
+     }
+     getData();
+  }, []);
+
+
   const { loading, isAuthenticated, editState} = useAuth0();
-   if (loading) {
+
+   if (loading ) {
+     // get the configuration from the database if possible:
+     if(initConfig.appName != undefined){
+       // find the appName stuff from the database.
+
+     }
       return <Loading />;
     }
     else{
-    return(
-    <App2 isAuthenticated={isAuthenticated} editState={editState}/>
-  )};
+      console.log("got data", configData)
+
+      if(configData != undefined && configData != null){
+        return(
+        <App2 isAuthenticated={isAuthenticated} editState={editState} initConfig={configData[0]}/>
+      )
+      }
+      else{
+      return(
+    <App2 isAuthenticated={isAuthenticated} editState={editState} initConfig={initConfig}/>
+    )
+  }
+  };
 }
 
 export default App;
-/*
-{this.state.showItemPopUp ?
-<AddItemPopUp
-text='Add New Item'
-currentSection = {this.state.currentSection}
-addItem={this.addItem.bind(this)}
-/>:null
-}
-*/
