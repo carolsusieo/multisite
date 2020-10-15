@@ -7,8 +7,7 @@ getContacts = async (req, res) => {
             return res.status(400).json({ success: false, error: err })
         }
         if (!contacts.length) {
-            return res
-                .status(404)
+            return res.status(404)
                 .json({ success: false, error: `Contact not found` })
         }
         return res.status(200).json({ success: true, data: contacts})
@@ -125,5 +124,5 @@ getContactById = async (req, res) => {
 
 
 module.exports = {
-    getContacts,getContactById,updateContact,deleteContact,createContact
+    getContacts,getContactById,updateContact,createContact
 }

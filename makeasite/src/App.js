@@ -400,14 +400,15 @@ const App = () => {
 
   const [isDBLoading, setDBIsLoading] = useState(true);
   const [configData, setData] = useState(null)
+  const [apiforconfig, setWebsite] = useState("/api/config/config?website=" + initConfig.website)
 
 
-// get only the one record for this website configuration
   useEffect(() => {
-    console.log("api/config/config");
-      async function getData() { api.configOut("/api/config/config?website=makeasiteTest")
+      console.log(api);
+      async function getData() { api.configOut(apiforconfig)
       //.then(res =>  res.json())
        .then((configdata) => {
+         console.log(configdata)
          setData(configdata.data.data);
          setDBIsLoading(false);
        })
@@ -421,17 +422,14 @@ const App = () => {
 
    if (loading ) {
      // get the configuration from the database if possible:
-     if(initConfig.appName != undefined){
-       // find the appName stuff from the database.
-
-     }
       return <Loading />;
     }
     else{
-      console.log("got data", configData)
+        console.log("got data", configData)
 
       if(configData != undefined && configData != null){
-        return(
+        console.log("using db")
+      return(
         <App2 isAuthenticated={isAuthenticated} editState={editState} initConfig={configData[0]}/>
       )
       }
