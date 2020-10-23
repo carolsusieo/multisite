@@ -28,7 +28,7 @@ class BBHome extends Component {
 
   setBackgroundImage = (name,current) => {
     var currentPhoto = PHOTOS[current].photo;
-    console.log("gallery " + name + " " + current);
+    //console.log("gallery " + name + " " + current);
 
     this.props.setBackgroundImage(name,currentPhoto);
   };

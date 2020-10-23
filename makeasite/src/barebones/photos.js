@@ -8,10 +8,10 @@ export default [
     thumbnail: process.env.PUBLIC_URL + '/images/webpic_lrg/free-website-background-10.jpg',
   },
   {
-    photo: process.env.PUBLIC_URL + '/images/webpic_lrg/background-2426328_1920.jpg',
+    photo: process.env.PUBLIC_URL + '/images/webpic_lrg/blue_geometric.jpg',
     caption: "",
     subcaption: "Image by ",
-    thumbnail: process.env.PUBLIC_URL + '/images/webpic_lrg/background-2426328_1920.jpg',
+    thumbnail: process.env.PUBLIC_URL + '/images/webpic_lrg/blue_geometric.jpg',
   },
   {
     photo: process.env.PUBLIC_URL + '/images/webpic_lrg/CountryLeather_1920x1234.jpg',

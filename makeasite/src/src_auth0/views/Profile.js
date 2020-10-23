@@ -6,13 +6,17 @@ import Loading from "../components/Loading";
 import { useAuth0 } from "../react-auth0-spa";
 
 const Profile = () => {
+
   const { loading, user } = useAuth0();
 
   if (loading || !user) {
     return <Loading />;
   }
 
+  // is it toggled to see it?
+
   return (
+
     <Container className="mb-5">
       <Row className="align-items-center profile-header mb-5 text-center text-md-left">
         <Col md={2}>

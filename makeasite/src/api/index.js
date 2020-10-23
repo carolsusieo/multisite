@@ -10,10 +10,14 @@ const api = axios.create({
 export const formIn = ({where,payload}) => api.post(where, payload)
 export const displayOut = where => api.get(where)
 export const configOut = where => api.get(where)
+export const configUpdate = ({where,payload}) => api.put(where,payload)
+export const configDelete = where => api.delete(where)
 const apis = {
     formIn,
     displayOut,
-    configOut
+    configOut,
+    configUpdate,
+    configDelete
 }
 
 export default apis

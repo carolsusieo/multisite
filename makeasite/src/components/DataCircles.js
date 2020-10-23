@@ -3,38 +3,41 @@ import BBHome from "../barebones/components/BBHome";
 
 import BubbleChart from '@weknow/react-bubble-chart-d3';
 import {Button} from 'reactstrap';
+import { StyleSheet, css } from 'aphrodite';
+
+
+// todo come up with a variable width....
+
 
 export default class DataCircles extends Component {
 
   constructor(props) {
         super(props);
 
-        this.deleteSection = this.deleteSection.bind(this);
+        this.deleteArticle = this.deleteArticle.bind(this);
         this.setBackgroundImage = this.setBackgroundImage.bind(this);
         this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
-        this.getSectionStyle = this.getSectionStyle.bind(this);
+        this.getArticleStyle = this.getArticleStyle.bind(this);
     };
 
 
 
 
-getSectionStyle = () => {
+getArticleStyle = () => {
   return this.props.aStyle(this.props.name);
 }
 forceUpdateHandler = () => {
   this.forceUpdate();
 }
 
- deleteSection = ()=> {
-   console.log("delete Section " + this.props.name);
-   this.props.deleteSection(this.props.name);
+ deleteArticle = ()=> {
+   this.props.deleteArticle(this.props.name);
  };
  setBackgroundImage = (name,current)=> {
    this.props.setBackgroundImage(name,current);
-   console.log("forcing Update")
+   //console.log("forcing Update")
    // props are read only
-   //this.setSectionStyle(current.substr(1));
-   this.forceUpdateHandler();
+     this.forceUpdateHandler();
  };
 
   bubbleClick = (label) =>{
@@ -44,31 +47,60 @@ forceUpdateHandler = () => {
     console.log("Customer legend click func")
   }
 
+
+  renderPre = (e) => {
+    if(this.props.editState === true){
+      return(
+      <Button
+        id="qsDeleteArticle"
+        color="primary"
+        block
+        onClick={() => this.deleteArticle()}
+      >
+      Delete Section
+      </Button>
+      );
+    }
+    else return (<div/>)
+  }
+
+  renderPost = (e) => {
+/*
+    if(this.props.showItemPopup === true){
+
+        return(<EditItemPopUp styles={this.props.styles}
+          text='Add New Item'
+          articleName = {this.props.name}
+          addItem={this.addItem}
+          onExit={this.onExit}
+          />);
+    }
+    else {
+      return <div/>;
+    }
+*/
+    if(this.props.editState)
+      return(<BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>)
+    else {
+      return <div/>;
+    }
+  }
+
+
+
 render(){
   if(this.props.data)  {
   return(
-    <section  id={this.props.name}>
-    <div className="row skill" >
-        <div>
-        {this.props.editState == true && (
+    <article className={css(this.props.styles.articleContainer)}>
+      <a id={this.props.name} name={this.props.name}>
+        <h2 className={css(this.props.styles.anchor)}>{this.props.header}</h2>
+     </a>
 
-        <h2 >{this.props.header}<span>
-        <Button
-            id="qsDeleteSection"
-            color="primary"
-            class="btn btn-sm btn-outline-success"
-            block
-            onClick={() => this.deleteSection({})}
-            >
-          Delete Section
-        </Button></span></h2>
+    {this.renderPre()}
 
-       )}
-       {this.props.editState != true && (
-         <h2>{this.props.header}</h2>)}
-        </div>
-    </div>
-    <div style={this.getSectionStyle()}>
+    <div id={this.props.name} name={this.props.name}
+      className={css(this.props.styles.articleContainer,this.props.styles.articleContainer.jump)} display="inline">
+    <div style={this.getArticleStyle()}>
     <BubbleChart
       graph= {{
         zoom: 1.1,
@@ -104,11 +136,10 @@ render(){
       // these are the bubbles
       data={this.props.data}
     />
-    {this.props.editState &&(
-      <BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>
-    )}
     </div>
-    </section>
+    </div>
+    {this.renderPost()}
+    </article>
   )
 }
 return(<p>Error</p>)

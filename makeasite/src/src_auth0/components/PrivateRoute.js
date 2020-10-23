@@ -6,6 +6,8 @@ import { useAuth0 } from "../react-auth0-spa";
 const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const { loading, isAuthenticated, loginWithRedirect } = useAuth0();
 
+
+//console.log("In PrivateRoute " + path)
   useEffect(() => {
     if (loading || isAuthenticated) {
       return;
@@ -19,8 +21,10 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
   }, [loading, isAuthenticated, loginWithRedirect, path]);
 
   const render = props =>
-    isAuthenticated === true ? <Component {...props} /> : null;
+    isAuthenticated === true ?
+        <Component {...props} /> : null;
 
+  //      console.log(path, rest, render)
   return <Route path={path} render={render} {...rest} />;
 };
 

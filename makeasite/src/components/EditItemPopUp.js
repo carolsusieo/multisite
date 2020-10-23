@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from 'react-dropdown';
-import '../scss/main.scss';
+//import '../scss/main.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
@@ -9,6 +9,7 @@ import { SliderPicker } from 'react-color';
 import FontSizeChanger from 'react-font-size-changer';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faPlus,faMinus } from "@fortawesome/free-solid-svg-icons";
+import { StyleSheet, css } from 'aphrodite';
 
 /* add of edit an item in container.  popup screen allows you to add
 specifics about the item (text, links, etc)
@@ -18,13 +19,15 @@ class EditItemPopUp extends React.Component {
         super(props);
       this.state ={ type: '',
                       id: '',
-                      activeFontFamily: "Open Sans",
-                      textcolor: '#000',
-                      fontsize: '12',
+                      style: {
+                        fontFamily: "Open Sans",
+                        color: '#333333',
+                        fontSize: '12px'
+                      }
                   };
 
 
-        console.log(JSON.stringify(this.props))
+//        console.log(JSON.stringify(this.props))
         if(this.props.item != undefined){
           this.state.data = this.props.item.data;
           this.state.type = this.props.item.type;
@@ -34,18 +37,11 @@ class EditItemPopUp extends React.Component {
           this.state.type = 'text';
         }
         if(this.props.item != undefined){
-          if(this.props.item.font != undefined){
-            this.state.activeFontFamily= this.props.item.font;
-          }
-          if(this.props.item.textcolor != undefined){
-            this.state.textcolor = this.props.item.textcolor;
-          }
-          if(this.props.item.fontsize != undefined){
-            this.state.fontsize = this.props.item.fontsize;
+          if(this.props.item.style != undefined){
+            this.state.style = this.props.item.style;
           }
         }
 
-        console.log(JSON.stringify(this.state))
         this.onSubmit = this.onSubmit.bind(this);
       //  this.onChange = this.onChange.bind(this);
         this.onClear = this.onClear.bind(this);
@@ -92,21 +88,16 @@ class EditItemPopUp extends React.Component {
     }
 
       onSubmit = async (values) => {
-          console.log(JSON.stringify(values) + " " + JSON.stringify(this.props))
-          values.font = this.state.activeFontFamily;
+          values.style = this.state.style;
           values.type = this.state.type;
-          values.textcolor = this.state.textcolor;
-          values.fontsize = this.state.fontsize;
           if(this.state.type == 'carddeck'){
           }
           if(this.props.editItem != undefined){
-            console.log("Editing " + values.data)
             this.props.editItem(values);
           }
           else if(this.props.addItem != undefined){
                 values.type = this.state.type;
-              console.log("adding " + JSON.stringify(values))
-              this.props.addItem(this.props.sectionName,values)
+              this.props.addItem(this.props.articleName,values)
             }
     }
 
@@ -116,27 +107,29 @@ class EditItemPopUp extends React.Component {
     }
 
     onExit = () => {
-      console.log("selected to exit")
+      // Don't update the data from the original
+      console.log("selected to exit");
+      this.props.onExit();
     }
-
 
 
   render() {
 
     var i=1;
-    var font = this.state.font;
+    var font = this.state.style.fontFamily;
     var styleval = {
-      'fontFamily': this.state.font,
-      'color': this.state.textcolor,
-      'font-size': this.state.fontsize,
+      'fontFamily': this.state.style.fontFamily,
+      'color': this.state.style.color,
+      'fontSize': this.state.style.fontSize,
     }
+    console.log(this.state.style)
     var dirty = 1;
 
-
+// can't dirty on changing text
     return (
-     <div className='popup' style={{ position:"relative", zIndex:'3000'}}>
-      <div className='popup\_inner' style={{ position:"relative", zIndex:'3000'}}>
-      <h2>{this.props.text}</h2>
+     <div className={css(this.props.styles.popup)}>
+      <div className={css(this.props.styles.popupInner)}>
+
        <Form
           mutators=
           {{
@@ -148,10 +141,14 @@ class EditItemPopUp extends React.Component {
            initialValues={{ data: this.state.data, type: this.state.type}}
 
            render={({ handleSubmit, form, submitting, pristine, values  }) => (
-             <form onSubmit={handleSubmit}>
+             <form onSubmit={handleSubmit} >
+
+             <pre className="apply-font" style={styleval}>{values.data} </pre>
+
                <div >
-                 <label>Enter type:</label>
-                 <Field name="type" component="select" onChange={this.handleChange}>
+                 <label className = {css(this.props.styles.text)}>Enter type:</label>
+                 <Field className = {css(this.props.styles.text)} name="type"
+                    component="select" onChange={this.handleChange}>
                    <option />
                    <option value="text">Text</option>
                    <option value="html">Html</option>
@@ -165,8 +162,9 @@ class EditItemPopUp extends React.Component {
                {(this.state.type == 'carddeck' ) && (
 
                  <div >
-                   <label>Pick Card:</label>
-                   <Field name="type" component="select" onChange={this.pickCard}>
+                   <label className = {css(this.props.styles.text)}>Pick Card:</label>
+                   <Field name="type" component="select" onChange={this.pickCard}
+                   className = {css(this.props.styles.text)}>
                      <option />
                      {(this.state.data[0]) && (
                      <option value='0'>Card 1</option>
@@ -182,8 +180,9 @@ class EditItemPopUp extends React.Component {
                )}
                {(this.state.card)  && (
                  <div >
-                   <label>Pick Card Update:</label>
-                   <Field name="type" component="select" onChange={this.pickCardUpdate}>
+                   <label className = {css(this.props.styles.text)}>Pick Card Update:</label>
+                   <Field name="type" component="select" onChange={this.pickCardUpdate}
+                   className = {css(this.props.styles.text)}>
                      <option />
                      <option value='header'>Header</option>
                      <option value='text'>Body Text</option>
@@ -197,22 +196,33 @@ class EditItemPopUp extends React.Component {
                {(this.state.type == 'text' || this.state.type == 'html') && (
                  <div>
                  <div id="thisone">
-                  <label>Enter Data:</label>
-                  <Field style={styleval}
+                  <label className = {css(this.props.styles.text)}>Enter Data:</label>
+                  <Field className = {css(this.props.styles.text)}
                    name="data"
                    component="input"
                    type="text"
-                   className="apply-font"
                    value={this.state.data}
-                  />
+                   onBlur={(e)=>{
+                     this.setState({data:e.target.value})
+                     form.mutators.makeDirty();
+
+                   }}
+                    />
                  </div>
                  <div id="thistwo">
                  {(this.state.type == 'text') && (
                    <>
-                      <SliderPicker color={this.state.textcolor}
+                      <SliderPicker color={this.state.style.color}
                         onChange={(color) =>
                         {
-                          this.setState({ textcolor: color.hex });
+
+                          this.setState(prevState =>  ({
+                            style:{
+                              ...prevState.style,
+                              color: color.hex
+                            }
+                          }));
+
                           form.mutators.makeDirty();
                         }
                       }
@@ -222,27 +232,31 @@ class EditItemPopUp extends React.Component {
                        activeFontFamily={this.state.activeFontFamily}
                        onChange={(nextFont) =>
                          {
-                           this.setState({
-                             activeFontFamily:nextFont.family,
-                           })
-                           form.mutators.makeDirty();
+                           this.setState(prevState =>  ({
+                             style:{
+                               ...prevState.style,
+                               fontFamily: nextFont.family
+                             }
+                           }));
+                         form.mutators.makeDirty();
                          }
                        }
                       />
                       <FontSizeChanger
                         onChange={(element, newValue, oldValue) =>
                            {
-                             console.log(element, newValue, oldValue);
-                             this.setState({
-                               fontsize: newValue,
-                             })
+                             this.setState(prevState =>  ({
+                               style:{
+                                 ...prevState.style,
+                                 fontSize: newValue
+                               }
+                             }));
                              form.mutators.makeDirty();
-                             console.log(JSON.stringify(this.state))
                            }}
                            targets={['#target-two .apply-font']}
                           options={{
                                        stepSize: 2,
-                                       range: 6
+                                       range: 20
                           }}
                           customButtons={{
                           up: <FontAwesomeIcon icon={faPlus}/>,
@@ -270,8 +284,9 @@ class EditItemPopUp extends React.Component {
                {(this.state.type == 'video' || this.state.type == 'img' ) && (
                    <div>
                    <div id="thislink">
-                   <label>Enter Link:</label>
-                   <Field style={styleval}
+                   <label >Enter Link:</label>
+                   <Field
+                     className = {css(this.props.styles.text)}
                      name="data"
                      component="input"
                      type="text"
@@ -283,7 +298,8 @@ class EditItemPopUp extends React.Component {
                    </div>
                )}
 
-               <Field style={{display: 'none'}}
+               <Field className = {css(this.props.styles.text)}
+                 style={{display: 'none'}}
                  name="dirtyit"
                  component="input"
                  type="text"
@@ -291,29 +307,37 @@ class EditItemPopUp extends React.Component {
 
 
 
-               <div className="buttons">
-                 <button type="submit" disabled={submitting || pristine}>
+               <div >
+                 <button
+                 style={{fontSize:15}}
+                  type="submit" disabled={submitting || pristine}>
                    Submit
                  </button>
+
                  <button
+                 style={{fontSize:15}}
                    type="button"
                    onClick={form.reset}
                    disabled={submitting || pristine}
                  >
                    Reset
                  </button>
+
                  {this.props.deleteItem != undefined && (
                  <button
-                   type="button"
+                 style={{fontSize:15}}
+                 type="button"
                    onClick={this.onDelete}
                    disabled={submitting}
                  >
                    Delete
                  </button>
                  )}
+
                  <button
-                   type="submit"
-                   onClick={this.onExit}
+                   type="button"
+                   style={{fontSize:15}}
+                     onClick={this.onExit}
                    disabled={submitting}
                  >
                    Exit

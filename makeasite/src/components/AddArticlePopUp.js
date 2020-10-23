@@ -1,11 +1,11 @@
 import React from 'react';
 import Dropdown from 'react-dropdown';
-import '../scss/main.scss';
+//import '../scss/main.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
 
-class AddSectionPopUp extends React.Component {
+class AddArticlePopUp extends React.Component {
   constructor(props) {
         super(props);
         this.state ={ type: 'info',
@@ -25,7 +25,7 @@ class AddSectionPopUp extends React.Component {
         this.addLabel = this.addLabel.bind(this);
     };
     onClear = () =>{
-      console.log("clear")
+  //    console.log("clear")
       this.setState({
         type:'info',
         loginDisplay: true,
@@ -40,7 +40,7 @@ class AddSectionPopUp extends React.Component {
 
 
     onChange = (which,value,previous) => {
-      console.log("change "+ which + " " + value + " " + previous)
+      //console.log("change "+ which + " " + value + " " + previous)
       if(which == 'type'){
         if(value == 'info'){
 
@@ -76,12 +76,12 @@ class AddSectionPopUp extends React.Component {
        }
        else if(which === 'cvalue'){
 
-         console.log(value + " " + previous);
-         const newValue = {
+        // console.log(value + " " + previous);
+         var newValue = {
            "label": previous,
            "value": value
          }
-         const newData = [
+         var newData = [
              ...this.state.data,
              newValue
          ];
@@ -93,7 +93,7 @@ class AddSectionPopUp extends React.Component {
 
     addLabel = async (values) => {
 
-      console.log(values);
+      //console.log(values);
       const newValue = {
         "label": values.clabel,
         "value": values.cvalue
@@ -106,26 +106,61 @@ class AddSectionPopUp extends React.Component {
     }
 
     onSubmit = async values => {
-          console.log("submit " + values.header + " " + values.type + " " + values.url + " " + this.state.menutitle);
+        //  console.log("submit " + values.header + " " + values.type + " " + values.url + " " + this.state.menutitle);
           if(this.state.menutitle === true)
             values.menutitle = this.state.header;
 
           if(values.type === 'circles'){
             values.data = this.state.data
-          }  
-            console.log(values);
-          this.props.addSection(values);
+          }
+          //  console.log(values);
+          this.props.addArticle(values);
     }
 
   render() {
     var i=1;
 
 
+
+/*
+popup: {
+width: '65%',
+height: '25%',
+top: '15%',
+left: 0,
+right: 0,
+bottom: 0,
+margin: 'auto',
+backgroundColor: 'white',
+position:"relative",
+zIndex:'3000',
+},
+popupInner: {
+left: '25%',
+right: '25%',
+top: '5%',
+bottom: '5%',
+margin: 'auto',
+borderRadius: '20px',
+backgroundColor: 'white',
+position:"relative",
+zIndex:'4000',
+},
+popupTitle:{
+fontSize:"14px",
+color:"black"
+},
+popupText:{
+fontSize:"12px",
+color:"black"
+}
+
+*/
 return (
 <div className='popup'>
 <div className='popup\_inner'>
-<div class="form-group row">
-   <div class="col-1"/>
+<div className="form-group row">
+   <div className="col-1"/>
    <h1>{this.props.text}</h1>
  </div>
   <Form
@@ -133,12 +168,12 @@ return (
     render={({ handleSubmit, form, submitting, pristine, values }) => (
       <form onSubmit={handleSubmit}>
 
-      <div class="form-group row">
-      <div class="col-1"/>
-       <div class="col-4">
+      <div className="form-group row">
+      <div className="col-1"/>
+       <div className="col-4">
         <label>Section Title</label>
        </div>
-       <div class="col-4">
+       <div className="col-4">
         <Field
          name='header'
          component='input'
@@ -148,16 +183,15 @@ return (
        </div>
       </div>
 
-      <div class="form-group row">
-      <div class="col-1"/>
-       <div class="col-4">
+      <div className="form-group row">
+      <div className="col-1"/>
+       <div className="col-4">
           <label>Section Type</label>
        </div>
-       <div class="col-4">
+       <div className="col-4">
         <Field  name='type'
           component='select'
-          inputOnChange={this.onChange}
-          >
+            >
           <option key = {i++} value='info'>Info</option>
           <option key = {i++} value='subcolumns'>Subcolumns</option>
           <option key = {i++} value='video'>Video</option>
@@ -172,12 +206,12 @@ return (
         </div>
       </div>
 
-      <div class="form-group row">
-      <div class="col-1"/>
-     <div class="col-4">
+      <div className="form-group row">
+      <div className="col-1"/>
+     <div className="col-4">
           <label>Display when Logged in only</label>
        </div>
-       <div class="col-4">
+       <div className="col-4">
         <Field  name='loginDisplay'
           component='input'
           type='checkbox'
@@ -189,13 +223,13 @@ return (
         </OnChange>
        </div>
       </div>
-      <div class="form-group row">
-      <div class="col-1"/>
-       <div class="col-4">
+      <div className="form-group row">
+      <div className="col-1"/>
+       <div className="col-4">
           <label>Display On Menu</label>
        </div>
 
-       <div class="col-4">
+       <div className="col-4">
         <Field  name='selectMenu'
         component='input'
         type='checkbox'
@@ -210,12 +244,12 @@ return (
 
       {(values.type === 'video') &&(
 
-      <div class="form-group row">
-      <div class="col-1"/>
-       <div class="col-4">
+      <div className="form-group row">
+      <div className="col-1"/>
+       <div className="col-4">
         <label>URL:</label>
        </div>
-       <div class="col-4">
+       <div className="col-4">
         <Field
          name='url'
          component='input'
@@ -228,12 +262,12 @@ return (
     )}
     {(values.type === 'circles') &&
      <div>
-      <div class="form-group row">
-        <div class="col-1"/>
-        <div class="col-2">
+      <div className="form-group row">
+        <div className="col-1"/>
+        <div className="col-2">
          <label>Circle Label:</label>
         </div>
-        <div class="col-2">
+        <div className="col-2">
          <Field
           name='clabel'
           component='input'
@@ -242,10 +276,10 @@ return (
           ></Field>
         </div>
 
-        <div class="col-1">
+        <div className="col-1">
          <label>Circle Value</label>
         </div>
-        <div class="col-1">
+        <div className="col-1">
          <Field  name='cvalue'
           component='select'
           >
@@ -270,16 +304,16 @@ return (
      </div>
     }
 
-      <div class="row justify-content-start">
-      <div class="col-1"/>
-          <button class='col-2'
+      <div className="row justify-content-start">
+      <div className="col-1"/>
+          <button className='col-2'
                     type="reset"
                   onClick={this.onClear}
                     disabled={submitting || pristine}
                     >
                     Reset
             </button>
-            <button class='col-2'
+            <button className='col-2'
                   type="submit" disabled={submitting || pristine}>
                  Submit
             </button>
@@ -294,7 +328,7 @@ return (
 }
 }
 
-export default AddSectionPopUp;
+export default AddArticlePopUp;
 /*
 
 

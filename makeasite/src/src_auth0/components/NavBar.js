@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavLink as RouterNavLink } from "react-router-dom";
+
 import {
   Collapse,
   Container,
@@ -18,24 +19,26 @@ import {
 
 import { useAuth0 } from "../react-auth0-spa";
 
-const NavBar = ({editable, sections}) => {
+function test(){
+//  console.log("testing route")
+}
 
-// determine if the sections sent in have any ones with menutitle set..
+const NavBar = ({addButtons, navChoices, articles}) => {
+
+// determine if the articles sent in have any ones with menutitle set..
   const [isOpen, setIsOpen] = useState(false);
-  const { user, isAuthenticated, loginWithRedirect,editState,toggleEditState, logout} = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect, logout} = useAuth0();
   const toggle = () => setIsOpen(!isOpen);
 
 
   var hasMore=[];
-  //  console.log("sections", sections);
-    if(typeof sections === 'object')
+    if(typeof articles === 'object')
     {
-      sections.map(section =>{
-    //      console.log("section",section);
-          // items will show up in the navigational bar based on if menutitle
+      articles.map(section =>{
+            // items will show up in the navigational bar based on if menutitle
           // is in the configuration file for the item...
 
-          if(section.menutitle != undefined && (section.loginDisplay == true || isAuthenticated)){
+          if(section.menutitle != undefined && (section.loginDisplay == false || isAuthenticated)){
             hasMore.push(section)
             return(section);
           }
@@ -49,14 +52,19 @@ const NavBar = ({editable, sections}) => {
       returnTo: window.location.origin
     });
 
-  const currentEditState = () =>{
-  //  console.log("editState: " + editState);
-    return(editState == true?"Stop Edit":"Edit");
-  };
+const inNavChoices = (val) =>
+  navChoices(val);
+// added buttons need to be close to the login button...
 
+  var idNum = 0;
+//  console.log(addButtons);
+  var addButtonsArray = [];
+
+  if(addButtons)
+    addButtonsArray = addButtons();
 
   return (
-    <div className="nav-container">isAuthenticated
+    <div className="nav-container">
       <Navbar fixed="top" color="light" light expand="md">
         <Container>
           <NavbarBrand className="logo" />
@@ -70,39 +78,24 @@ const NavBar = ({editable, sections}) => {
                              {'#' + section.name}>{section.menutitle}</NavLink>
                          </NavItem>))
                   )}
-
-                  {(isAuthenticated && editable) && (
-                    <NavItem>
-                      <Button
-                        id="qsEditBtn"
-                        color="primary"
-                        class="btn btn-sm btn-outline-success"
-                        block
-                        onClick={() => toggleEditState({})}
-                        >
-                      {currentEditState()}
-                    </Button>
-
-                    </NavItem>
-                  )}
-
             </Nav>
+
               <Nav className="d-none d-md-block" navbar>
-              {!isAuthenticated && (
+              {!isAuthenticated ?
 
                 <NavItem>
                   <Button
                     id="qsLoginBtn"
                     color="primary"
-                    className="btn-margin"Navbar
+                    className="btn-margin"
                     onClick={() => loginWithRedirect({})}
                   >
                     Log in
                   </Button>
                 </NavItem>
 
-              )}
-              {isAuthenticated && (
+              :
+              <div class="pull-right">
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret id="profileDropDown">
                     <img
@@ -123,6 +116,25 @@ const NavBar = ({editable, sections}) => {
                     Profile
                     </DropdownItem>
                     <DropdownItem
+                      tag={RouterNavLink}
+                      to="/something"
+                      className="dropdown-profile"
+                      activeClassName="router-link-exact-active"
+                    >
+                    Website Only
+                    </DropdownItem>
+
+                    {addButtonsArray.map(addButton =>(
+                          <DropdownItem
+                            id={addButton.id}
+                            onClick={() => inNavChoices(addButton.nav)}
+                          >
+                          {addButton.label}
+                         </DropdownItem>
+                    ))}
+
+
+                    <DropdownItem
                       id="qsLogoutBtn"
                       onClick={() => logoutWithRedirect()}
                     >
@@ -130,60 +142,10 @@ const NavBar = ({editable, sections}) => {
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-              )}
-
+                </div>
+              }
             </Nav>
-            {!isAuthenticated && (
-              <Nav className="d-md-none" navbar>
-                <NavItem>
-                  <Button
-                    id="qsLoginBtn"
-                    color="primary"
-                    block
-                    onClick={() => loginWithRedirect({})}
-                  >
-                    Log in
-                  </Button>
-                </NavItem>
-              </Nav>
-            )}
-            {isAuthenticated && (
-              <Nav
-                className="d-md-none justify-content-between"
-                navbar
-                style={{ minHeight: 170 }}
-              >
-                <NavItem>
-                  <span className="user-info">
-                    <img
-                      src={user.picture}
-                      alt="Profile"
-                      className="nav-user-profile d-inline-block rounded-circle mr-3"
-                      width="50"
-                    />
-                    <h6 className="d-inline-block">{user.name}</h6>
-                  </span>
-                </NavItem>
-                <NavItem>
 
-                  <RouterNavLink
-                    to="/profile"
-                    activeClassName="router-link-exact-active"
-                  >
-                    Profile
-                  </RouterNavLink>
-                </NavItem>
-                <NavItem>
-                  <RouterNavLink
-                    to="#"
-                    id="qsLogoutBtn"
-                    onClick={() => logoutWithRedirect()}
-                  >
-                    Log out
-                  </RouterNavLink>
-                </NavItem>
-              </Nav>
-            )}
           </Collapse>
         </Container>
       </Navbar>

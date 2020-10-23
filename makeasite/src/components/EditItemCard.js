@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropdown from 'react-dropdown';
-import '../scss/main.scss';
+//import '../scss/main.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
@@ -9,6 +9,7 @@ import { SliderPicker } from 'react-color';
 import FontSizeChanger from 'react-font-size-changer';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faPlus,faMinus } from "@fortawesome/free-solid-svg-icons";
+import { StyleSheet, css } from 'aphrodite';
 
 /* add of edit an item in container.  popup screen allows you to add
 specifics about the item (text, links, etc)
@@ -16,15 +17,15 @@ specifics about the item (text, links, etc)
 class EditItemCard extends React.Component {
   constructor(props) {
         super(props);
-      this.state ={ type: '',
+        this.state ={ type: '',
                       id: '',
-                      activeFontFamily: "Open Sans",
-                      textcolor: '#000',
-                      fontsize: '12',
+                      style.fontFamily: "Open Sans",
+                      style.color: '#000',
+                      style.fontSize: '12px',
                   };
 
 
-        console.log(JSON.stringify(this.props))
+        //console.log(JSON.stringify(this.props))
         if(this.props.item != undefined){
           this.state.data = this.props.item.data;
           this.state.type = this.props.item.type;
@@ -34,18 +35,12 @@ class EditItemCard extends React.Component {
           this.state.type = 'text';
         }
         if(this.props.item != undefined){
-          if(this.props.item.font != undefined){
-            this.state.activeFontFamily= this.props.item.font;
-          }
-          if(this.props.item.textcolor != undefined){
-            this.state.textcolor = this.props.item.textcolor;
-          }
-          if(this.props.item.fontsize != undefined){
-            this.state.fontsize = this.props.item.fontsize;
+          if(this.props.item.style != undefined){
+            this.state.item.style = this.props.item.style;
           }
         }
 
-        console.log(JSON.stringify(this.state))
+        //console.log(JSON.stringify(this.state))
         this.onSubmit = this.onSubmit.bind(this);
       //  this.onChange = this.onChange.bind(this);
         this.onClear = this.onClear.bind(this);
@@ -58,7 +53,7 @@ class EditItemCard extends React.Component {
 
 
     onClear = () => {
-      console.log("clear")
+      //console.log("clear")
       this.setState({
         type:'text',
         loginDisplay: true,
@@ -86,28 +81,26 @@ class EditItemCard extends React.Component {
     }
 
       onSubmit = async (values) => {
-          console.log(JSON.stringify(values) + " " + JSON.stringify(this.props))
-          values.font = this.state.activeFontFamily;
+          //console.log(JSON.stringify(values) + " " + JSON.stringify(this.props))
           values.type = this.state.type;
-          values.textcolor = this.state.textcolor;
-          values.fontsize = this.state.fontsize;
+          values.style = this.state.style;
 
-          // adding or editing a card 
+          // adding or editing a card
           if(this.props.editItem != undefined){
             this.props.editItem(values);
           }
           else if(this.props.addItem != undefined){
-              this.props.addItem(this.props.sectionName,values)
+              this.props.addItem(this.props.articleName,values)
           }
     }
 
     onDelete = () => {
-      console.log("selected to delete")
+      //console.log("selected to delete")
       this.props.deleteItem();
     }
 
     onExit = () => {
-      console.log("selected to exit")
+      this.props.onExit();
     }
 
 
@@ -115,18 +108,20 @@ class EditItemCard extends React.Component {
   render() {
 
     var i=1;
-    var font = this.state.font;
+    var font = this.state.style.fontFamily;
     var styleval = {
-      'fontFamily': this.state.font,
-      'color': this.state.textcolor,
-      'font-size': this.state.fontsize,
+      'fontFamily': this.state.style.fontFamily,
+      'color': this.state.style.color,
+      'fontSize': this.state.style.fontSize,
     }
     var dirty = 1;
 
 
+
+    console.log("Edit Item - ", type, id);
     return (
      <div className='popup' style={{ position:"relative", zIndex:'3000'}}>
-      <div className='popup\_inner' style={{ position:"relative", zIndex:'3000'}}>
+      <div className='popup\_Inner' style={{ position:"relative", zIndex:'3000'}}>
       <h2>{this.props.text}</h2>
        <Form
           mutators=
@@ -183,21 +178,21 @@ class EditItemCard extends React.Component {
                  <div id="thistwo">
                  {(this.state.type == 'text') && (
                    <>
-                      <SliderPicker color={this.state.textcolor}
+                      <SliderPicker color={this.state.style.color}
                         onChange={(color) =>
                         {
-                          this.setState({ textcolor: color.hex });
+                          this.setState({ style.color: color.hex });
                           form.mutators.makeDirty();
                         }
                       }
                       />
                      <FontPicker
                        apiKey="AIzaSyCwxw1i_MlbMd-9xg_bcCo8UJXyZ89fYHU"
-                       activeFontFamily={this.state.activeFontFamily}
+                       activeFontFamily={this.state.style.fontFamily}
                        onChange={(nextFont) =>
                          {
                            this.setState({
-                             activeFontFamily:nextFont.family,
+                             style.fontFamily:nextFont.family,
                            })
                            form.mutators.makeDirty();
                          }
@@ -206,9 +201,9 @@ class EditItemCard extends React.Component {
                       <FontSizeChanger
                         onChange={(element, newValue, oldValue) =>
                            {
-                             console.log(element, newValue, oldValue);
+                             //console.log(element, newValue, oldValue);
                              this.setState({
-                               fontsize: newValue,
+                               style.fontSize: newValue,
                              })
                              form.mutators.makeDirty();
                              console.log(JSON.stringify(this.state))
@@ -286,7 +281,7 @@ class EditItemCard extends React.Component {
                  </button>
                  )}
                  <button
-                   type="submit"
+                   type="button"
                    onClick={this.onExit}
                    disabled={submitting}
                  >

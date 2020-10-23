@@ -1,18 +1,95 @@
-@import 'scss/main.scss';
 
-// Bootstrap
 
-// // Required
-// @import "nodegrayscale_modules/bootstrap/scss/functions";
-// @import "node_modules/bootstrap/scss/variables";
-// @import "nodegrayscale_modules/bootstrap/scss/mixins";
+a {
+  color: green;
+  &:focus,
+  &:hover {
+    text-decoration: none;
+    color: darken(green, 40%);
+  }
+}
+.bg-black {
+  background-color: black !important;
+}
 
-// // Optional
-// @import "node_modules/bootstrap/scss/reboot";
-// @import "node_modules/bootstrap/scss/type";
-// @import "node_modules/bootstrap/scss/images";
-// @import "node_modules/bootstrap/scss/code";
-// @import "node_modules/bootstrap/scss/grid";
+.bg-primary {
+  background-color:  yellow !important;
+}
 
-@import "node_modules/bootstrap/scss/bootstrap";
+.text-primary {
+  color: green !important;
+}
+.footer {
+  padding: 5rem 0;
+}
+
+.color-picker-palette {
+  position: absolute;
+  z-index: 100;
+}
+.color-picker-cover {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+}
+
+.popup {
+  position: fixed;
+  width: 65%;
+  height: 65%;
+  top: 15%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: rgba(255,255,255,1.9);
+
+}
+.popup\_inner {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 25%;
+  bottom: 25%;
+  margin: auto;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 1.9);
+ transition: opacity 500ms;
+ visibility: hidden;
+ opacity: 0;
+
+}
+
+
+.btn {
+  box-shadow: 0 .1875rem .1875rem 0 rgba(0,0,0,.1) !important;
+  padding: 1.25rem 2rem;
+  font-family: 'Varela Round';
+  font-size: 80%;
+  text-transform: uppercase;
+  letter-spacing: .15rem;
+  border: 0;
+}
+
+.btn-primary {
+  background-color: green;
+  &:hover {
+    background-color: darken(green, 10%);
+  }
+  &:focus {
+    background-color: darken(green, 10%);
+    color: white;
+  }
+  &:active {
+    background-color: darken(green, 15%) !important;
+  }
+}
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+
+
+//@import "node_modules/bootstrap/scss/bootstrap";
 @import "node_modules/font-awesome/scss/font-awesome.scss";

@@ -1,0 +1,1 @@
+Images directory used for selecting images on edit only.  The app displays images from the public directory

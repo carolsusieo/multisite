@@ -1,28 +1,135 @@
+
 export const initConfig ={
 	"website": "makeasiteTest",
 	"editable": true,
+	"appStyle":{
+		mainWrapper: {
+			width: "100%",
+			height: "cover",
+			textAlign: "center",
+			overflow: "hidden"
+		},
 
-	"sections": [{
+		articleContainer: {
+		  width: "100%",
+			height: "cover",
+		  position: "relative",
+			marginTop1: "-75px",
+		  marginBottom1: "-75px",
+		},
+		anchor: {
+				paddingTop: "40px",
+				marginTop: "-40px"
+		},
+
+			bgBlack: {
+			  backgroundColor: 'x111111'
+			},
+
+			bgPrimary: {
+			  backgroundColor: 'x333333'
+			},
+
+			textPrimary: {
+			  color: 'x333333'
+			},
+			footer: {
+			  padding: '5rem 0'
+			},
+
+			colorPickerPalette: {
+			  position: 'absolute',
+			  zIndex: 100
+			},
+			colorPickerCover: {
+			  position: 'fixed',
+			  top: '0px',
+			  left: '0px',
+			  bottom: '0px',
+			  right: '0px'
+			},
+
+
+		btn: {
+			  boxShadow: '0 .1875rem .1875rem 0 rgba(0,0,0,.1)',
+			  padding: '1.25rem 2rem',
+			  fontFamily: 'Varela Round',
+			  fontSize: '80%',
+			  textTransform: 'uppercase',
+			  letterSpacing: '.15rem',
+				size: 'lg',
+			  border: 0
+			},
+
+			btnSml: {
+					boxShadow: '0 .1875rem .1875rem 0 rgba(0,0,0,.1)',
+					padding: '1.25rem 2rem',
+					fontFamily: 'Varela Round',
+					fontSize: '80%',
+					textTransform: 'uppercase',
+					letterSpacing: '.15rem',
+					border: 0,
+					size: 'sm'
+				},
+
+			btnPrimary: {
+			  backgroundColor: 'x333333',
+			}
+
+	},
+
+	"articles": [{
 			"menutitle": "Home",
 			"loginDisplay": false,
-			"type": "header",
+			"type": "otherh",
 			"name": "header",
-			"header": "John Doe React-ing",
 			"classList": "text-center",
-			"title": "Greetings From",
 			"copyright_year": "2020",
-			"text": "Nashville based Software Engineer, Technical Consultant and FinTech specialist.",
-			"buttonLabel": "to learn more about me",
-			"backimg": "/images/bg-masthead.jpg"
+	    "backimg": "images/webpic_lrg/header-background.jpg",
+      "items": [
+        {
+          "type": "html",
+          "data": "<br/><br/><br/><br/><br/><br/><br/>"
+        },
+				{
+
+          "type": "html",
+          "id": "html1",
+          "data": "<h3 style='color:#A8A8A8; fontFamily:serif; margin:  auto; width:70%;'>Greetings From</h3>"
+
+        },
+        {
+            "type": "html",
+            "id": "html1",
+            "data": "<h1 style='color:#ffffff; fontFamily:opensans; fontSize:90px;'>John Doe</h1>"
+        },
+        {
+            "type": "html",
+            "id": "html1",
+            "data": "<h3 style='color:#A8A8A8; fontFamily:serif; margin:0 auto; width:70%;'>Nashville based Software Engineer, Technical Consultant and FinTech specialist.</h3>"
+        },
+        {
+            "type": "include",
+            "data": "social",
+						"style": {
+							"display": "inline",
+							"paddingRight": "3em"
+						}
+	      },
+        {
+          "type": "html",
+          "data": "<br/><br/><br/><br/>"
+        }
+      ]
+
 		},
 		{
 			"menutitle": "About1",
 			"loginDisplay": false,
 			"type": "carddeck",
 			"name": "carddeck",
-			"header": "About",
+			"header": "About1",
 			"items": [{
-
 					"name": "card1",
 					"img": "images/webpic_sml/sample-image.jpg"
 				},
@@ -49,7 +156,7 @@ export const initConfig ={
 			"loginDisplay": false,
 			"type": "tested",
 			"name": "test",
-			"header": "About",
+			"header": "AboutOld",
 			"items": [{
 					"type": "html",
 					"id": "html1",
@@ -103,10 +210,11 @@ export const initConfig ={
 						"x": "10px",
 						"y": "10px"
 					},
-					"font": "Arial",
-					"fontsize": "18",
-					"textcolor": "0x1111"
-
+					"style":{
+					 "fontFamily": "Arial",
+					 "fontSize": "18",
+					 "color": "0x1111"
+				  }
 
 				},
 				{
@@ -127,9 +235,11 @@ export const initConfig ={
 						"x": "10px",
 						"y": "10px"
 					},
-					"font": "Arial",
-					"fontsize": "18",
-					"textcolor": "0x1111"
+					"style":{
+						"activeFontFamily": "Arial",
+						"fontSize": "18",
+						"color": "0x1111"
+					}
 				},
 				{
 					"type": "image",
@@ -145,13 +255,13 @@ export const initConfig ={
 				{
 					"type": "html",
 					"id": "name2",
-					"data": "<a class='github' href='https://github.com'><b>GitHub</b></a>"
+					"data": "<a className='github' href='https://github.com'><b>GitHub</b></a>"
 				}
 			]
 		},
 
 		{
-			"menutitle": "About",
+			"menutitle": "About Me",
 			"loginDisplay": false,
 			"type": "other",
 			"name": "about",
@@ -596,7 +706,7 @@ export const initConfig ={
 				"type": "Skype",
 				"value": "carolsuejackson/chat",
 				"url": "skype:",
-				"fa": "fa fa-skype",
+				"fa": "fa fa-skype fa-2x",
 				"full": "skype:carolsusiejackson/chat"
 
 			},
@@ -604,21 +714,21 @@ export const initConfig ={
 				"type": "Linkedin",
 				"value": "carolodiorne",
 				"url": "www.linkedin.com/in/",
-				"fa": "fa fa-linkedin",
+				"fa": "fa fa-linkedin fa-2x",
 				"full": "https://www.linkedin.com/in/carolodiorne"
 			},
 			{
 				"type": "Github",
 				"value": "carolsusieo",
 				"url": "www.github.com",
-				"fa": "fa fa-github",
+				"fa": "fa fa-github fa-2x",
 				"full": "https://www.github.com/carolsusieo"
 			},
 			{
 				"type": "Stack Overflow",
 				"value": "1846633/carol-susie-odiorne",
 				"url": "www.stack-overflow/users/",
-				"fa": "fa fa-stack-overflow",
+				"fa": "fa fa-stack-overflow fa-2x",
 				"full": "https://www.stackoverflow.com/users/1846633/carol-susie-odiorne"
 
 			}

@@ -69,7 +69,7 @@ class Caption extends PureComponent {
       onPress,
       photos,
     } = this.props;
-    const index = parseInt(event.currentTarget.dataset.photoIndex, 10);
+    var index = parseInt(event.currentTarget.dataset.photoIndex, 10);
     if (index >= 0 && index <= photos.length - 1) {
       onPress(index);
     }
@@ -77,8 +77,8 @@ class Caption extends PureComponent {
 
   setThumbnailsWrapperScrollLeft(current) {
     const { photos } = this.props;
-    const bounding = this.thumbnailsWrapperRef.getBoundingClientRect();
-    const scrollLeft = calculateThumbnailsLeftScroll(current, photos.length, bounding);
+    var bounding = this.thumbnailsWrapperRef.getBoundingClientRect();
+    var scrollLeft = calculateThumbnailsLeftScroll(current, photos.length, bounding);
     this.thumbnailsListRef.style.marginLeft = `${scrollLeft}px`;
   }
 

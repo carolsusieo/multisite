@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 //import api from '../api'
 import BBHome from "../barebones/components/BBHome";
 import {Button} from 'reactstrap';
+import { StyleSheet, css } from 'aphrodite';
 
 
 export default class DisplayColumns extends Component {
@@ -12,33 +13,66 @@ export default class DisplayColumns extends Component {
       display:"inline-block",
 
     };
-    this.deleteSection = this.deleteSection.bind(this);
+    this.deleteArticle = this.deleteArticle.bind(this);
     this.setBackgroundImage = this.setBackgroundImage.bind(this);
     this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
-    this.getSectionStyle = this.getSectionStyle.bind(this);
+    this.getArticleStyle = this.getArticleStyle.bind(this);
+
 };
 
-
-
-
-getSectionStyle = () => {
-return this.props.aStyle(this.props.name);
+getArticleStyle = () => {
+  return this.props.aStyle(this.props.name);
 }
 forceUpdateHandler = () => {
-this.forceUpdate();
+  this.forceUpdate();
 }
 
-deleteSection = ()=> {
-console.log("delete Section " + this.props.name);
-this.props.deleteSection(this.props.name);
+deleteArticle = ()=> {
+  this.props.deleteArticle(this.props.name);
 };
+
 setBackgroundImage = (name,current)=> {
-this.props.setBackgroundImage(name,current);
-console.log("forcing Update")
+  this.props.setBackgroundImage(name,current);
+//console.log("forcing Update")
 // props are read only
-//this.setSectionStyle(current.substr(1));
-this.forceUpdateHandler();
+  this.forceUpdateHandler();
 };
+
+renderPre = (e) => {
+  if(this.props.editState === true){
+    return(
+    <Button
+      id="qsDeleteArticle"
+      color="primary"
+      block
+      onClick={() => this.deleteArticle()}
+    >
+    Delete Section
+    </Button>
+    );
+  }
+  else return (<div/>)
+}
+
+renderPost = (e) => {
+/*
+  if(this.props.showItemPopup === true){
+      return(<EditItemPopUp styles={this.props.styles}
+        text='Add New Item'
+        articleName = {this.props.name}
+        addItem={this.addItem}
+        onExit={this.onExit}
+        />);
+  }
+  else   return <div/>;
+*/
+  if(this.props.editState)
+    return(<BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>)
+  else
+    return (<div/>)
+
+}
+
 
   // want the columns to look like this:
 
@@ -50,67 +84,62 @@ this.forceUpdateHandler();
   //        . record bullet........
   render() {
     var i = 1;
-        return (
-          <section class='jumptarget'  id={this.props.name}>
-          <div>
-          {this.props.editState == true && (
+      return (
+        <article className={css(this.props.styles.articleContainer)}>
+          <a id={this.props.name} name={this.props.name}>
+            <h2 className={css(this.props.styles.anchor)}>{this.props.header}</h2>
+         </a>
 
-          <h2 >{this.props.header}<span>
-          <Button
-              id="qsDeleteSection"
-              color="primary"
-              class="btn btn-sm btn-outline-success"
-              block
-              onClick={() => this.deleteSection({})}
-              >
-            Delete Section
-          </Button></span></h2>
+         {this.renderPre()}
 
-         )}
-         {this.props.editState != true && (
-           <h2>{this.props.header}</h2>)}
-          </div>
-
-          <div class="container" style={this.getSectionStyle()}>
-
-
+          <div className="container" style={this.getArticleStyle()}>
             {this.props.data.map(record =>(
-              <div>
-               <div class="row justify-content-start" key={i++}>
-                <div class="col-3">
+              <div key={i++}>
+               <div className="row justify-content-start" key={i++}>
+                <div className="col-3">
                   <h3>{record.header}</h3>
-                  <p>{record.main}<span> • </span> <em className="date">{record.submain}</em></p>
+                  <p>{record.main}<span> • </span> <em className="date">
+                     {record.submain}</em></p>
+                </div><div className="col-7"><p>{record.text}</p></div>
                </div>
-                 <div class="col-7">
-                  <p>
-                    {record.text}
-                  </p>
-                  </div>
-               </div>
-               <div class = "row">
-                  <div class="col-3"><p/></div>
-                  <div class="col-7">
-                  <ul class="text-left" style={this.bulletStyle}>
-
-                  {record.subtext.map(subdesc =>(
-                          <li key = {i++}>{subdesc} </li>
-                   ))}
+               <div className = "row">
+                  <div className="col-3"><p/></div><div className="col-7">
+                   <ul className="text-left" style={this.bulletStyle}>
+                    {record.subtext.map(subdesc =>(<li key={i++}>{subdesc}</li>
+                    ))}
                    </ul>
-                   </div>
-
-               </div>
-               <div class="row">
-               <p/>
-               </div>
-
+                  </div>
+               </div><div className="row"><p/></div>
               </div>
             ))}
-            </div>
-            {this.props.editState &&(
-              <BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>
-            )}
+          </div>
 
-          </section>
-        )
+
+          {this.renderPost()}
+        </article>
+      )
     }
   }
+/*
+<div className="container" style={this.getArticleStyle()}>
+  {this.props.data.map(record =>(
+    <div key={i++}>
+     <div className="row justify-content-start" key={i++}>
+      <div className="col-3">
+        <h3>{record.header}</h3>
+        <p>{record.main}<span> • </span> <em className="date">
+           {record.submain}</em></p>
+      </div><div className="col-7"><p>{record.text}</p></div>
+     </div>
+     <div className = "row">
+        <div className="col-3"><p/></div><div className="col-7">
+         <ul className="text-left" style={this.bulletStyle}>
+          {record.subtext.map(subdesc =>(<li key={i++}>{subdesc}</li>
+          ))}
+         </ul>
+        </div>
+     </div><div className="row"><p/></div>
+    </div>
+  ))}
+</div>
+*/
