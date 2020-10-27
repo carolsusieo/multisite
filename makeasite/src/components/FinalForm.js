@@ -60,7 +60,6 @@ onSubmit = async values => {
       })
 }
 renderPre = (e) => {
-  if(this.props.editState === true){
     return(
     <Button
       id="qsDeleteArticle"
@@ -71,8 +70,6 @@ renderPre = (e) => {
     Delete Section
     </Button>
     );
-  }
-  else return (<div/>)
 }
 
 renderPost = (e) => {
@@ -90,11 +87,7 @@ renderPost = (e) => {
     return <div/>;
   }
 */
-  if(this.props.editState)
     return(<BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>)
-  else {
-    return <div/>;
-  }
 }
 
 render(){
@@ -106,19 +99,9 @@ render(){
      <a id={this.props.name} name={this.props.name}>
        <h2 className={css(this.props.styles.anchor)}>{this.props.header}</h2>
     </a>
-    {this.renderPre()}
-
-    {this.props.editState == true && (
-     <Button
-       id="qsDeleteArticle"
-       color="primary"
-       className="btn btn-sm btn-outline-success"
-       block
-       onClick={() => this.deleteArticle({})}
-       >
-      Delete Section
-     </Button>
+    {this.props.editState == true && ( this.renderPre()
     )}
+    {this.props.editState && (this.renderPre())}
 
     <div style={this.articleStyle} >
       <p>{this.props.text}</p>
@@ -239,7 +222,7 @@ render(){
        )}
      />
    </div>
-   {this.renderPost()}
+   {this.props.editState && (this.renderPost())}
   </article>
 )
 }

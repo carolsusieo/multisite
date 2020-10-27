@@ -7,15 +7,15 @@ export const initConfig ={
 			width: "100%",
 			height: "cover",
 			textAlign: "center",
-			overflow: "hidden",
-			backgroundRepeat: "no-repeat"
-
+			overflow: "hidden"
 		},
 
 		articleContainer: {
 		  width: "100%",
 			height: "cover",
 		  position: "relative",
+			marginTop1: "-75px",
+		  marginBottom1: "-75px",
 		},
 		anchor: {
 				paddingTop: "40px",
@@ -86,12 +86,6 @@ export const initConfig ={
 			"classList": "text-center",
 			"copyright_year": "2020",
 	    "backimg": "images/webpic_lrg/header-background.jpg",
-			"style":{
-					backgroundRepeat: "no-repeat",
-					backgroundSize: "cover",
-					width: "100%"
-
-			},
       "items": [
         {
           "type": "html",
@@ -130,14 +124,39 @@ export const initConfig ={
 
 		},
 		{
+			"menutitle": "About1",
+			"loginDisplay": false,
+			"type": "carddeck",
+			"name": "carddeck",
+			"header": "About1",
+			"items": [{
+					"name": "card1",
+					"img": "images/webpic_sml/sample-image.jpg"
+				},
+				{
+					"name": "card2",
+					"body": {
+						"text": "This is text about the image"
+					}
+
+				},
+				{
+					"name": "card3",
+					"classlist": "text-center",
+					"header": "Contact Details",
+					"body": {
+						"contact": "Contact"
+					}
+				}
+			]
+		},
+
+		{
 			"menutitle": "AboutOld",
 			"loginDisplay": false,
 			"type": "tested",
 			"name": "test",
 			"header": "AboutOld",
-			"style": {
-				margin: "30px"
-			},
 			"items": [{
 					"type": "html",
 					"id": "html1",
@@ -183,9 +202,6 @@ export const initConfig ={
 			"header": "Test2 this",
 			"classList": "text-center",
 			"backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
-			"style": {
-				margin: "30px"
-			},
 			"items": [{
 					"type": "button",
 					"id": "button1",
@@ -250,10 +266,7 @@ export const initConfig ={
 			"type": "other",
 			"name": "about",
 			"header": "About Me",
-			"style": {
-				margin: "30px"
-			},
-		"items": [{
+			"items": [{
 					"type": "carddeck",
 					"className": "bg-light",
 					"data": [{
@@ -281,7 +294,6 @@ export const initConfig ={
 
 			]
 		},
-
 		{
 			"menutitle": "Work",
 			"loginDisplay": false,
@@ -289,27 +301,12 @@ export const initConfig ={
 			"name": "work",
 			"header": "Work",
 			"classList": "columns2",
-			"style": {
-				textAlign: "left"
-
-			},
-			"rows":[
-				{"columns":[{"xs": 3,"field":0,"style":{textAlign: "left"}},{"xs": 0,"field":3,"style":{textAlign: "left"}}]},
-				{"columns":[{"xs": 3,"field":1,"style":{textAlign: "left"}},{"xs": 0,"field":4,"style":{textAlign: "left"}}]},
-				{"columns":[{"xs": 3,"field":2,"style":{textAlign: "left"}},{"xs": 0,"subfields":5,"style":{textAlign: "left"}}]}
-			],
-			"data": [
-
-				{
-					"fields": [
-					"Temenos",
-					"Technical Lead",
-					"2017– Present ",
-					"Design functional technology solutions, develop the structure for IT systems, implement architecture, and ensure the IT framework operates efficiently. Provide technical leadership to software development teams. Oversee AWS and Azure hosting such as coordinating and monitoring VPN connections. Identify and resolve network and application security issues.",
-					"and ensure the IT framework operates efficiently. Provide technical leadership to software development teams. Oversee AWS and Azure hosting such as coordinating and monitoring VPN connections. Identify and resolve network and application security issues.",
-				  ],
-				  "subfields":
-					[
+			"data": [{
+					"header": "Temenos",
+					"main": "Technical Lead",
+					"submain": "2017– Present ",
+					"text": "Design functional technology solutions, develop the structure for IT systems, implement architecture, and ensure the IT framework operates efficiently. Provide technical leadership to software development teams. Oversee AWS and Azure hosting such as coordinating and monitoring VPN connections. Identify and resolve network and application security issues.",
+					"subtext": [
 						"Certified Kony Fabric/Visualizer Developer with expertise in JavaScript and Java supporting the Spring Framework.",
 						"Enhance security and improve the user experience by leading Okta API Integration to support Identity Access Management for the enterprise mobile application.",
 						"Execute full lifecycle software development for the enterprise retail banking mobile application including requirements gathering, system architecture, verification, and documentation.",
@@ -317,13 +314,11 @@ export const initConfig ={
 					]
 				},
 				{
-					"fields":[
-					"Independent Contractor",
-					"Software engineer",
-					"2013–2017",
-					"Designed, developed, tested, and supported custom software applications and their integrations in support of the strategic IT objectives for diverse clients. Partnered with key stakeholders to build scalable technology solutions that exceeded client expectations. Oversaw Identity Access Management (IAM) and AWS Administration.",
-				  ],
-					"subfields": [
+					"header": "Independent Contractor",
+					"main": "Software engineer",
+					"submain": "2013–2017",
+					"text": "Designed, developed, tested, and supported custom software applications and their integrations in support of the strategic IT objectives for diverse clients. Partnered with key stakeholders to build scalable technology solutions that exceeded client expectations. Oversaw Identity Access Management (IAM) and AWS Administration.",
+					"subtext": [
 						"Website development for Job Corps USA using Drupal and various coding languages: HTML, CSS, and PHP.",
 						"Designed and developed several Android applications using Android Studio, Eclipse, and Unity.",
 						"Created Full Stack Web Applications with Restful webservices using Laravel and WordPress.",
@@ -331,31 +326,28 @@ export const initConfig ={
 					]
 				},
 				{
-					"fields": ["Active Network, LLC",
-					"Senior Software Engineer",
-					"2008–2013",
-					"Designed, developed, implemented, and supported applications, systems, and IT products based on company’s business objectives. Led a team of software developers to drive continuous improvement by implementing value-added development solutions.",
-				  ],
-					"subfields": [
+					"header": "Active Network, LLC",
+					"main": "Senior Software Engineer",
+					"submain": "2008–2013",
+					"text": "Designed, developed, implemented, and supported applications, systems, and IT products based on company’s business objectives. Led a team of software developers to drive continuous improvement by implementing value-added development solutions.",
+					"subtext": [
 						"Designed, developed, and managed lifecycle for Software Development Kit (SDK) supporting automated hunting and fishing licensing systems across the United States",
 						"Led mobile application development to support and enhance hunting and fishing applications.",
 						"Enhanced development and debugging processes for POS application software by designing a PC Emulator in Microsoft Visual Studio and C++."
 					]
 				},
 				{
-					"fields": ["Automated License Systems, Inc. ",
-					"Senior Software Engineer",
-					"2002–2008",
-					"Proposed, designed, and developed a terminal application for the POS purchas",
-				  ],
-					"subfields": [
+					"header": "Automated License Systems, Inc. ",
+					"main": "Senior Software Engineer",
+					"submain": "2002–2008",
+					"text": "Proposed, designed, and developed a terminal application for the POS purchas",
+					"subtext": [
 						"Expanded product adoption across the United States driving exponential revenue growth.",
 						"Technical Architect and Team Lead delivering numerous projects on time and within budget."
 					]
 				}
 			]
 		},
-
 		{
 			"menutitle": "Video",
 			"loginDisplay": true,
@@ -364,9 +356,6 @@ export const initConfig ={
 			"name": "testvideo",
 			"header": "Video",
 			"classList": "video",
-			"style": {
-				margin: "30px"
-			},
 			"items": [{
 				"type": "video",
 				"id": "name2",
@@ -450,32 +439,34 @@ export const initConfig ={
 			"loginDisplay": false,
 			"header": "Education",
 			"classList": "columns2",
-			"style":{
-					backgroundRepeat: "no-repeat",
-					backgroundSize: "cover",
-					width: "100%"
-
-			},
-			"data":[{
-		        "fields": ["LeTourneau University", "Dallas, TX","1995" ,
-		        "Business Managment Coursework", "","4.0 GPA"]
-		      },
-		      {
-						"fields": ["Community College of the Air Force","Georgia","1989" ,
-		        "Associate Applied Science","Information Systems","4.0 GPA"]
-		      },
-		      {
-						"fields":["Dale Carnegie", "Round Rock, Texas","2020" ,
-		        "Certification","Professional Communications and Human Relations",
-"Human Relations and Crashing Through Awards"]
-		      }
-				],
-
-			"rows":[
-				{"columns":[{"xs": 6,"field":0},{"xs": 6,"field":3}]},
-			  {"columns":[{"xs": 6,"field":1},{"xs": 6,"field":4}]},
-			  {"columns":[{"xs": 6,"field":2},{"xs": 6,"field":5}]}
-		  ]
+			"data": [{
+					"header": "LeTourneau University",
+					"main": "Dallas, TX",
+					"submain": "1995",
+					"text": "Business Managment Coursework",
+					"subtext": ["",
+						"4.0 GPA"
+					]
+				},
+				{
+					"header": "Community College of the Air Force",
+					"main": "Georgia",
+					"submain": "1989",
+					"text": "Associate Applied Science",
+					"subtext": ["Information Systems",
+						"4.0 GPA"
+					]
+				},
+				{
+					"header": "Dale Carnegie",
+					"main": "Round Rock, Texas",
+					"submain": "2020",
+					"text": "Certification",
+					"subtext": ["Professional Communications and Human Relations",
+						"Human Relations and Crashing Through Awards"
+					]
+				}
+			]
 		},
 		{
 			"type": "final-form",
@@ -485,9 +476,6 @@ export const initConfig ={
 			"header": "Get In Touch.",
 			"text": "Provide the following information so that I can get back to you.",
 			"api": "api/contact/contact",
-			"style": {
-				margin: "30px"
-			},
 			"data": [{
 					"label": [
 						"First Name"
@@ -653,9 +641,6 @@ export const initConfig ={
 			"header": "Easy Data",
 			"text": "Text DB In",
 			"_onSubmit": "{this.onSubmit}",
-			"style": {
-				margin: "30px"
-			},
 			"api": "/api/easy/easy",
 			"data": [{
 					"label": [

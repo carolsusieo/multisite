@@ -11,6 +11,7 @@ export default function DisplayDBData(input){
       */
   const [apiData, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
  var i = 0;
 
   useEffect(() => {
@@ -29,7 +30,6 @@ export default function DisplayDBData(input){
 
 
   const renderPre = (input) => {
-    if(input.editState === true){
       return(
       <Button
         id="qsDeleteArticle"
@@ -40,8 +40,6 @@ export default function DisplayDBData(input){
       Delete Section
       </Button>
       );
-    }
-    else return (<div/>)
   }
 
   const renderPost = (input) => {
@@ -59,13 +57,9 @@ export default function DisplayDBData(input){
       return <div/>;
     }
 */
-    if(input.editState)
-      return(<BBHome setBackgroundImage={input.setBackgroundImage} name={input.name}/>)
-    else {
-      return (<div/>)
-    }
-  }
+    return(<BBHome setBackgroundImage={input.setBackgroundImage} name={input.name}/>)
 
+  }
 
 
 
@@ -73,17 +67,16 @@ export default function DisplayDBData(input){
       return(
         <article className={css(input.styles.articleContainer)}>
           <a id={input.name} name={input.name}>
-            <h2 className={css(input.styles.anchor)}>{input.header}</h2>
-         </a>
-         {renderPre(input)}
-         <div className="row">
+           </a>
+         {input.editState && (this.renderPre(input))}
+       <div className="row">
             <div className="three columns header-col">
               {apiData.map(item => (
                 <p key={i++}> {JSON.stringify(item)} </p>
               ))}
             </div>
          </div>
-         {renderPost(input)}
+         {input.editState && (this.renderPost(input))}
         </article>
       )
       else {
@@ -92,6 +85,8 @@ export default function DisplayDBData(input){
 }
 
 /*
+<h2 className={css(input.styles.anchor)}>{input.header}</h2>
+
 
             <div className="nine columns main-col">
             {dbData.map(record =>(

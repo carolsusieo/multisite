@@ -73,7 +73,7 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 currently a json file that controls what shows up in the webpage.
 
 
-export const appConfig ={
+export const initConfig ={
   "appName": "makeasite",
   "editable": true,
 
@@ -90,18 +90,7 @@ export const appConfig ={
     }
   },
   "sections":[
-    {
-     "menutitle": "",
-     "login": "",
-     "type": "info",
-     "name": "",
-     "header": "",
-     "classList": "text-center",
-     "text": "",
-     "img" : "images/webpic_sml/sample-image.jpg",
-     "include": "contact",
-     "include": "social"
-    },
+
     {
       "menutitle": "",
       "login": "false",

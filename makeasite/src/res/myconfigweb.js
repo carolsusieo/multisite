@@ -1,86 +1,23 @@
 export const initConfig ={
 	"website": "web4u4less",
 	"editable": true,
+
 	"appStyle":{
 		mainWrapper: {
 			width: "100%",
 			height: "cover",
 			textAlign: "center",
-			overflow: "hidden"
-		},
+			},
+
 		articleContainer: {
 		  width: "100%",
 			height: "cover",
 		  position: "relative",
-		  margin: "-75px",
 		},
-		jump:{
-			margin:"+75px 0 0",
-			display:"block",
-			position: "relative",
-   		height:"0px",
+		anchor: {
+				paddingTop: "40px",
+				marginTop: "-40px"
 		},
-
-			bgBlack: {
-			  backgroundColor: 'x111111'
-			},
-
-			bgPrimary: {
-			  backgroundColor: 'x333333'
-			},
-
-			textPrimary: {
-			  color: 'x333333'
-			},
-			footer: {
-			  padding: '5rem 0'
-			},
-
-			colorPickerPalette: {
-			  position: 'absolute',
-			  zIndex: 100
-			},
-			colorPickerCover: {
-			  position: 'fixed',
-			  top: '0px',
-			  left: '0px',
-			  bottom: '0px',
-			  right: '0px'
-			},
-
-			popup: {
-			  width: '65%',
-			  height: '25%',
-			  top: '15%',
-			  left: 0,
-			  right: 0,
-			  bottom: 0,
-			  margin: 'auto',
-			  backgroundColor: 'white',
-				position:"relative",
- 				zIndex:'3000',
-			},
-			popupInner: {
-			  left: '25%',
-			  right: '25%',
-			  top: '5%',
-			  bottom: '5%',
-			  margin: 'auto',
-			  borderRadius: '20px',
-			  backgroundColor: 'white',
-			 position:"relative",
-			 zIndex:'4000',
-		 },
-		 popupTitle:{
-			 fontSize:"14px",
-			 color:"black"
-		 },
-
-     popupText:{
-			 fontSize:"12px",
-			 color:"black"
-		 },
-
 		btn: {
 			  boxShadow: '0 .1875rem .1875rem 0 rgba(0,0,0,.1)',
 			  padding: '1.25rem 2rem',
@@ -101,26 +38,26 @@ export const initConfig ={
 					letterSpacing: '.15rem',
 					border: 0,
 					size: 'sm'
-				},
+			},
 
 			btnPrimary: {
 			  backgroundColor: 'x333333',
 			}
-
-	},
+	 },
 
 	      "articles": [
 				{
 						"menutitle": "Home",
 						"loginDisplay": false,
-						"type": "headero",
+						"type": "other",
 						"name": "header",
-/*
-						"classList": "Header",
+						"style":{
+							  backgroundHold: "linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,.7)), url(",
+							  backgroundRepeat: "no-repeat",
+							  backgroundSize: "cover",
+								width: "100%"
 
-						"style": null,
-						*/
-
+						},
 
 						"backimg": "images/webpic_lrg/BluePolygons_1920x1234.png",
 						"items": [
@@ -130,22 +67,52 @@ export const initConfig ={
 			        },
 							{
 
-								"type": "html",
+								"type": "text",
 								"id": "html1",
+								"style": {
+									fontFamily: 'Varela Round',
+							    fontSize: '4rem',
+							    lineHeight: '4rem',
+							    letterSpacing: '0.8rem',
+							    background: "linear-gradient(to bottom, rgba(255,255,255,.1), rgba(255,255,255,1))",
+							    webkitTextFillColor: "transparent",
+							    webkitBackgroundClip: "text",
+									writable: true
 
-								"data": "<h1 style='letterSpacing:0.8rem; color:white; fontSize:70px; fontFamily:Varela Round; fontWeight:bold;'>Web For You</p>",
-								"datahld": "<h1>Web For You</h1>",
+								},
+
+								"data": "Web For You",
+
 							},
 							{
-									"type": "html",
+								"style": {
+													fontFamily: 'Varela Round',
+											    fontSize: '4rem',
+											    lineHeight: '4rem',
+											    letterSpacing: '0.8rem',
+											    background: "linear-gradient(to bottom, rgba(255,255,255,.1), rgba(255,255,255,1))",
+											    webkitTextFillColor: "transparent",
+											    webkitBackgroundClip: "text"
+
+												},
+
+									"type": "text",
 									"id": "html1",
-									"data": "<p style='color:white; fontSize:70px; fontWeight:bold;fontFamily:Varela Round;'>For Less</p>",
-									"datahld": "<h2>For Less</h2>"
+									"data": "For Less",
 							},
 							{
-								"type": "html",
+								"type": "text",
 								"id": "html1",
-								"data": "<p style='fontSize:15px; color:white; align:center fontFamily:Varela Round;'>Fabulous Websites at a fraction of the cost!</p>"
+								"style": {
+													fontFamily: 'Varela Round',
+													fontSize: '1.3rem',
+													lineHeight: '1.3rem',
+													background: "linear-gradient(to bottom, rgba(255,255,255,.7), rgba(255,255,255,.7))",
+													webkitTextFillColor: "transparent",
+													webkitBackgroundClip: "text"
+
+												},
+								"data": "Fabulous Websites at a fraction of the cost!"
 
 							},
 							{
@@ -156,11 +123,8 @@ export const initConfig ={
 									"color": "white",
 									"fontSize": "25px",
 									"fontFamily": "Arial"
-
 								}
-
 							},
-
 							{
 									"type": "button",
 									"id": "button1",
@@ -193,13 +157,12 @@ export const initConfig ={
 				},
 	      {
 					 "menutitle": "About",
-					 "header": "About",
 					 "loginDisplay": false,
 					 "type": "other",
            "name": "about",
            "classList": "text-center",
-
 					  "backimg": "images/webpic_lrg/circuit.jpg",
+
 					 "items": [{
 							 "type": "html",
 							 "data": "<br/><br/><br/><br/>"
@@ -211,13 +174,11 @@ export const initConfig ={
 								  "color" : "white",
 									"fontFamily" :"Varela Round"
 								}
-
 						 },
 						 {
 								 "type": "html",
 								 "id": "html1",
 								 "data": "<p style='fontSize:15px; color:white; align=center fontFamily:Varela Round;'>We support our customers in creating, hosting, and advertsing their websites. Working out of Round Rock Texas, we collaborate with you to create and maintain a stunning interactive website that looks as good on your phone as it does on your laptop.</p>"
-
 							},
 						 {
 							 "type": "html",
@@ -232,7 +193,9 @@ export const initConfig ={
 					 "loginDisplay": false,
 					 "type": "other",
            "classList": "text-center",
-
+					 "style": {
+						 margin: "30px"
+					 },
 					"items": [{
 						 "type": "carddeck",
 						 "className": "bg-light",
@@ -290,6 +253,9 @@ export const initConfig ={
 				{
 					"type": "final-form",
 					"name": "signup",
+					"style": {
+ 					 margin: "30px",
+				 },
 					"backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
 					"loginDisplay": false,
 					"text": "Subscribe to receive news, coupons and tech advice.",
@@ -324,10 +290,17 @@ export const initConfig ={
 					 "loginDisplay": false,
 					 "type": "other",
            "name" : "contact",
-					 "classList": "bg-black",
-					 "items": [{
+					 "style": {
+						 background: "linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,.8), rgba(0,0,0,1))",
+	 					 },
+					 "items": [
+						 {
+								 "type": "html",
+								 "data": "<br/><br/>"
+							 },
+{
 		 					"type": "carddeck",
-		 					"className": "bg-light",
+		 					"className": "container",
 		 					"data": [{
 		 							"name": "address",
 									"header": "Address",
@@ -406,3 +379,6 @@ export const initConfig ={
 		}
 
 }
+/*
+overflow: "hidden"
+*/

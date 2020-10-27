@@ -9,6 +9,7 @@ import EditItemPopUp from "./EditItemPopUp";
 import ArticleItem from "./ArticleItem";
 import {Draggable} from 'react-draggable';
 import { StyleSheet, css } from 'aphrodite';
+import BubbleChart from '@weknow/react-bubble-chart-d3';
 
 export default class Article extends Component {
 
@@ -81,7 +82,6 @@ forceUpdateHandler = () => {
  }
 
  renderPre = (e) => {
-   if(this.props.editState === true){
 
  // delete the entire article button.  Probably look best, right on top.
  // avoid having to scroll to end to see it.... and probably the top is more like
@@ -97,14 +97,25 @@ forceUpdateHandler = () => {
      Delete Section
      </Button>
      );
-   }
-   else {
-     return <div/>;
-   }
+
  }
 
  renderPost = (e) => {
-   if(this.props.showItemPopup === true){
+
+   if(!this.props.showItemPopup === true){
+     return(<div>
+       <BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>
+       <Button
+         id='addItem'
+         block
+         onClick={(event) => this.addItemPopUp(event)}
+       >
+       Add Item
+       </Button>
+     </div>
+   )}
+
+   else {
 
        return(<EditItemPopUp styles={this.props.styles}
          text='Add New Item'
@@ -113,9 +124,7 @@ forceUpdateHandler = () => {
          onExit={this.onExit}
          />);
    }
-   else {
-     return <div/>;
-   }
+
  }
 
 
@@ -128,9 +137,10 @@ forceUpdateHandler = () => {
         <a id={this.props.name} name={this.props.name}>
           <h2 className={css(this.props.styles.anchor)}>{this.props.header}</h2>
        </a>
-       {this.renderPre()}
+       {this.props.editState && (this.renderPre())}
 
-        <div className="container" style={this.getArticleStyle()}>
+        <div style={this.getArticleStyle()} className={this.props.className}>
+
           {this.props.items && (
             this.props.items.map(item =>{
              return(
@@ -147,28 +157,28 @@ forceUpdateHandler = () => {
 
 
           {(!this.props.items && this.props.url) && (
-            <div className="row justify-content-start">
-              <div className="col-1"><p/></div>
-              <div className="col-9">
-                <ReactPlayer url={this.props.url}/>
-              </div>
+            <div>
+              <ReactPlayer url={this.props.url}/>
             </div>
           )}
-
-          {this.props.editState &&(
-            <div>
-              <BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>
-              <Button
-                id='addItem'
-                block
-                onClick={(event) => this.addItemPopUp(event)}
-              >
-              Add Item
-              </Button>
-            </div>
+          {(!this.props.items && this.props.data) && (
+            <BubbleChart
+              graph= {{ zoom: 1.1,offsetX: -0.05,offsetY: -0.01,}}
+              width={1000}
+              height={800}
+              padding={0} // optional value, number that set the padding between bubbles
+              showLegend={true} // optional value, pass false to disable the legend.
+              legendPercentage={20} // number that represent the % of with that legend going to use.
+              legendFont={{family: 'Arial',size: 12,color: '#000',weight: 'bold'}}
+              valueFont={{family: 'Arial',size: 12,color: '#fff',weight: 'bold'}}
+              labelFont={{family: 'Arial',size: 16,color: '#fff',weight: 'bold'}}
+//              bubbleClickFunc={this.bubbleClick}
+//              legendClickFun={this.legendClick}
+              data={this.props.data}
+            />
           )}
         </div>
-      {this.renderPost()}
+      {this.props.editState && (this.renderPost())}
     </article>
   )}
 }

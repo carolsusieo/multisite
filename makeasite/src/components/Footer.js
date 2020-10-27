@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import {Button} from 'reactstrap';
-import { StyleSheet, css } from 'aphrodite';
+import {css } from 'aphrodite';
 
 /*import "bootstrap/dist/css/bootstrap.min.css";*/
 export default class Footer extends Component {

@@ -1,0 +1,9 @@
+What it would take to actually sell a makeasite?
+
+Need to have the ready apps available in digitalocean.
+
+Need to purchase a domain name.
+
+Need to assign domain name to a specific app in digitalocean (all those apps are currently accessed via web4u4less/appname)
+
+Need to create an adminstrative user in Auth0, that can access only the domain name purchased, and assign

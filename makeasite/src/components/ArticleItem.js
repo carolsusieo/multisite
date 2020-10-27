@@ -264,11 +264,11 @@ if(item.type == 'text')
         }
         else if(item.type == 'carddeck'){
           return(
-            <div>
+            <div >
               {(this.state.popup == false) && (
                 <CardDeck
                 onClick={this.selectItem}
-                className={item.classname}
+                className={item.className}
                 >
 
                 {item.data.map(card =>(
@@ -312,7 +312,7 @@ if(item.type == 'text')
 
         else if (this.props.item.type == 'video') {
           return(
-            <div className="row justify-content-start" >
+            <div className={item.className} style={styleval} >
               <div className="col-1">
                 {(this.state.popup == false) && (
                   <div className="col-9" onClick={this.selectItem}>
