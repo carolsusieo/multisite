@@ -11,7 +11,7 @@ getConfigs = async(req, res) => {
             return res.status(400).json({ success: false, error: err })
       }
       if (!configs.length) {
-          return res.status(404).json({ success: false, error: `Config/Contact not found` })
+          return res.status(404).json({ success: false, error: `Config not found` })
       }
       return res.status(200).json({ success: true, data: configs})
   })
@@ -34,65 +34,50 @@ getConfig = async(req, res) => {
   })
 };
 
-updateConfig = async(req, res) => {
-  const body = req.body
-  const sections = req.body.sections
-//  const sections = req.body.param.sections
+/* remember this is mongoose... not mongodb*/
+updateConfig = async (req, res) => {
+    const body = req.body
 
-  console.log("sections" , sections);
-
-  //const sections = body.sections;
-  console.log("query ", req.query.website);
-
-  if (!body) {
-
-      return res.status(400).json({
-          success: false,
-          error: 'You must provide a body to update',
-      })
-  }
-
-  Config.findOne({website: req.query.website}, (err, config) => {
-      if (err) {
-            return res.status(400).json({ success: false, error: err })
-      }
-
-      config.sections = body.sections
-console.log(config)
-
-     config
-      .save()
-      /*
-       { "_id": configRet._id},
-       {$set: {"sections.$[]": sections}},
-       {upsert : true}
-      )
-      */
-        .then(() => {
-            return res.status(200).json({
-                success: true,
-                id: config._id,
-                message: 'Config updated!',
-            })
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a contact to update',
         })
-        .catch(error => {
-          console.log("error",error)
+    }
+
+    Config.findOne(req.query, (err, config) => {
+        if (err) {
             return res.status(404).json({
-                error,
-                message: 'Config not updated!',
+                err,
+                message: 'Contact not found!',
             })
-        })
-
-
-      })
-
-
-  };
+        }
+        config.sections = body.sections
+        config.website = body.website
+        config
+            .save()
+            .then(() => {
+                return res.status(200).json({
+                    success: true,
+                    id: config._id,
+                    message: 'Config updated!',
+                })
+            })
+            .catch(error => {
+                return res.status(404).json({
+                    error,
+                    message: 'Config not updated!',
+                })
+            })
+    })
+}
 
 
 
   createConfig = (req, res) => {
         const body = req.body
+        // get rid of the id
+        delete body._id
         console.log("body", body);
         if (!body) {
             console.log("failure no body");
@@ -127,6 +112,8 @@ console.log(config)
                 })
             })
   };
+
+
   deleteConfig= async (req, res) => {
     console.log("req",req.query)
       await Config.findOneAndDelete(req.query , (err, config) => {
