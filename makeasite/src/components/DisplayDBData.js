@@ -2,12 +2,11 @@ import api from '../api'
 import React, { useState, useEffect } from 'react';
 import { css } from 'aphrodite';
 import {Button} from 'reactstrap';
-import BBHome from "../barebones/components/BBHome";
 
 export default function DisplayDBData(input){
      /* input:
      key,styles,name,header,api,classList,
-        deleteArticle ,editState ,setBackgroundImage ,  aStyle
+        deleteArticle ,editState ,
       */
   const [apiData, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +15,7 @@ export default function DisplayDBData(input){
 
   useEffect(() => {
     //console.log("api",input.api);
-    async function getData() { api.displayOut(input.api)
+    async function getData() { api.displayOut(input.article.api)
       //.then(res =>  res.json())
        .then((apidata) => {
          //console.log("got data for ", input.api, apidata.data.data)
@@ -29,75 +28,36 @@ export default function DisplayDBData(input){
   }, []);
 
 
-  const renderPre = (input) => {
+  const renderPre = (deleteArticle) => {
       return(
       <Button
         id="qsDeleteArticle"
         color="primary"
         block
-        onClick={() => input.deleteArticle()}
+        onClick={() => deleteArticle()}
       >
       Delete Section
       </Button>
       );
   }
 
-  const renderPost = (input) => {
-/*
-    if(this.props.showItemPopup === true){
-
-        return(<EditItemPopUp styles={this.props.styles}
-          text='Add New Item'
-          articleName = {this.props.name}
-          addItem={this.addItem}
-          onExit={this.onExit}
-          />);
-    }
-    else {
-      return <div/>;
-    }
-*/
-    return(<BBHome setBackgroundImage={input.setBackgroundImage} name={input.name}/>)
-
-  }
-
-
-
-     if(!isLoading)
+     if(!isLoading){
       return(
         <article className={css(input.styles.articleContainer)}>
-          <a id={input.name} name={input.name}>
-           </a>
-         {input.editState && (this.renderPre(input))}
-       <div className="row">
+          <a id={input.article.name} name={input.article.name}>
+          </a>
+         {input.editState && (renderPre(input.deleteArticle))}
+          <div className="row">
             <div className="three columns header-col">
               {apiData.map(item => (
                 <p key={i++}> {JSON.stringify(item)} </p>
               ))}
             </div>
-         </div>
-         {input.editState && (this.renderPost(input))}
+          </div>
         </article>
       )
-      else {
+    }
+    else {
         return(<p>Loading</p>)
-      }
+    }
 }
-
-/*
-<h2 className={css(input.styles.anchor)}>{input.header}</h2>
-
-
-            <div className="nine columns main-col">
-            {dbData.map(record =>(
-              <div className="row item">
-                <div className="twelve columns">
-                  <h3>{record.header}</h3>
-                  {record.map(field =>(
-                    <p>{record.field}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
-            </div>
-*/

@@ -1,7 +1,5 @@
 import React from 'react';
 import Dropdown from 'react-dropdown';
-//import '../scss/main.scss';
-//import '../scss/header.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
@@ -59,7 +57,7 @@ export default class ArticleItem extends React.Component {
   deleteItem = () => {
     //console.log("deleting" + this.props.item.id)
     this.setState({popup: false})
-    this.props.deleteItem(this.props.name,this.props.item.id)
+    this.props.deleteItem(this.props.item.id)
   };
 
   selectItem = (e) => {
@@ -91,8 +89,10 @@ export default class ArticleItem extends React.Component {
           new1 = new1 + data;
         }
         return(
-          <EditItemPopUp styles={this.props.styles} text={new1}
-          deleteItem={this.deleteItem} editItem={this.editItem}
+          <EditItemPopUp styles={this.props.styles}
+          text={new1}
+          deleteItem={this.deleteItem}
+          editItem={this.editItem}
           onExit={this.onExit}
           item={this.props.item}/>
         )
@@ -154,14 +154,11 @@ export default class ArticleItem extends React.Component {
       }
       :item.style;
 
-if(item.type == 'text')
-  console.log("styleval1" ,styleval, item.id)
 
     var id =item.id;
     if(item.id == undefined){
       id = Date.now();
     }
-    //console.log(item.type + " " + item.data)
         if(item.type == 'button'){
           return(
             <Draggable
@@ -192,34 +189,30 @@ if(item.type == 'text')
         }
         else if(item.type == 'text'){
           if(styleval != undefined && styleval != null){
-  //          console.log("styleval ", styleval)
             return(
-                          <div>
+                <div>
                         {(this.state.popup == false) && (
                           <p style={styleval} onClick={this.selectItem} > {item.data} </p>
-                          )}
-                          {this.renderPlus(item.data)}
-                          </div>
-                        )
+                        )}
+                        {this.renderPlus(item.data)}
+                </div>
+            )
           }
           else{
-    //        console.log("css")
-
             return(
-                          <div className={styles.Header}>
+                  <div className={styles.Header}>
                         {(this.state.popup == false) && (
                           <p style={styleval} onClick={this.selectItem} > {item.data} </p>
-                          )}
-                          {this.renderPlus(item.data)}
-                          </div>
-                        )
-
+                        )}
+                        {this.renderPlus(item.data)}
+                  </div>
+              )
           }
         }
         else if(item.type == 'html'){
           return(
                 <div onClick={this.selectItem}>
-                  {(this.state.popup == false) && (
+                  {(this.state.popup == false && item.data && item.data.length) && (
                     renderHTML(item.data)
                 )}
                 {this.renderPlus(item.data)}
@@ -230,7 +223,6 @@ if(item.type == 'text')
           return(
             <div>
               {(this.state.popup == false) && (
-
                 <Card onClick={this.selectItem}  style={{ width: '18rem' }}>
                 {(item.header) && (
                 <Card.Header as="h3">{item.header}</Card.Header>
@@ -260,7 +252,6 @@ if(item.type == 'text')
             {this.renderPlus(item.data)}
           </div>
          )
-
         }
         else if(item.type == 'carddeck'){
           return(
@@ -270,7 +261,6 @@ if(item.type == 'text')
                 onClick={this.selectItem}
                 className={item.className}
                 >
-
                 {item.data.map(card =>(
 
                 <Card  key={i++} style={{ width: '18rem' }}>
@@ -307,9 +297,7 @@ if(item.type == 'text')
             {this.renderPlus(item.data)}
           </div>
          )
-
         }
-
         else if (this.props.item.type == 'video') {
           return(
             <div className={item.className} style={styleval} >
@@ -336,7 +324,6 @@ if(item.type == 'text')
         }
         else if(this.props.item.type == 'include'
           && this.props.item.data == 'social'){
-  //          console.log("social ",this.props.include);
             return(
               <div>
                 {(this.state.popup === false) && (

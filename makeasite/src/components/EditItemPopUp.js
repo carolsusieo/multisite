@@ -1,6 +1,5 @@
 import React from 'react';
 import Dropdown from 'react-dropdown';
-//import '../scss/main.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
@@ -9,7 +8,8 @@ import { SliderPicker } from 'react-color';
 import FontSizeChanger from 'react-font-size-changer';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faPlus,faMinus } from "@fortawesome/free-solid-svg-icons";
-import { StyleSheet, css } from 'aphrodite';
+import {  css } from 'aphrodite';
+import renderHTML from 'react-render-html';
 
 /* add of edit an item in container.  popup screen allows you to add
 specifics about the item (text, links, etc)
@@ -23,7 +23,9 @@ class EditItemPopUp extends React.Component {
                         fontFamily: "Open Sans",
                         color: '#333333',
                         fontSize: '12px'
-                      }
+                      },
+                      cardnum: -1,
+                      card: ""
                   };
 
 
@@ -43,29 +45,26 @@ class EditItemPopUp extends React.Component {
         }
 
         this.onSubmit = this.onSubmit.bind(this);
-      //  this.onChange = this.onChange.bind(this);
         this.onClear = this.onClear.bind(this);
         this.onDelete = this.onDelete.bind(this);
         this.onExit = this.onExit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.pickCard = this.pickCard.bind(this);
         this.pickCardUpdate = this.pickCardUpdate.bind(this);
-    //    this.onEditItem = this.onEditItem.bind(this);
     };
 
 
     onClear = () => {
       console.log("clear")
-      this.setState({
-        type:'text',
-        loginDisplay: true,
-        selectMenu: false,
-        getText: false,
-        header: "",
-        url: "",
-        menutitle: "",
-        html:""
-      })
+
+      if(this.props.item){
+        this.setState({
+          id: this.props.item.id,
+          style: this.props.item.style,
+          cardnum: -1,
+          card: ""
+        })
+      }
     }
 
     handleChange(event) {
@@ -75,35 +74,74 @@ class EditItemPopUp extends React.Component {
 
     pickCard(event) {
       if(event != undefined && event.target != undefined && event.target.value != undefined){
-        this.setState({cardnum: parseInt(event.target.value)});
-        this.setState({card: this.state.data[parseInt(event.target.value)]});
+        console.log(event.target.value)
+        this.setState({cardnum: event.target.value});
+        this.setState({card: this.state.data[event.target.value]});
+        this.setState({cardData: this.state.data});
+        this.setState({data: this.state.data[event.target.value]})
       }
 
     }
     pickCardUpdate(event) {
       if(event != undefined && event.target != undefined && event.target.value != undefined){
         this.setState({cardItem:event.target.value});
+        // need to allow for the information needed to manage the type of item selected...
+        // header, text, title, img, footer
+        if(event.target.value === 'img'){
+          this.setState({type: 'img'})
+
+        }else {
+          // get the input text for the header, text, title, or footer.
+          this.setState({type:'text'})
+        }
       }
 
     }
 
       onSubmit = async (values) => {
+        console.log("On Submit")
           values.style = this.state.style;
           values.type = this.state.type;
-          if(this.state.type == 'carddeck'){
+          if(this.state.cardnum != -1){
+            values.type = 'carddeck';
+            var remake = this.state.cardData;
+            console.log(remake)
+            if(this.state.cardItem === 'img'){
+              remake[this.state.cardnum].img = values.data;
+              if(remake[this.state.cardnum].body)
+                remake[this.state.cardnum].body = null;
+            }
+            else if(this.state.cardItem === 'header'){
+              remake[this.state.cardnum].header = values.data;
+            }
+            else if(this.state.cardItem === 'footer'){
+              remake[this.state.cardnum].footer = values.data;
+            }
+            else if(this.state.cardItem === 'title'){
+              remake[this.state.cardnum].body.title = values.data;
+            }
+            else //        console.log(JSON.stringify(this.props))
+
+              remake[this.state.cardnum].body.text = values.data;
+
+            values.data = remake;
           }
+
+
+          this.setState({cardnum : -1, card: "", cardItem : "",cardData: ""});
+
           if(this.props.editItem != undefined){
             this.props.editItem(values);
           }
           else if(this.props.addItem != undefined){
-                values.type = this.state.type;
-              this.props.addItem(this.props.articleName,values)
-            }
+            this.props.addItem(this.props.articleName,values)
+          }
+
     }
 
     onDelete = () => {
       console.log("selected to delete")
-      this.props.deleteItem();
+      this.props.deleteItem(this.state.id);
     }
 
     onExit = () => {
@@ -113,19 +151,69 @@ class EditItemPopUp extends React.Component {
     }
 
 
+
+
+
+
   render() {
 
+    function textStyle(props){ return(props.item && props.item.style)?
+      props.item.style:(props.styles)?props.styles.textPrimary:
+      ({
+        fontFamily: "Open Sans",
+        color: '#333333',
+        fontSize: '12px'
+      })}
+
+
+    function renderCardDeck(props,state,pickCard){
+
+        return(
+          <div >
+           <label className = {css(textStyle(props))}>Pick Card:</label>
+           <Field name="cardnum" component="select" onChange={pickCard}
+           className = {css(textStyle(props))} value={state.cardnum}>
+             <option />
+             {state.cardData ? state.cardData.map((card, index) => {
+                return <option value={index}>Card {index + 1}</option>
+              }): state.data.map((card,index) => {
+                return <option value={index}>Card {index + 1}</option>})
+            }
+         </Field>
+         </div>
+       )
+    }
+    function renderCardPart(props,state,pickCardUpdate){
+
+        return(
+          <div >
+            <label className = {css(textStyle(props))}>Pick Card Update:</label>
+            <Field name="carditem" component="select" onChange={pickCardUpdate}
+            className = {css(textStyle(props))} value={state.cardItem}>
+
+              <option />
+              <option value='header'>Header</option>
+              <option value='text'>Body Text</option>
+              <option value='title'>Body Title</option>
+              <option value='img'>Image</option>
+              <option value='footer'>Footer</option>
+            </Field>
+          </div>
+       )
+    }
+
     var i=1;
-    var font = this.state.style.fontFamily;
     var styleval = {
       'fontFamily': this.state.style.fontFamily,
       'color': this.state.style.color,
       'fontSize': this.state.style.fontSize,
     }
-    console.log(this.state.style)
+    console.log(this.state)
     var dirty = 1;
 
-// can't dirty on changing text
+
+
+
     return (
      <div className={css(this.props.styles.popup)}>
       <div className={css(this.props.styles.popupInner)}>
@@ -138,12 +226,19 @@ class EditItemPopUp extends React.Component {
            }
           }}
            onSubmit={this.onSubmit}
-           initialValues={{ data: this.state.data, type: this.state.type}}
+
+           initialValues={{ data: this.state.data, type: this.state.type,
+             cardnum: this.state.cardnum, card: this.state.card,
+              cardItem: this.state.carditem}}
 
            render={({ handleSubmit, form, submitting, pristine, values  }) => (
              <form onSubmit={handleSubmit} >
 
+            {(this.state.type === 'text' && this.state.cardnum === undefined) &&
              <pre className="apply-font" style={styleval}>{values.data} </pre>
+            }
+            {(this.state.type === 'html' && values.data && values.data.length)
+              && renderHTML(values.data)}
 
                <div >
                  <label className = {css(this.props.styles.text)}>Enter type:</label>
@@ -159,39 +254,8 @@ class EditItemPopUp extends React.Component {
                  </Field>
                </div>
 
-               {(this.state.type == 'carddeck' ) && (
-
-                 <div >
-                   <label className = {css(this.props.styles.text)}>Pick Card:</label>
-                   <Field name="type" component="select" onChange={this.pickCard}
-                   className = {css(this.props.styles.text)}>
-                     <option />
-                     {(this.state.data[0]) && (
-                     <option value='0'>Card 1</option>
-                     )}
-                     {(this.state.data[1]) && (
-                     <option value='1'>Card 2</option>
-                     )}
-                     {(this.state.data[2]) && (
-                     <option value='2'>Card 3</option>
-                     )}
-                   </Field>
-                 </div>
-               )}
-               {(this.state.card)  && (
-                 <div >
-                   <label className = {css(this.props.styles.text)}>Pick Card Update:</label>
-                   <Field name="type" component="select" onChange={this.pickCardUpdate}
-                   className = {css(this.props.styles.text)}>
-                     <option />
-                     <option value='header'>Header</option>
-                     <option value='text'>Body Text</option>
-                     <option value='title'>Body Title</option>
-                     <option value='img'>Image</option>
-                     <option value='footer'>Footer</option>
-                   </Field>
-                 </div>
-               )}
+               {this.state.type == 'carddeck'  && renderCardDeck(this.props,this.state,this.pickCard)}
+               {(this.state.card)  && renderCardPart(this.props,this.state,this.pickCardUpdate)}
 
                {(this.state.type == 'text' || this.state.type == 'html') && (
                  <div>
@@ -210,19 +274,17 @@ class EditItemPopUp extends React.Component {
                     />
                  </div>
                  <div id="thistwo">
-                 {(this.state.type == 'text') && (
+                 {(this.state.type == 'text' ) && (
                    <>
                       <SliderPicker color={this.state.style.color}
                         onChange={(color) =>
                         {
-
                           this.setState(prevState =>  ({
                             style:{
                               ...prevState.style,
                               color: color.hex
                             }
                           }));
-
                           form.mutators.makeDirty();
                         }
                       }
@@ -273,10 +335,9 @@ class EditItemPopUp extends React.Component {
                         />
                         <div id="target-two" test="needed for font-size-changer"
                           style={{display: 'none'}}>
-                          <p className="apply-font">{this.state.data}</p>
+                          <p className="apply-font">{this.state.header}</p>
                         </div>
-
-                        </>
+                      </>
                  )}
                  </div>
                  </div>
@@ -293,25 +354,23 @@ class EditItemPopUp extends React.Component {
                      className="link"
                      value={this.state.data}
                    />
-
                    </div>
                    </div>
                )}
 
-               <Field className = {css(this.props.styles.text)}
+               <Field
                  style={{display: 'none'}}
                  name="dirtyit"
                  component="input"
                  type="text"
                />
 
-
-
                <div >
                  <button
-                 style={{fontSize:15}}
-                  type="submit" disabled={submitting || pristine}>
-                   Submit
+                  type="submit" disabled={submitting || pristine}
+                  style={{fontSize:15}}
+                  >
+                 Submit
                  </button>
 
                  <button
@@ -351,13 +410,5 @@ class EditItemPopUp extends React.Component {
     );
   }
 }
-/*
-targets={['#target .content']}
-
-<div id="target-two">
-  <p className="title">This is the title of my target text</p>
-  <p className="content">This is the content of my target text</p>
-</div>
-*/
 
 export default EditItemPopUp;

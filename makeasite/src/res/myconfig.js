@@ -29,6 +29,7 @@ export const initConfig ={
 			bgPrimary: {
 			  backgroundColor: 'x333333'
 			},
+			
 
 			textPrimary: {
 			  color: 'x333333'

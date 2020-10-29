@@ -4,66 +4,19 @@ import React, { Component } from 'react';
 import BBHome from "../barebones/components/BBHome";
 import {Button,Container,Row,Col} from 'reactstrap';
 import { StyleSheet, css } from 'aphrodite';
+import Article from "./Article";
 
 
-export default class DisplayColumns extends Component {
+export default class DisplayColumns extends Article {
   constructor(props){
     super(props);
-    this.state = { bulletStyle: {display:"inline-block"}};
-
-    this.deleteArticle = this.deleteArticle.bind(this);
-    this.setBackgroundImage = this.setBackgroundImage.bind(this);
-    this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
-    this.getArticleStyle = this.getArticleStyle.bind(this);
+    this.state = { bulletStyle: {display:"inline-block"},
+                  styles: props.styles,
+                  currentStyle: props.article.style,
+                  backimg: props.article.backimg};
 
 };
 
-getArticleStyle = () => {
-  return this.props.aStyle(this.props.name);
-}
-forceUpdateHandler = () => {
-  this.forceUpdate();
-}
-
-deleteArticle = ()=> {
-  this.props.deleteArticle(this.props.name);
-};
-
-setBackgroundImage = (name,current)=> {
-  this.props.setBackgroundImage(name,current);
-//console.log("forcing Update")
-// props are read only
-  this.forceUpdateHandler();
-};
-
-renderPre = (e) => {
-    return(
-    <Button
-      id="qsDeleteArticle"
-      color="primary"
-      block
-      onClick={() => this.deleteArticle()}
-    >
-    Delete Section
-    </Button>
-    );
-}
-
-renderPost = (e) => {
-/*
-  if(this.props.showItemPopup === true){
-      return(<EditItemPopUp styles={this.props.styles}
-        text='Add New Item'
-        articleName = {this.props.name}
-        addItem={this.addItem}
-        onExit={this.onExit}
-        />);
-  }
-  else   return <div/>;
-*/
-    return(<BBHome setBackgroundImage={this.setBackgroundImage} name={this.props.name}/>)
-
-}
 
 
   // want the columns to look like this:
@@ -84,7 +37,7 @@ renderPost = (e) => {
 
     function rCol(col,fields,subfields) {
 
-      console.log(col, fields)
+  //    console.log(col, fields)
 
       function getField(num,fields) {
         if(fields.length > num){
@@ -126,7 +79,7 @@ renderPost = (e) => {
       var subfieldnum = 0;
     return(
       <div>
-      {this.props.rows && this.props.rows.map(row => {
+      {this.props.article.rows && this.props.article.rows.map(row => {
         rownum++
           return(<Row>
          {row.columns.map(column => {
@@ -140,7 +93,7 @@ renderPost = (e) => {
         rec.subfields.map(subfield =>{
         subfieldnum++
 
-        return(subfieldnum > 1 && this.props.rows && this.props.rows.map(row => {
+        return(subfieldnum > 1 && this.props.article.rows && this.props.article.rows.map(row => {
           rownum++
             return(<Row>
            {row.columns.map(column => {
@@ -162,14 +115,14 @@ renderPost = (e) => {
     //var fields;
     return (
       <article className={css(this.props.styles.articleContainer)}>
-        <a id={this.props.name} name={this.props.name}>
-          <h2 className={css(this.props.styles.anchor)}>{this.props.header}</h2>
+        <a id={this.props.article.name} name={this.props.article.name}>
+          <h2 className={css(this.props.styles.anchor)}>{this.props.article.header}</h2>
        </a>
 
        {this.props.editState && (this.renderPre())}
 
          <Container>
-         {this.props.data && this.props.data.map(rec =>{
+         {this.props.article.data && this.props.article.data.map(rec =>{
             return( this.dataSet(rec)
             )
          })}
@@ -180,63 +133,3 @@ renderPost = (e) => {
 
   }
 }
-
-/*
-
-{this.props.data && this.props.data.map(rec =>{
-   return(
-     this.props.rows && this.props.rows.map(row => {
-      return(<Row>
-       {row.columns.map(column => {
-        return this.rCol(column,rec.fields)
-       })}
-       </Row>
-      )
-     })
-   )
-})}
-
-
-
-
-
-  render() {
-    var i = 1;
-    console.log(this.props.data);
-      return (
-        <article className={css(this.props.styles.articleContainer)}>
-          <a id={this.props.name} name={this.props.name}>
-            <h2 className={css(this.props.styles.anchor)}>{this.props.header}</h2>
-         </a>
-
-         {this.props.editState && (this.renderPre())}
-
-          <div  style={this.getArticleStyle()}>
-            {this.props.data.map(record =>(
-              <div key={i++}>
-               <div className="row justify-content-start" key={i++}>
-                <div className="col-3">
-                  <h3>{record.r1c1}</h3>
-                  <p>{record.r2c1}<span> • </span> <em className="date">
-                     {record.r3c1}</em></p>
-                </div><div className="col-7"><p>{record.r1c2}</p></div>
-               </div>
-               <div className = "row">
-                  <div className="col-3"><p/></div><div className="col-7">
-                   <ul className="text-left">
-                    {record.r2c2.map(subdesc =>(<li key={i++}>{subdesc}</li>
-                    ))}
-                   </ul>
-                  </div>
-               </div><div className="row"><p/></div>
-              </div>
-            ))}
-          </div>
-
-
-          {this.props.editState && (this.renderPost())}
-        </article>
-      )
-    }
-  }
-*/

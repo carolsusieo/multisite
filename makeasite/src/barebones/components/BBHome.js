@@ -26,16 +26,16 @@ class BBHome extends Component {
     this.setBackgroundImage = this.setBackgroundImage.bind(this);
   }
 
-  setBackgroundImage = (name,current) => {
+  setBackgroundImage = (current) => {
     var currentPhoto = PHOTOS[current].photo;
     //console.log("gallery " + name + " " + current);
 
-    this.props.setBackgroundImage(name,currentPhoto);
+    this.props.setBackgroundImage(currentPhoto);
   };
 
   onChangeView = current =>{
     this.setState({currentView: current});
-    this.setBackgroundImage(this.props.name,current);
+    this.setBackgroundImage(current);
   };
 /*
   closeGallery = current => {

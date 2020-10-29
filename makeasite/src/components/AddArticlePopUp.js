@@ -1,6 +1,5 @@
 import React from 'react';
 import Dropdown from 'react-dropdown';
-//import '../scss/main.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';

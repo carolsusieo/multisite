@@ -1,11 +1,12 @@
 export const initConfig ={
 	"website": "web4u4less",
+	"description": "Web4u4less Business Information",
 	"editable": true,
 
 	"appStyle":{
 		mainWrapper: {
 			width: "100%",
-			height: "cover",
+			height: "contain",
 			textAlign: "center",
 			},
 
@@ -52,18 +53,23 @@ export const initConfig ={
 						"type": "other",
 						"name": "header",
 						"style":{
-							  backgroundHold: "linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,.7)), url(",
+							  backgroundHold: "linear-gradient(to bottom, rgba(0,0,0,.2), rgba(0,0,0,.6), rgba(0,0,0,.8)), url(",
 							  backgroundRepeat: "no-repeat",
 							  backgroundSize: "cover",
-								width: "100%"
-
+								width: "100%",
+								writable: true,
 						},
 
-						"backimg": "images/webpic_lrg/BluePolygons_1920x1234.png",
+						"backimg": "images/webpic_lrg/bg_web4u4less.jpg",
 						"items": [
  		        {
-			          "type": "html",
-			          "data": "<br/><br/><br/><br/>"
+			          "type": "text",
+								"style": {
+									fontFamily: 'Varela Round',
+							    lineHeight: '12rem',
+									color: 'transparent'
+								},
+			          "data": " .    "
 			        },
 							{
 
@@ -71,26 +77,25 @@ export const initConfig ={
 								"id": "html1",
 								"style": {
 									fontFamily: 'Varela Round',
-							    fontSize: '4rem',
-							    lineHeight: '4rem',
+							    fontSize: '6rem',
+							    lineHeight: '6rem',
 							    letterSpacing: '0.8rem',
-							    background: "linear-gradient(to bottom, rgba(255,255,255,.1), rgba(255,255,255,1))",
+							    background: "linear-gradient(to bottom, rgba(255,255,255,.8), rgba(255,255,255,.8))",
 							    webkitTextFillColor: "transparent",
 							    webkitBackgroundClip: "text",
 									writable: true
 
 								},
 
-								"data": "Web For You",
-
+								"data": "WEB FOR YOU"
 							},
 							{
 								"style": {
 													fontFamily: 'Varela Round',
-											    fontSize: '4rem',
-											    lineHeight: '4rem',
+											    fontSize: '6rem',
+											    lineHeight: '6rem',
 											    letterSpacing: '0.8rem',
-											    background: "linear-gradient(to bottom, rgba(255,255,255,.1), rgba(255,255,255,1))",
+											    background: "linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,.1))",
 											    webkitTextFillColor: "transparent",
 											    webkitBackgroundClip: "text"
 
@@ -98,7 +103,7 @@ export const initConfig ={
 
 									"type": "text",
 									"id": "html1",
-									"data": "For Less",
+									"data": "FOR LESS",
 							},
 							{
 								"type": "text",
@@ -147,11 +152,7 @@ export const initConfig ={
 									"display": "inline",
 									"paddingRight": "3em"
 								}
-						},
-							 {
- 			          "type": "html",
- 			          "data": "<br/><br/><br/><br/><br/><br/><br/>"
- 			        }
+						}
 						]
 
 				},
@@ -162,27 +163,55 @@ export const initConfig ={
            "name": "about",
            "classList": "text-center",
 					  "backimg": "images/webpic_lrg/circuit.jpg",
+						"style":{
+							  backgroundHold: "linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.7), rgba(0,0,0,.5)), url(",
+							  backgroundRepeat: "no-repeat",
+							  backgroundSize: "cover",
+								width: "100%",
+								writable: true,
+						},
 
-					 "items": [{
-							 "type": "html",
-							 "data": "<br/><br/><br/><br/>"
-						 },{
+					 "items": [
+						 {
+						 		"type": "text",
+						 		"style": {
+						 			fontFamily: 'Varela Round',
+						 			lineHeight: '12rem',
+						 			color: 'transparent'
+						 		},
+						 		"data": " .    "
+						 	},
+						 {
 							 "type": "text",
 							 "id": "html1",
 							 "data": "Built with Love (and Bootstrap if you want it)",
 							 "style": {
-								  "color" : "white",
-									"fontFamily" :"Varela Round"
+								  color : "white",
+									fontFamily :"Varela Round",
+									lineHeight: '2rem',
+									fontSize: '2rem'
+
 								}
 						 },
 						 {
-								 "type": "html",
+								 "type": "text",
 								 "id": "html1",
-								 "data": "<p style='fontSize:15px; color:white; align=center fontFamily:Varela Round;'>We support our customers in creating, hosting, and advertsing their websites. Working out of Round Rock Texas, we collaborate with you to create and maintain a stunning interactive website that looks as good on your phone as it does on your laptop.</p>"
-							},
+								 "data": "We support our customers in creating, hosting, and advertsing their websites. Working out of Round Rock Texas, we collaborate with you to create and maintain a stunning interactive website that looks as good on your phone as it does on your laptop.",
+								 "style": {
+									  color : "white",
+										fontFamily :"Varela Round",
+										fontSize: '1rem'
+
+									}
+								},
 						 {
-							 "type": "html",
-							 "data": "<br/>"
+							 "type": "text",
+							 "style": {
+								 fontFamily: 'Varela Round',
+								 lineHeight: '12rem',
+								 color: 'transparent'
+							 },
+							 "data": " .    "
 						 }
 					 ]
         },

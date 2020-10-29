@@ -23,7 +23,7 @@ function test(){
 //  console.log("testing route")
 }
 
-const NavBar = ({addButtons, navChoices, articles}) => {
+const NavBar = ({additionalNavButtons, navChoices, articles}) => {
 
 // determine if the articles sent in have any ones with menutitle set..
   const [isOpen, setIsOpen] = useState(false);
@@ -57,11 +57,10 @@ const inNavChoices = (val) =>
 // added buttons need to be close to the login button...
 
   var idNum = 0;
-//  console.log(addButtons);
   var addButtonsArray = [];
 
-  if(addButtons)
-    addButtonsArray = addButtons();
+  if(additionalNavButtons)
+    addButtonsArray = additionalNavButtons();
 
   return (
     <div className="nav-container">

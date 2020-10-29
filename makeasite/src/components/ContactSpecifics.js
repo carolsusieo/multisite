@@ -8,9 +8,8 @@ export default class ContactSpecifics extends Component {
           super(props)
 
           this.articleStyle = {
-          width: "100%",
-          backgroundImage: "url(" +  props.backimg + ")"
-        };
+          width: "100%"
+          };
       }
 
       render() {
