@@ -29,10 +29,11 @@ export const initConfig ={
 			bgPrimary: {
 			  backgroundColor: 'x333333'
 			},
-			
+
 
 			textPrimary: {
-			  color: 'x333333'
+			  color: 'x333333',
+				fontSize: "1rem"
 			},
 			footer: {
 			  padding: '5rem 0'
@@ -148,7 +149,6 @@ export const initConfig ={
 				{
 					"type": "carddeck",
 					"id": "cd1",
-					"className": "bg-light",
 					"data": [{
 							"name": "card1",
 							"img": "images/webpic_sml/sample-image.jpg"
@@ -256,7 +256,6 @@ export const initConfig ={
 			},
 		"items": [{
 					"type": "carddeck",
-					"className": "bg-light",
 					"data": [{
 							"name": "card1",
 							"img": "images/webpic_sml/sample-image.jpg"
@@ -450,7 +449,6 @@ export const initConfig ={
 			"backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
 			"loginDisplay": false,
 			"header": "Education",
-			"classList": "columns2",
 			"style":{
 					backgroundRepeat: "no-repeat",
 					backgroundSize: "cover",
@@ -482,7 +480,7 @@ export const initConfig ={
 			"type": "final-form",
 			"name": "contactyou",
 			"backimg": "images/webpic_lrg/leavesofgrass_1920x1234.jpg",
-			"loginDisplay": true,
+			"loginDisplay": false,
 			"header": "Get In Touch.",
 			"text": "Provide the following information so that I can get back to you.",
 			"api": "api/contact/contact",
@@ -650,7 +648,7 @@ export const initConfig ={
 		{
 			"type": "final-form",
 			"name": "easyData",
-			"loginDisplay": false,
+			"loginDisplay": true,
 			"header": "Easy Data",
 			"text": "Text DB In",
 			"_onSubmit": "{this.onSubmit}",

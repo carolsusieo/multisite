@@ -3,6 +3,8 @@ import './App.scss';
 import { Router, Route, Switch } from "react-router-dom";
 import { StyleSheet, css } from 'aphrodite';
 import { Helmet } from 'react-helmet'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Loading from "./src_auth0/components/Loading";
 import NavBar from "./src_auth0/components/NavBar";
@@ -23,6 +25,7 @@ import { useData } from "./ctrl/DataController"
 // better from db
 import {initConfig} from "./res/myconfig";
 
+
 // Edit state - if in Edit mode the Navigation Menu is a different color...
 // todos:
 // move items around in a section - mouse down and pull
@@ -33,6 +36,7 @@ import {initConfig} from "./res/myconfig";
 
 // todo - need a gallery..... - probably work well as a carddeck -
 // and that is already possible - need to be able to upload pictures.
+// be able to select one thing - not overall CardDeck
 
 class App2 extends Component {
 
@@ -53,16 +57,24 @@ class App2 extends Component {
                         appConfig: props.initConfig,
                         editState: false,
                         editStateLabel: "Edit",
-                        edited: 0
+                        edited: 0,
+                        itemPopup: false
                       };
          };
 
-         forceUpdateHandler = () => {
-           // store the record for this...
-           var edited = this.state.edited;
+         // article updates need to be pushed up this way
+         // until we do the updates in a database
+
+         forceUpdateHandler = (articleName,article) => {
+
+           if(articleName){
+             var i = this.whichArticle(articleName);
+             let currConfig = Object.assign({}, this.state.appConfig);
+             currConfig.articles[i] = article;
+             this.setState({appConfig: currConfig, edited: 1});
+           }
            this.props.saveEdit(this.props.initConfig.website,this.state.appConfig);
-           this.setState({edited: 1})
-           this.forceUpdate();
+            this.forceUpdate();
          }
 
 
@@ -76,6 +88,38 @@ class App2 extends Component {
          return -1;
        }
 
+
+       // best way to deal with item popup...
+       // only want to show it once...
+       // would like to show a toast otherwise
+       // that goes away
+       manageItemPopup = (turnOn) => {
+         if(turnOn === true){
+
+           if(this.state.itemPopup === true){
+             toast("Exit currently open item popup");
+             return false;
+           }
+           else if(this.state.editState === true){
+             this.setState({itemPopup: true});
+             return true;
+           }
+           else {
+             return false;
+           }
+         }
+         else {
+           if(this.state.itemPopup === true){
+             this.setState({itemPopup: false})
+             return true;
+           }
+           else
+            return true;
+          }
+       }
+
+       // article updates need to be pushed up this way
+       // until we do the updates in a database
 
 /* start manage articles*/
 
@@ -91,10 +135,8 @@ class App2 extends Component {
               this.setState({appConfig: currConfig});
               this.forceUpdateHandler();
               this.setState({
-                   showArticlePopUp: !this.state.showArticlePopUp
+                   showArticlePopUp: false
               });
-              this.forceUpdate();
-
         }
 
       deleteArticle = (articleName)=> {
@@ -168,6 +210,7 @@ class App2 extends Component {
         <meta name="description" content={this.state.appConfig.description} />
       </Helmet>
         <div id="app" className={css(appStyle.mainWrapper)}>
+          <ToastContainer />
           <NavBar styles={appStyle} articles ={this.state.appConfig.articles}
             navChoices={this.navChoices}
             additionalNavButtons = {this.additionalNavButtons}/>
@@ -181,8 +224,10 @@ class App2 extends Component {
                     article={article}
                     styles={appStyle}
                     editState = {this.state.editState}
-                    deleteArticle = {this.deleteArticle}
                     include = {this.state.appConfig.include}
+                    deleteArticle = {this.deleteArticle}
+                    manageItemPopup = {this.manageItemPopup}
+                    forceUpdateHandler = {this.forceUpdateHandler}
                     />)
               }
               else if(article.type == 'final-form'){
@@ -191,14 +236,18 @@ class App2 extends Component {
                   article={article}
                   editState = {this.state.editState}
                   deleteArticle = {this.deleteArticle}
+                  manageItemPopup = {this.manageItemPopup}
+                  forceUpdateHandler = {this.forceUpdateHandler}
                />)
               }
               else if(article.type == 'dbdata'){
                 return(<DisplayDBData key = {article.name}
                   styles={appStyle}
                   article={article}
-                  deleteArticle = {this.deleteArticle}
                   editState = {this.state.editState}
+                  deleteArticle = {this.deleteArticle}
+                  manageItemPopup = {this.manageItemPopup}
+                  forceUpdateHandler = {this.forceUpdateHandler}
                   />
                 )
               }
@@ -210,8 +259,9 @@ class App2 extends Component {
                   include={this.state.appConfig.include}
                   editState = {this.state.editState}
                   deleteArticle={this.deleteArticle}
-                  include = {this.state.appConfig.include}
-                />)
+                  manageItemPopup = {this.manageItemPopup}
+                  forceUpdateHandler = {this.forceUpdateHandler}
+                  />)
               }
               }
             })}

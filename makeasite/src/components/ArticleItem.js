@@ -15,6 +15,7 @@ import styles from '../res/header.module.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 // wrapper to allow items to be edited or deleted
+
 export default class ArticleItem extends React.Component {
   constructor(props) {
         super(props);
@@ -36,17 +37,15 @@ export default class ArticleItem extends React.Component {
     // decision to add item was selected from withing the Article component -
     // and this indicated the popup should display.
 
-  addItem = (value) => {
-
-  }
 
   onExit = () => {
     this.setState({popup: false})
     this.props.onExit();
   }
 
-  editItem = (values) => {
-    console.log("edit " + this.props.item.id)
+  editItem = (id,values) => {
+
+    console.log( this.props.item.id)
     var id = this.props.item.id;
     values.id = id;
 //    values.type = this.props.item.type;
@@ -61,9 +60,12 @@ export default class ArticleItem extends React.Component {
   };
 
   selectItem = (e) => {
-    //console.log("edit " + e.target.id);
-    if(this.props.editState === true && this.state.popup == false)
-      this.setState({popup: true});
+    // need to know if another item has been selected already and is
+    // displaying a popup, because we don't want to let more than one
+
+    if(this.state.popup == false && this.props.manageItemPopup(true)){
+        this.setState({popup: true});
+    }
   };
 
   itemButton = (e) => {
@@ -75,19 +77,21 @@ export default class ArticleItem extends React.Component {
   }
 
   renderPlus = (data) => {
-    var new1 = "";
+    var new1;
       if(this.state.popup === true) {
         new1 = "Edit or Delete ";
       }
-      else if(this.props.showItemPopUp === true){
+      else if(this.props.showItemPopup === true){
         new1 = "Add ";
       }
 
-      if(new1 != ""){
+      if(new1 != undefined){
 
         if(this.props.item.type != 'carddeck'){
           new1 = new1 + data;
         }
+
+
         return(
           <EditItemPopUp styles={this.props.styles}
           text={new1}
@@ -139,55 +143,31 @@ export default class ArticleItem extends React.Component {
   }
 
 
+ getStyleVal = (item) =>{
+   return(
+     (item.type != 'include' && item.type != 'html' && item.style == undefined)?
+     {
+     'fontFamily': 'Open Sans',
+     'color': 0x0000,
+     'fontSize': "15px",
+     }
+     :item.style);
 
+ }
 
 
   render() {
     var item = this.props.item;
     var i=1;
-    var styleval =
-      (item.type != 'include' && item.type != 'html' && item.style == undefined)?
-      {
-      'fontFamily': 'Open Sans',
-      'color': 0x0000,
-      'fontSize': "15px",
-      }
-      :item.style;
-
+    var styleval = this.getStyleVal(item);
 
     var id =item.id;
     if(item.id == undefined){
       id = Date.now();
     }
-        if(item.type == 'button'){
-          return(
-            <Draggable
-              onDrag={this.onDrag}
-              onStop={this.onStop}
-                    >
-                    {item.className ?
-                      <Button
-                      style={{styleval}}
-                      id={id}
-                      className={item.className}
-                      variant= {item.variant}
-                      >
-                      {item.data}
-                    </Button>
-                    :
-                <Button
-                style={{styleval}}
-                id={id}
-                className="btn btn-sm btn-outline-success"
-                variant= {item.variant}
-                >
-                {item.data}
-              </Button>
-            }
-            </Draggable>
-          )
-        }
-        else if(item.type == 'text'){
+
+      if(item.type == 'text'){
+        console.log("item ", item.id)
           if(styleval != undefined && styleval != null){
             return(
                 <div>
@@ -218,40 +198,6 @@ export default class ArticleItem extends React.Component {
                 {this.renderPlus(item.data)}
                 </div>
             )
-        }
-        else if(item.type == 'card'){
-          return(
-            <div>
-              {(this.state.popup == false) && (
-                <Card onClick={this.selectItem}  style={{ width: '18rem' }}>
-                {(item.header) && (
-                <Card.Header as="h3">{item.header}</Card.Header>
-                )}
-                {item.img && (
-                  <Card.Img src={item.img}/>
-                )}
-                {item.body && (
-                <Card.Body>
-                  {item.body.title && (
-                  <Card.Title>{item.body.title}</Card.Title>
-                  )}
-                  {item.body.text && (
-                  <Card.Text>{item.body.text}</Card.Text>
-                  )}
-                  {item.body.contact && (
-                  <ContactSpecifics contact={this.props.include.contact}></ContactSpecifics>
-                  )}
-                </Card.Body>
-                )}
-                {(item.footer) && (
-                <Card.Footer as="h4">{item.footer}</Card.Footer>
-                )}
-                </Card>
-              )}
-
-            {this.renderPlus(item.data)}
-          </div>
-         )
         }
         else if(item.type == 'carddeck'){
           return(
@@ -312,6 +258,7 @@ export default class ArticleItem extends React.Component {
             </div>
           )
         }
+        //images should be done differently... like part of carddecks....
         else if(this.props.item.type == 'image') {
           return(
               <div>
@@ -322,8 +269,8 @@ export default class ArticleItem extends React.Component {
               </div>
           )
         }
-        else if(this.props.item.type == 'include'
-          && this.props.item.data == 'social'){
+        else if(this.props.item.type == 'include'){
+          if(this.props.item.data == 'social'){
             return(
               <div>
                 {(this.state.popup === false) && (
@@ -336,52 +283,21 @@ export default class ArticleItem extends React.Component {
                )}
                {this.renderPlus(item.data)}
               </div>
-          )
+            )
+          }
+          else{
+            return(
+               <div>
+               {(this.state.popup === false) && (
+                 <ContactSpecifics contact = {this.props.include.contact}/>)
+               }
+               {this.renderPlus(item.data)}
+              </div>
+            )
+          }
         }
         else {
           return(<p/>)
         }
   }
 }
-
-
-/*
-<SocialMediaIconsReact url={social.full} icon={social.type} />
-
-<li key={i++}><a href={social.full} > <i className={social.fa} /></a></li>
-
-onClick(event) {
-  // your code
-}
-
-onDrop(event) {
-  // your code
-}
-
-onDrag() {
-  this.setState({dragging: true})
-}
-
-onStop(...args) {
-  const {dragging} = this.state
-  this.setState({dragging: false})
-  if (dragging) {
-    this.onDrop(...args)
-  } else {
-    this.onClick(...args)
-  }
-}
-
-render() {
-  return (
-    <Draggable
-      onDrag={this.onDrag} // assume it's bound to `this`
-      onStop={this.onStop} // assume it's bound to `this`
-    />
-  )
-}
-
-*/
-/*
-<div style={styleval}>
-*/

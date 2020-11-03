@@ -44,7 +44,7 @@ render(){
 
    <article className={css(this.props.styles.articleContainer)}>
      <a id={this.props.article.name} name={this.props.article.name}>
-       <h2 className={css(this.props.styles.anchor)}>{this.props.article.header}</h2>
+       <h2 className={css(this.setupAnchor())}>{this.props.article.header}</h2>
     </a>
 
       {this.props.editState && (this.renderPre())}

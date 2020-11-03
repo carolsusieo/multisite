@@ -327,7 +327,7 @@ export const initConfig ={
 								 "type": "html",
 								 "data": "<br/><br/>"
 							 },
-{
+							 {
 		 					"type": "carddeck",
 		 					"className": "container",
 		 					"data": [{

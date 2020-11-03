@@ -21,7 +21,7 @@ export const DataProvider = ({
     return currConfig;
 
   }
-
+/* not making this calls yet
 const addItemToArticle = (articleName,values,currConfig) => {
   for(var i = 0; i < currConfig.articles.length;i++){
     if(currConfig.articles[i].name == articleName){
@@ -43,7 +43,7 @@ const addItemToArticle = (articleName,values,currConfig) => {
     }
   }
 }
-
+*/
 const deleteItemFromArticle = (currArticle, currItem, currConfig) => {
 
 }

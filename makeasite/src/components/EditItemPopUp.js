@@ -3,11 +3,8 @@ import Dropdown from 'react-dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Form, Field } from 'react-final-form';
 import { OnChange } from 'react-final-form-listeners';
-import FontPicker from "font-picker-react";
-import { SliderPicker } from 'react-color';
-import FontSizeChanger from 'react-font-size-changer';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { faPlus,faMinus } from "@fortawesome/free-solid-svg-icons";
+import EditItemText from './EditItemText';
+import EditItemCardDeck from './EditItemCardDeck';
 import {  css } from 'aphrodite';
 import renderHTML from 'react-render-html';
 
@@ -18,14 +15,16 @@ class EditItemPopUp extends React.Component {
   constructor(props) {
         super(props);
       this.state ={ type: '',
-                      id: '',
                       style: {
                         fontFamily: "Open Sans",
                         color: '#333333',
                         fontSize: '12px'
                       },
-                      cardnum: -1,
-                      card: ""
+                      cardnum : -1,
+                      carddata : "",
+                      cardtype :"carddeck",
+                      data: "",
+                      id: ''
                   };
 
 
@@ -34,14 +33,14 @@ class EditItemPopUp extends React.Component {
           this.state.data = this.props.item.data;
           this.state.type = this.props.item.type;
           this.state.id = this.props.item.id;
-          }
-        else{
-          this.state.type = 'text';
-        }
-        if(this.props.item != undefined){
           if(this.props.item.style != undefined){
             this.state.style = this.props.item.style;
           }
+        }
+        else{
+  //        console.log("item was undefined")
+          this.state.type = 'text';
+          this.state.id = Date.now();
         }
 
         this.onSubmit = this.onSubmit.bind(this);
@@ -49,95 +48,168 @@ class EditItemPopUp extends React.Component {
         this.onDelete = this.onDelete.bind(this);
         this.onExit = this.onExit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.pickCard = this.pickCard.bind(this);
-        this.pickCardUpdate = this.pickCardUpdate.bind(this);
+        this.updateWhichCard = this.updateWhichCard.bind(this);
+        this.getWhichCard = this.getWhichCard.bind(this);
+
+  //      this.pickCard = this.pickCard.bind(this);
+  //      this.pickCardUpdate = this.pickCardUpdate.bind(this);
     };
 
 
+
     onClear = () => {
-      console.log("clear")
+    //  console.log("clear")
 
       if(this.props.item){
         this.setState({
           id: this.props.item.id,
           style: this.props.item.style,
-          cardnum: -1,
-          card: ""
+            cardnum: -1,
+            carddata: "",
+            cardtype: "carddeck"
+
         })
       }
     }
 
     handleChange(event) {
-      if(event != undefined && event.target != undefined && event.target.value != undefined)
+      if(event != undefined && event.target != undefined && event.target.value != undefined){
         this.setState({type: event.target.value});
-    }
-
-    pickCard(event) {
-      if(event != undefined && event.target != undefined && event.target.value != undefined){
-        console.log(event.target.value)
-        this.setState({cardnum: event.target.value});
-        this.setState({card: this.state.data[event.target.value]});
-        this.setState({cardData: this.state.data});
-        this.setState({data: this.state.data[event.target.value]})
+        // if a carddeck has been added, and there isn't currently information
+        // about carddecks in the article, we need to remedy that problem.
       }
-
     }
-    pickCardUpdate(event) {
-      if(event != undefined && event.target != undefined && event.target.value != undefined){
-        this.setState({cardItem:event.target.value});
-        // need to allow for the information needed to manage the type of item selected...
-        // header, text, title, img, footer
-        if(event.target.value === 'img'){
-          this.setState({type: 'img'})
 
-        }else {
-          // get the input text for the header, text, title, or footer.
-          this.setState({type:'text'})
+
+// values available at remake:
+// this props - original data passed in
+// values: - from the form...
+// data - edit string...  - this needs to be reformatted
+//
+
+// needs to look like:
+/*
+{
+  "type", "id", - NO CHANGE - IF THEY WANT TO CHANGE THIS, WILL NEED TO delete
+   and DELETE IS A TODO
+
+  "data": remap TO FOLLOWING- from STRING IN VALUES - COULD ALSO BE A CHANGE IN TYPE
+  - WILL NEED TO KNOW THE VALUE CHOSEN FOR TYPE
+
+   [{
+      "name": "card1",
+      "img": "images/webpic_sml/sample-image.jpg"
+    },
+    {
+      "name": "card2",
+      "body": {
+        "text": "This is text about the image"
+      }
+    },
+    {
+      "name": "card3",
+      "classlist": "text-center",
+      "header": "Contact Details",
+      "body": {
+        "contact": "Contact"
+      }
+    }
+  ]
+},
+*/
+
+      remakeForCard = (values) =>
+      {
+          var cardnum;
+          var addCard = false;
+          var carddata = this.state.carddata;
+
+        // console.log(this.state.carddata, values);
+
+        //  console.log(this.state.card)
+
+         cardnum = this.state.cardnum;
+         if(cardnum === this.state.data.length
+           || typeof this.state.data === 'string'){
+           addCard = true;
+           if(typeof this.state.data === 'string' && this.state.carddata === ""){
+             carddata = this.state.data;
+           }
+
+
+           if(cardnum == -1){
+             cardnum = 0
+           }
+         }
+
+        console.log(this.state.data,this.state.carddata)
+
+
+        //  console.log(cardnum)
+          var remake;
+          if(!this.state.data || typeof this.state.data === 'string'){
+            remake = [{}];
+          }
+          else{
+            remake = this.state.data;
+          }
+          // might be a new article too, or something that was not previously
+          // a carddeck
+          if(addCard && cardnum > 0){
+            remake.push({img:"",body:{},header:"",footer:""});
+          }
+          else if(addCard){
+            remake[0] = {img:"",body:{},header:"",footer:""};
+          }
+
+      //    console.log(remake)
+          if(this.state.cardtype === 'img'){
+            remake[cardnum].img = carddata;
+            if(remake[cardnum].body){
+              remake[cardnum].body = undefined;
+            }
+          }
+
+          if(this.state.cardtype === 'header'){
+            remake[cardnum].header = carddata;
+            if(remake[cardnum].body){
+              remake[cardnum].body = undefined;
+            }
         }
+          else if(this.state.cardtype === 'footer'){
+            remake[cardnum].footer = carddata;
+            if(remake[cardnum].body){
+              remake[cardnum].body = undefined;
+            }
+          }
+          else if(this.state.cardtype === 'title'){
+            if(!remake[cardnum].body){
+              remake[cardnum].body = {title: "", text: ""}
+            }
+            remake[cardnum].body.title = carddata;
+          }
+          else {//        console.log(JSON.stringify(this.props))
+            if(!remake[cardnum].body){
+              remake[cardnum].body = {title: "", text: ""}
+            }
+            remake[cardnum].body.text = carddata
+          }
+          console.log(remake)
+          values.data = remake;
+
+          return values;
+
       }
 
-    }
 
-      onSubmit = async (values) => {
-        console.log("On Submit")
+    onSubmit = async (values) => {
           values.style = this.state.style;
           values.type = this.state.type;
           if(this.state.cardnum != -1){
-            values.type = 'carddeck';
-            var remake = this.state.cardData;
-            console.log(remake)
-            if(this.state.cardItem === 'img'){
-              remake[this.state.cardnum].img = values.data;
-              if(remake[this.state.cardnum].body)
-                remake[this.state.cardnum].body = null;
-            }
-            else if(this.state.cardItem === 'header'){
-              remake[this.state.cardnum].header = values.data;
-            }
-            else if(this.state.cardItem === 'footer'){
-              remake[this.state.cardnum].footer = values.data;
-            }
-            else if(this.state.cardItem === 'title'){
-              remake[this.state.cardnum].body.title = values.data;
-            }
-            else //        console.log(JSON.stringify(this.props))
-
-              remake[this.state.cardnum].body.text = values.data;
-
-            values.data = remake;
+              values = this.remakeForCard(values);
           }
-
-
-          this.setState({cardnum : -1, card: "", cardItem : "",cardData: ""});
-
-          if(this.props.editItem != undefined){
-            this.props.editItem(values);
-          }
-          else if(this.props.addItem != undefined){
-            this.props.addItem(this.props.articleName,values)
-          }
-
-    }
+          this.props.editItem(this.state.id,values);
+      }
 
     onDelete = () => {
       console.log("selected to delete")
@@ -150,12 +222,54 @@ class EditItemPopUp extends React.Component {
       this.props.onExit();
     }
 
+    updateWhichCard = (value) => {
+      this.setState({cardnum:value})
+    }
+    getWhichCard = () => {
+          return this.state.cardnum;
+    }
+    updateCardDataType = (value) => {
+      this.setState({cardtype:value})
+    }
+    getCardDataType = () => {
+        return this.state.cardtype;
+    }
+
+// need to look at this closely in regards to carddeck
+    updateStyle= (which,value) => {
+      if(which == 'color'){
+        this.setState(prevState =>({style:{...prevState.style,color:value}}))
+      }
+      else if(which == 'fontFamily'){
+        this.setState(prevState =>({style:{...prevState.style,fontFamily:value}}));
+      }
+      else if(which == 'fontSize'){
+        this.setState(prevState=>({style:{...prevState.style,fontSize:value}}));
+      }
+    }
+
+    handleTextChange = (event) => {
 
 
+      console.log("value ",event.target.value)
+      console.log("more ",event.nativeEvent)
 
+// probably shouldn't use nested state in react according to some....
+      if(event && event.target && event.target.value != null && this.state.type === 'carddeck'){
+            this.setState({carddata: event.target.value})
+       }
+       else if(event && event.target && event.target.value != null){
+           this.setState({data: event.target.value})
+       }
+   }
+   // only card by carddeck stuff
+   getText = () =>
+   {
+     return this.state.carddata;
 
-
+   }
   render() {
+  //  console.log(this.state.card)
 
     function textStyle(props){ return(props.item && props.item.style)?
       props.item.style:(props.styles)?props.styles.textPrimary:
@@ -166,57 +280,25 @@ class EditItemPopUp extends React.Component {
       })}
 
 
-    function renderCardDeck(props,state,pickCard){
-
-        return(
-          <div >
-           <label className = {css(textStyle(props))}>Pick Card:</label>
-           <Field name="cardnum" component="select" onChange={pickCard}
-           className = {css(textStyle(props))} value={state.cardnum}>
-             <option />
-             {state.cardData ? state.cardData.map((card, index) => {
-                return <option value={index}>Card {index + 1}</option>
-              }): state.data.map((card,index) => {
-                return <option value={index}>Card {index + 1}</option>})
-            }
-         </Field>
-         </div>
-       )
-    }
-    function renderCardPart(props,state,pickCardUpdate){
-
-        return(
-          <div >
-            <label className = {css(textStyle(props))}>Pick Card Update:</label>
-            <Field name="carditem" component="select" onChange={pickCardUpdate}
-            className = {css(textStyle(props))} value={state.cardItem}>
-
-              <option />
-              <option value='header'>Header</option>
-              <option value='text'>Body Text</option>
-              <option value='title'>Body Title</option>
-              <option value='img'>Image</option>
-              <option value='footer'>Footer</option>
-            </Field>
-          </div>
-       )
-    }
-
     var i=1;
     var styleval = {
       'fontFamily': this.state.style.fontFamily,
       'color': this.state.style.color,
       'fontSize': this.state.style.fontSize,
     }
-    console.log(this.state)
+  //  console.log(this.state)
     var dirty = 1;
 
-
-
-
+    var initialValues = {};
+    if(typeof this.state.data != 'object' && typeof this.state.data != 'array')
+      initialValues = { html: this.state.data, type: this.state.type, data: this.state.data}
+    else {
+      // cannot know which will get selected so can't update this.
+      initialValues = { html: this.state.data, type: this.state.type}
+    }
+    // popup styles are part of this app, not configurable
+    // by other apps.
     return (
-     <div className={css(this.props.styles.popup)}>
-      <div className={css(this.props.styles.popupInner)}>
 
        <Form
           mutators=
@@ -227,18 +309,14 @@ class EditItemPopUp extends React.Component {
           }}
            onSubmit={this.onSubmit}
 
-           initialValues={{ data: this.state.data, type: this.state.type,
-             cardnum: this.state.cardnum, card: this.state.card,
-              cardItem: this.state.carditem}}
+           initialValues={initialValues}
 
            render={({ handleSubmit, form, submitting, pristine, values  }) => (
-             <form onSubmit={handleSubmit} >
+             <form onSubmit={handleSubmit}
+               className="block-example border border-primary popup">
 
-            {(this.state.type === 'text' && this.state.cardnum === undefined) &&
-             <pre className="apply-font" style={styleval}>{values.data} </pre>
-            }
-            {(this.state.type === 'html' && values.data && values.data.length)
-              && renderHTML(values.data)}
+              {(this.state.type === 'html' && values.html && values.html.length)
+              && renderHTML(values.html)}
 
                <div >
                  <label className = {css(this.props.styles.text)}>Enter type:</label>
@@ -249,16 +327,37 @@ class EditItemPopUp extends React.Component {
                    <option value="html">Html</option>
                    <option value="image">Image</option>
                    <option value="video">Video</option>
-                   <option value="card">Card</option>
                    <option value="carddeck">CardDeck</option>
+                   <option value="button">Button</option>
                  </Field>
                </div>
 
-               {this.state.type == 'carddeck'  && renderCardDeck(this.props,this.state,this.pickCard)}
-               {(this.state.card)  && renderCardPart(this.props,this.state,this.pickCardUpdate)}
+               {(this.state.type == 'carddeck') &&
+               <EditItemCardDeck
+                  updateCardDataType = {this.updateCardDataType}
+                  getCardDataType = {this.getCardDataType}
+                  updateWhichCard = {this.updateWhichCard}
+                  getWhichCard = {this.getWhichCard}
+                  data = {this.state.data}
+                  id = {this.state.id}
+                  styles={this.props.styles}
+                  style = {this.state.style}
+                  mutators = {form.mutators}
+                  updateStyle = {this.updateStyle}
+                  handleTextChange = {this.handleTextChange}
+                  getText = {this.getText}
+                    />
+                }
 
-               {(this.state.type == 'text' || this.state.type == 'html') && (
-                 <div>
+               {this.state.type == 'text' && (
+                 <EditItemText styles={this.props.styles} data = {values.html}
+                  style = {this.state.style} mutators = {form.mutators}
+                  handleTextChange = {this.handleTextChange}
+                  updateStyle = {this.updateStyle}
+                  header = {this.state.header}
+                  card = {values.card}/>
+                )}
+               {this.state.type === 'html' && (
                  <div id="thisone">
                   <label className = {css(this.props.styles.text)}>Enter Data:</label>
                   <Field className = {css(this.props.styles.text)}
@@ -266,86 +365,28 @@ class EditItemPopUp extends React.Component {
                    component="input"
                    type="text"
                    value={this.state.data}
-                   onBlur={(e)=>{
-                     this.setState({data:e.target.value})
-                     form.mutators.makeDirty();
-
-                   }}
                     />
                  </div>
-                 <div id="thistwo">
-                 {(this.state.type == 'text' ) && (
-                   <>
-                      <SliderPicker color={this.state.style.color}
-                        onChange={(color) =>
-                        {
-                          this.setState(prevState =>  ({
-                            style:{
-                              ...prevState.style,
-                              color: color.hex
-                            }
-                          }));
-                          form.mutators.makeDirty();
-                        }
-                      }
-                      />
-                     <FontPicker
-                       apiKey="AIzaSyCwxw1i_MlbMd-9xg_bcCo8UJXyZ89fYHU"
-                       activeFontFamily={this.state.activeFontFamily}
-                       onChange={(nextFont) =>
-                         {
-                           this.setState(prevState =>  ({
-                             style:{
-                               ...prevState.style,
-                               fontFamily: nextFont.family
-                             }
-                           }));
-                         form.mutators.makeDirty();
-                         }
-                       }
-                      />
-                      <FontSizeChanger
-                        onChange={(element, newValue, oldValue) =>
-                           {
-                             this.setState(prevState =>  ({
-                               style:{
-                                 ...prevState.style,
-                                 fontSize: newValue
-                               }
-                             }));
-                             form.mutators.makeDirty();
-                           }}
-                           targets={['#target-two .apply-font']}
-                          options={{
-                                       stepSize: 2,
-                                       range: 20
-                          }}
-                          customButtons={{
-                          up: <FontAwesomeIcon icon={faPlus}/>,
-                          down: <FontAwesomeIcon icon={faMinus} />,
-                          style: {
-                            backgroundColor: 'red',
-                            color: 'white',
-                            WebkitBoxSizing: 'border-box',
-                            WebkitBorderRadius: '5px',
-                            width: '60px'
-                          },
-                          buttonsMargin: 10
-                        }}
-                        />
-                        <div id="target-two" test="needed for font-size-changer"
-                          style={{display: 'none'}}>
-                          <p className="apply-font">{this.state.header}</p>
-                        </div>
-                      </>
-                 )}
-                 </div>
-                 </div>
                )}
-               {(this.state.type == 'video' || this.state.type == 'img' ) && (
+                 {(this.state.type == 'video' || this.state.type == 'image' ) && (
                    <div>
                    <div id="thislink">
                    <label >Enter Link:</label>
+                   <Field
+                     className = {css(this.props.styles.text)}
+                     name="data"
+                     component="input"
+                     type="text"
+                     className="link"
+                     value={this.state.data}
+                   />
+                   </div>
+                   </div>
+               )}
+               {(this.state.type == 'button'  ) && (
+                   <div>
+                   <div id="thislink">
+                   <label >TODO NEED TO ALLOW SELECTION OF WHAT bUTTON does</label>
                    <Field
                      className = {css(this.props.styles.text)}
                      name="data"
@@ -363,6 +404,7 @@ class EditItemPopUp extends React.Component {
                  name="dirtyit"
                  component="input"
                  type="text"
+
                />
 
                <div >
@@ -375,7 +417,7 @@ class EditItemPopUp extends React.Component {
 
                  <button
                  style={{fontSize:15}}
-                   type="button"
+                 type="button"
                    onClick={form.reset}
                    disabled={submitting || pristine}
                  >
@@ -384,7 +426,7 @@ class EditItemPopUp extends React.Component {
 
                  {this.props.deleteItem != undefined && (
                  <button
-                 style={{fontSize:15}}
+               style={{fontSize:15}}
                  type="button"
                    onClick={this.onDelete}
                    disabled={submitting}
@@ -405,10 +447,7 @@ class EditItemPopUp extends React.Component {
            </form>
          )}
          />
-      </div>
-     </div>
     );
   }
 }
-
 export default EditItemPopUp;

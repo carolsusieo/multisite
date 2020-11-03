@@ -23,8 +23,9 @@ export default class ContactSpecifics extends Component {
                   <span>{test.email}</span><br/>
                   <span>{test.phone}</span><br/>
                 </section>
-            );
-          };
-        return(<p> No Data </p>);
+            )
+          }
+          else
+            return(<p> No Data </p>);
     }
 }

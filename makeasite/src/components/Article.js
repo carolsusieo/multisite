@@ -7,6 +7,7 @@ import ContactSpecifics from "./ContactSpecifics";
 import renderHTML from 'react-render-html';
 import EditItemPopUp from "./EditItemPopUp";
 import ArticleItem from "./ArticleItem";
+import ArticleButton from "./ArticleButton";
 import {Draggable} from 'react-draggable';
 import { StyleSheet, css } from 'aphrodite';
 import BubbleChart from '@weknow/react-bubble-chart-d3';
@@ -16,7 +17,7 @@ import BubbleChart from '@weknow/react-bubble-chart-d3';
 
 // todo - update the db at the article level, or, can send a
 // routine to cause a forced update at the app level when something
-// changes in article....
+// changes in article.... (the later done for now... via forceUpdateHandler)
 export default class Article extends Component {
 
   constructor(props) {
@@ -26,7 +27,6 @@ export default class Article extends Component {
           styles: props.styles,
           cStyle: props.article.style,
           backimgEdited: false,
-
           showItemPopup: false
         };
 
@@ -48,13 +48,12 @@ export default class Article extends Component {
 
 
 
-        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+  //      this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
         this.deleteArticle = this.deleteArticle.bind(this);
         this.setBackgroundImage = this.setBackgroundImage.bind(this);
-        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
         this.getStyle = this.getStyle.bind(this);
         this.addItemPopUp = this.addItemPopUp.bind(this);
-        this.addItem = this.addItem.bind(this);
+  //      this.addItem = this.addItem.bind(this);
         this.onExit = this.onExit.bind(this);
 
         // based on whether we're in edit mode or standard mode,
@@ -63,6 +62,7 @@ export default class Article extends Component {
 
 
     whichItem = (id,article) => {
+      console.log(id, article)
       if(article.items != undefined){
         for(var j = 0; j < article.items.length;j++){
             if(article.items[j].id === id){
@@ -87,73 +87,74 @@ export default class Article extends Component {
         // todo probably want to read in the record from the database...
         // no... we want to do that when they exit out...
 
-        this.setState({showItemPopUp:false});
+        this.setState({showItemPopup:false});
+        this.props.manageItemPopup(false);
         this.forceUpdate();
       }
 
       addItemPopUp = () =>{
 
-        var values = { "id": Date.now(),"type": "text", "data":"add..." };
+        // need to add the item.... with the state set up
+        // properly....
+        var whichItem = 0;
+        if(this.props.manageItemPopup(true)){
+          console.log("add item popup")
 
-        let currConfig = Object.assign({}, this.state.article);
-            if(currConfig.items != undefined){
-              const newItems = [
-                ...currConfig.items,
-                values
-              ]
-              currConfig.items = newItems;
-              this.setState({article: currConfig});
-            }
-            else{
-              currConfig.items = [values];
-              this.setState({article: currConfig});
-            }
-            this.forceUpdateHandler();
+          var values = { "id": Date.now(),"type": "text", "data":"add...", "new": true};
 
-        this.setState({showItemPopUp:true});
-        // and, we need to create the itme in the articles set of items
-        // even if it's removed on Exit...
-        this.forceUpdate();
+          let currConfig = Object.assign({}, this.state.article);
+          if(currConfig.items != undefined){
+            const newItems = [
+              ...currConfig.items,
+              values
+            ]
+            currConfig.items = newItems;
+            whichItem = currConfig.items.length -1;
+          }
+          else{
+            currConfig.items = [values];
+            console.log (currConfig.items)
+            whichItem = 0;
+          }
+
+          this.setState({showItemPopup:true,article:currConfig,currItemNum:whichItem});
+
+          // NOT seeing the popup
+
+          // and, we need to create the itme in the articles set of items
+          // even if it's removed on Exit...
+          this.forceUpdate();
+        }
       }
 
-      addItem = (values,style) => {
-        let currConfig = Object.assign({}, this.state.article);
-
-         console.log(values, style)
-          // the values need to be checked and possibly modified
-          // a submit could of been an update for a carddeck card.
-
-              values.id = Date.now();
-            if(currConfig.items != undefined){
-              const newItems = [
-                ...currConfig.items,
-                values
-              ]
-                currConfig.items = newItems;
-              this.setState({article: currConfig});
-            }
-            else{
-              currConfig.items = [values];
-              this.setState({article: currConfig});
-            }
-            this.forceUpdateHandler();
-
-        this.setState({showItemPopUp: false})
-      }
-
-
+      /* add and edit*/
       editItem = (id, values) => {
-        console.log("edit", values)
         let currConfig = Object.assign({}, this.state.article);
 
            var j = this.whichItem(id,currConfig);
-           if(j != -1){
+          if(j != -1){
+             // item isn't first one
+             values.id = id;
+               if(this.state.article.items[j].new === true){
+                 values.new = false;
+               }
                currConfig.items[j] = values;
-               this.setState({article: currConfig});
-               this.forceUpdateHandler();
            }
+           else if(currConfig.items && currConfig.items[currConfig.items.length -1].new === true){
+               // overwrite this one - the first one added
+               values.new = false;
+               values.id = id;
+               if(!values.id || values.id === "" )
+                  values.id = Date.now();
+               currConfig.items[currConfig.items.length -1] = values;
+               console.log(values,currConfig)
 
-        this.setState({showItemPopUp:false})
+           }
+           console.log(currConfig)
+        this.props.manageItemPopup(false);
+        this.setState({showItemPopup:false, article:currConfig})
+        this.props.forceUpdateHandler(this.props.article.name,currConfig);
+
     }
 
       deleteItem = (id) => {
@@ -165,8 +166,9 @@ export default class Article extends Component {
          if(j != -1){
            currConfig.items.splice(j,1);
            this.setState({article:currConfig});
-           this.forceUpdateHandler();
+           this.props.forceUpdateHandler();
          }
+         this.props.manageItemPopup(false);
 
       }
 
@@ -174,24 +176,29 @@ export default class Article extends Component {
     formatStyleWithImg = () =>{
       var backgroundImage;
       if(this.state.article.backimg != undefined) {
-        if(this.state.cStyle.backgroundHold != undefined &&
-              this.state.cStyle.backgroundHold.includes("url")){
-                backgroundImage =
-                this.state.cStyle.backgroundHold +
-                this.state.article.backimg + ")";
+        if(this.state.cStyle != undefined){
+          if(this.state.cStyle.backgroundHold != undefined &&
+                this.state.cStyle.backgroundHold.includes("url")){
+                  backgroundImage =
+                  this.state.cStyle.backgroundHold +
+                  this.state.article.backimg + ")";
+          }
+          // this throws error on edit, but looks better and resizes
+          else if(this.state.cStyle.backgroundImageHold != undefined &&
+            this.state.cStyle.backgroundImageHold.includes("url")){
+            backgroundImage =
+             this.state.cStyle.backgroundImageHold +
+             this.state.article.backimg + ")";
+          }
+          else if(this.state.cStyle.backgroundHold != undefined){
+            backgroundImage = this.state.cStyle.backgroundHold;
+          }
+          else if(this.state.cStyle.backgroundImage == undefined){
+            backgroundImage = "url(" +  this.state.article.backimg + ")";
+          }
         }
-        // this throws error on edit, but looks better and resizes
-        else if(this.state.cStyle.backgroundImageHold != undefined &&
-          this.state.cStyle.backgroundImageHold.includes("url")){
-          backgroundImage =
-           this.state.cStyle.backgroundImageHold +
-           this.state.article.backimg + ")";
-        }
-        else if(this.state.cStyle.backgroundHold != undefined){
-          backgroundImage = this.state.cStyle.backgroundHold;
-        }
-        else if(this.state.cStyle.backgroundImage == undefined){
-          backgroundImage = "url(" +  this.state.article.backimg + ")";
+        else{
+
         }
       }
       return backgroundImage;
@@ -204,19 +211,18 @@ export default class Article extends Component {
       if(this.state.backimgEdited){
         // need to update the style to include the newly set value.
         currentStyle.backgroundImage = this.formatStyleWithImg();
-        console.log(currentStyle.backgroundImage)
+//        console.log("getStyle" , currentStyle.backgroundImage)
 
       }
       return currentStyle;
     }
-
+/*
 forceUpdateHandler = () => {
   this.forceUpdate();
 }
-
+*/
  deleteArticle = ()=> {
    this.props.deleteArticle(this.props.article.name);
-   this.forceUpdateHandler();
  }
 
  setBackgroundImage = (current) => {
@@ -226,16 +232,12 @@ forceUpdateHandler = () => {
    // props are read only
      */
 
-     console.log(current)
+  //   console.log("background" , current)
+    let currArticle = Object.assign({},this.state.article,{backimg:current});
+    this.setState({article:currArticle,backimgEdited:true})
 
-    this.setState(prevState =>  ({
-      article:{
-        ...prevState.article,
-        backimg: current
-      },
-      backimgEdited: true
-    }));
-    this.forceUpdateHandler();
+    // still not 100% on how to manage state updates and push up too
+    this.props.forceUpdateHandler(currArticle.name,currArticle);
 
  }
 
@@ -257,29 +259,59 @@ forceUpdateHandler = () => {
  }
 
  renderPost = (e) => {
-   if(!this.props.showItemPopup === true){
+   if(this.state.showItemPopup === false){
+
+     // because this button is at the bottom, it can be hard
+     // to select when the style is such that it seems a bit hidden.
+
      return(<div>
-       <BBHome setBackgroundImage={this.setBackgroundImage} />
+
        <Button
          id='addItem'
+         color="primary"
          block
-         onClick={(event) => this.addItemPopUp(event)}
+         zIndex='10000'
+         onClick={() => this.addItemPopUp()}
        >
        Add Item
        </Button>
+
+
+       <BBHome setBackgroundImage={this.setBackgroundImage} />
+
+
      </div>
    )}
    else {
        return(<EditItemPopUp styles={this.props.styles}
          text='Add New Item'
+         item={this.state.article.items[this.state.currItemNum]}
          articleName = {this.props.article.name}
-         addItem={this.addItem}
+         editItem = {this.editItem}
          deleteItem={this.deleteItem}
          onExit={this.onExit}
          />);
    }
  }
 
+// this isn't helping to allow selection of the buttons for adding fetures...
+
+ setupAnchor = () => {
+   if(this.props.editState === true){
+     // don't use the anchor stuff cause it messes up buttons
+     let anchor = Object.assign({},this.props.styles.anchor);
+
+     //strip out the margin and padding
+      delete anchor.paddingTop
+      delete anchor.marginTop
+
+//     console.log(anchor)
+     return(anchor)
+   }
+   else{
+     return this.props.styles.anchor
+   }
+ }
 
  render(){
 
@@ -288,28 +320,46 @@ forceUpdateHandler = () => {
     return(
       <article className={css(this.props.styles.articleContainer)}>
         <a id={this.props.article.name} name={this.props.article.name}>
-         <h2 className={css(this.props.styles.anchor)}>{this.props.article.header}</h2>
+         <h2 className={css(this.setupAnchor())}>{this.props.article.header}</h2>
        </a>
        {this.props.editState && (this.renderPre())}
 
         <div style={this.getStyle()} className={this.props.article.className}>
-<Container>
-          {this.props.article.items && (
-            this.props.article.items.map(item =>{
-             return(
+         <Container>
+          {this.state.article.items && (
+            this.state.article.items.map(item =>{
+
+              if(item.type != 'button') {
+                return(
+
               <ArticleItem key={i++}
               editState={this.props.editState}
+              styles={this.props.styles}
+              include={this.props.include}
+              manageItemPopup = {this.props.manageItemPopup}
+              showItemPopup = {item.new}
               item={item}
               deleteItem={this.deleteItem}
               editItem={this.editItem}
-              include={this.props.include}
-              addItem={this.addItem}
-              styles={this.props.styles}
-              onExit={this.props.onExit}
+              onExit={this.onExit}
+            />)
+            }
+            else {
 
-              />
-            )}
-          ))}
+            return(
+             <ArticleButton key={i++}
+             editState={this.props.editState}
+             styles={this.props.styles}
+             include={this.props.include}
+             manageItemPopup = {this.props.manageItemPopup}
+             showItemPopup = {item.new}
+             item={item}
+             deleteItem={this.deleteItem}
+             editItem={this.editItem}
+             onExit={this.onExit}
+           />
+           )}
+          }))}
 
 
           {(!this.props.article.items && this.props.article.url) && (

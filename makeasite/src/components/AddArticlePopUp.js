@@ -112,6 +112,10 @@ class AddArticlePopUp extends React.Component {
           if(values.type === 'circles'){
             values.data = this.state.data
           }
+
+          // make sure there is a style section for the
+          // article so backimages can be managed appropriately
+          values.style = {textAlign: "center"}
           //  console.log(values);
           this.props.addArticle(values);
     }
@@ -156,8 +160,7 @@ color:"black"
 
 */
 return (
-<div className='popup'>
-<div className='popup\_inner'>
+<div >
 <div className="form-group row">
    <div className="col-1"/>
    <h1>{this.props.text}</h1>
@@ -165,7 +168,7 @@ return (
   <Form
     onSubmit={this.onSubmit}
     render={({ handleSubmit, form, submitting, pristine, values }) => (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='popup'>
 
       <div className="form-group row">
       <div className="col-1"/>
@@ -191,10 +194,8 @@ return (
         <Field  name='type'
           component='select'
             >
-          <option key = {i++} value='info'>Info</option>
-          <option key = {i++} value='subcolumns'>Subcolumns</option>
-          <option key = {i++} value='video'>Video</option>
-          <option key = {i++} value='circles'>Circles</option>
+          <option key = {i++} value='subcolumns'>Grid</option>
+          <option key = {i++} value='circles'>Data Circles</option>
           <option key = {i++} value='final-form'>Form</option>
           <option key = {i++} value='dbdata'>Data Display</option>
           <option key = {i++} value='other'>Other</option>
@@ -320,7 +321,7 @@ return (
     </form>
   )}
     />
-</div>
+
 </div>
 
 );
